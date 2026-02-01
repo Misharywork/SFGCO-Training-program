@@ -8,6 +8,10 @@ const prog = [
     'html',
     'debug',
     'Website',
+    'Programming',
+    'Computer',
+    'Coffee',
+    'CO-OP',
      ]
 
 
