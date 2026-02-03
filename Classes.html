@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Classes in javascript</title>
+</head>
+<body>
+    <script>
+        class Rectangle {
+            constructor() {
+                console.log("The Rectangle is being created!"); 
+                this.width = 5;
+                this.height = 9;  // Changed from this.width
+                this.color = "blue";
+            }
+        }
+
+        let myRectangle1 = new Rectangle();
+        
+        // You can access the properties like this:
+        console.log("Width:", myRectangle1.width);
+        console.log("Height:", myRectangle1.height);
+        console.log("Color:", myRectangle1.color);
+    </script>
+</body>
+</html>
