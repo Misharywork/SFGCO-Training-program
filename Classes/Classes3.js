@@ -1,4 +1,3 @@
-
 class Employee {
     constructor(name, salary, hireYear) {
         this.name = name;
@@ -6,24 +5,20 @@ class Employee {
         this.hireYear = hireYear;
     }
     getExperience() {
-        const Date = new Date();
-        return Date.getFullYear() - this.hireYear
+        const date = new Date();
+        return date.getFullYear() - this.hireYear
     }
     getAnnualSalary() {
         return this.salary * 12
     }
     isEligibleForBouns() {
-        if (this.getExperience > 5) { return " True " }
+        if (this.getExperience() > 5) { return " True " }
         else { return " False " }
     }
 }
 
-const emp = new Employee(
-    { "Ali" , 8000, 2018 },
-    { "Mohammed", 9500 , 2017 },
-    { "Jaber" , 13423 , 2005 },
-)
+const emp = new Employee("Ali", 2000, 2026)
 
 console.log(" Experience ", emp.getExperience(), " Years ");
 console.log(" Annual Salary : ", emp.getAnnualSalary());
-console.log(emp.isEligibleForBouns() "Bouns Approved" : " No Bouns ");
+console.log(emp.isEligibleForBouns() ? "Bouns Approved" : " No Bouns ");

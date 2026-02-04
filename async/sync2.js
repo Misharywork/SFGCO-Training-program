@@ -21,7 +21,6 @@ function multiAsync(x, y) {
 //     console.log(z)
 // })
 
-
 sumAsync(6, 6)
     .then(res => {
         console.log(res)
