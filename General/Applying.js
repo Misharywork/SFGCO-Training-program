@@ -111,9 +111,9 @@
 // console.log(length)
 
 
-let bar = 'hi everyone this is an example for length and charat'
-let bob = bar.charAt(8)
-console.log(bob)
+// let bar = 'hi everyone this is an example for length and charat'
+// let bob = bar.charAt(8)
+// console.log(bob)
 
-let bab = bar.length
-console.log(bab)
+// let bab = bar.length
+// console.log(bab)
