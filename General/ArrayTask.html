@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ArrayTask</title>
+    <style>
+        body {
+            background-color: bisque;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="text-align: center; margin-top: 100px; ">
+        <label style="font-size: 40px;">Student Name</label>
+        <br><br>
+        <input type="text" id="student-input" placeholder="Enter student name"
+            style="font-size: larger; background-color: beige;">
+        <br><br>
+        <button id="add-student-btn">Submit</button>
+        <button id="delete-student-btn">Delete</button>
+        <div id="students" style="margin-top: 20px; font-size: medium; "></div>
+    </div>
+
+
+
+
+</body>
+
+<script>
+    var students = [];
+    document.getElementById("add-student-btn").addEventListener("click", function () {
+
+
+        var studentName = document.getElementById("student-input").value
+        students.push(studentName);
+        document.getElementById("students").innerHTML = students
+        document.getElementById("student-input").value = ""
+
+
+
+    })
+    document.getElementById("delete-student-btn").addEventListener("click", function () {
+        students.pop();
+        document.getElementById("students").innerHTML = students
+    })
+</script>
+
+</html>
