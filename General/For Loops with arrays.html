@@ -5,13 +5,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        body {
+            background-color: rgb(26, 76, 63);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+    </style>
 </head>
 
 <body>
+    <div style="text-align: center; margin-top: 20px; ">
+        <div>
+            <hr>
+            Find Student
+            <br>
+            <input type="text" id="student-input" placeholder="Search Student Name">
+            <button id="search">Search</button>
+        </div>
+
+        <div id="school" style="font-size: 25px;"></div>
+        <h2 id="result"></h2>
+    </div>
+
     <script>
 
+        var school = ['Mishary', 'Rayan', 'Fares', 'Khaled', 'Omar', 'Mohammed'];
+        for (var memberIndex = 0; memberIndex <= school.length - 1; memberIndex++) {
+            document.getElementById("school").innerHTML += school[memberIndex] + " - ";
+        }
+
+
+        document.getElementById("search").addEventListener("click", function () {
+            var name = document.getElementById("student-input").value.toLowerCase();
+
+            for (var student of school) {
+                var lowerdStudent = student.toLowerCase();
+                if (name == lowerdStudent) {
+                    document.getElementById("result").innerHTML = `Student ${name} is found in the school`;
+                    break;
+                } else {
+                    document.getElementById("result").innerHTML = `Student ${name} is not found in the school`;
+                }
+            }
+        })
 
     </script>
+    <hr>
 </body>
 
 </html>
