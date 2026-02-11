@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "TEST",
+			"path": "../../VS test/Coop1/TEST"
+		},
+		{
+			"name": "SFGCO Training program",
+			"path": ".."
+		}
+	],
+	"settings": {},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": []
+	}
+}
