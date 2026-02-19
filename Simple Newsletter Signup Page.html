@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Newsletter Signup</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #eed0a6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: rgb(210, 186, 143);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #007bff;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        button:hover {
+            background: #0056b3;
+            position: relative;
+
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 14px;
+            padding: 8px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .error {
+            background: #ffe6e6;
+            color: #d8000c;
+            display: block;
+        }
+
+        .success {
+            background: #e6ffed;
+            color: #1e7e34;
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Newsletter Signup</h2>
+
+        <form id="signupForm">
+            <input type="email" id="email" placeholder="Enter your email">
+            <button type="submit">Subscribe</button>
+            <div id="message" class="message"></div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('signupForm');
+        const emailInput = document.getElementById('email');
+        const messageDiv = document.getElementById('message');
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        const storedEmails = [];
+
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            const email = emailInput.value.trim();
+
+            messageDiv.className = 'message';
+            messageDiv.textContent = '';
+
+            if (email === '') {
+                messageDiv.textContent = 'Please enter your email address.';
+                messageDiv.classList.add('error');
+                return;
+            }
+
+            if (!emailRegex.test(email)) {
+                messageDiv.textContent = 'Please enter a valid email address.';
+                messageDiv.classList.add('error');
+                return;
+            }
+
+            storedEmails.push(email);
+
+            messageDiv.textContent = 'Successfully subscribed!';
+            messageDiv.classList.add('success');
+
+            emailInput.value = '';
+
+            console.log('Stored Emails:', storedEmails);
+        });
+    </script>
+
+</body>
+
+</html>

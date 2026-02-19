@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة وقاية وأمان</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2540;
+            --accent: #00b894;
+            --accent2: #e17055;
+            --gold: #f9ca24;
+            --light: #f4f7fa;
+            --white: #ffffff;
+            --gray: #8492a6;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --danger: #e74c3c;
+            --success: #00b894;
+            --warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--light);
+            color: var(--primary);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: var(--primary);
+            color: white;
+            padding: 0 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent), #00cec9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .logo-text {
+            font-family: 'Cairo', sans-serif;
+            font-weight: 900;
+            font-size: 1.3rem;
+        }
+
+        .logo-sub {
+            font-size: 0.65rem;
+            opacity: 0.7;
+            font-weight: 300;
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.85);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 600;
+            font-size: 0.88rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.4);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-accent:hover {
+            background: #00a381;
+            transform: translateY(-1px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #1a3a5c 50%, #0d3b6e 100%);
+            color: white;
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(0, 184, 148, 0.2);
+            border: 1px solid var(--accent);
+            border-radius: 50px;
+            padding: 0.3rem 1rem;
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            animation: fadeDown 0.6s ease;
+        }
+
+        .hero h1 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            animation: fadeDown 0.7s ease;
+            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            line-height: 1.8;
+            animation: fadeDown 0.8s ease;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 3rem;
+            animation: fadeUp 1s ease;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-num {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--accent);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .stats-bar {
+            background: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            flex-wrap: wrap;
+        }
+
+        .stats-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats-bar-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .stats-bar-icon.green {
+            background: #d4f8ee;
+        }
+
+        .stats-bar-icon.blue {
+            background: #dce8ff;
+        }
+
+        .stats-bar-icon.orange {
+            background: #ffebd4;
+        }
+
+        .stats-bar-icon.red {
+            background: #ffd9d9;
+        }
+
+        .stats-bar-num {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--primary);
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .stats-bar-label {
+            font-size: 0.78rem;
+            color: var(--gray);
+        }
+
+        .section {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .section-subtitle {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            background: white;
+            padding: 0.4rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            flex-wrap: wrap;
+        }
+
+        .tab {
+            flex: 1;
+            min-width: 120px;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            background: transparent;
+            color: var(--gray);
+            transition: all 0.2s;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tab.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(10, 37, 64, 0.3);
+        }
+
+        .tab:hover:not(.active) {
+            background: var(--light);
+            color: var(--primary);
+        }
+
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1.5px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent);
+            border-radius: 0 16px 16px 0;
+            transition: width 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0, 184, 148, 0.15);
+        }
+
+        .service-card:hover::before {
+            width: 6px;
+        }
+
+        .service-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .service-card h3 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: var(--primary);
+        }
+
+        .service-card p {
+            font-size: 0.82rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        .service-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            margin-top: 0.8rem;
+        }
+
+        .status-active {
+            background: #d4f8ee;
+            color: #00b894;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #f39c12;
+        }
+
+        .status-required {
+            background: #ffd9d9;
+            color: #e74c3c;
+        }
+
+        .products-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            border: none;
+            outline: none;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            color: var(--primary);
+            background: transparent;
+            width: 100%;
+            text-align: right;
+        }
+
+        .filter-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 1rem;
+            border-radius: 8px;
+            border: 1.5px solid var(--border);
+            background: white;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--primary);
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1.5px solid var(--border);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+            border-color: var(--accent);
+        }
+
+        .product-img {
+            width: 100%;
+            height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+        }
+
+        .product-badge.new {
+            background: var(--accent);
+        }
+
+        .product-badge.sale {
+            background: var(--accent2);
+        }
+
+        .product-body {
+            padding: 1rem;
+        }
+
+        .product-category {
+            font-size: 0.7rem;
+            color: var(--gray);
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .product-name {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+
+        .product-desc {
+            font-size: 0.78rem;
+            color: var(--gray);
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .product-price {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .product-price span {
+            font-size: 0.7rem;
+            color: var(--gray);
+            font-weight: 400;
+        }
+
+        .add-to-cart {
+            width: 34px;
+            height: 34px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .add-to-cart:hover {
+            background: var(--accent);
+            transform: scale(1.1);
+        }
+
+        .req-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .req-card {
+            background: white;
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1.5px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .req-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .req-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .req-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .req-progress {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent);
+            background: #d4f8ee;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+        }
+
+        .req-card h3 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .req-card p {
+            font-size: 0.82rem;
+            color: var(--gray);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .progress-bar {
+            background: var(--light);
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, var(--accent), #00cec9);
+            transition: width 1s ease;
+        }
+
+        .progress-fill.warning {
+            background: linear-gradient(90deg, #f39c12, #e17055);
+        }
+
+        .progress-fill.danger {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .req-tasks {
+            list-style: none;
+            margin-top: 0.8rem;
+        }
+
+        .req-tasks li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            padding: 0.3rem 0;
+            color: var(--primary);
+        }
+
+        .task-check {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            flex-shrink: 0;
+        }
+
+        .check-done {
+            background: var(--accent);
+            color: white;
+        }
+
+        .check-pending {
+            background: var(--border);
+            color: var(--gray);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--light);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #ffd9d9;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            border: 1.5px solid var(--border);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.9rem;
+            color: var(--primary);
+            outline: none;
+            transition: border-color 0.2s;
+            background: white;
+            text-align: right;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .img-upload {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: var(--light);
+        }
+
+        .img-upload:hover {
+            border-color: var(--accent);
+            background: #d4f8ee30;
+        }
+
+        .img-upload-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .img-upload p {
+            font-size: 0.82rem;
+            color: var(--gray);
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 0.95rem;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            font-family: 'Tajawal', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn-full:hover {
+            background: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .notifications-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .notif-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            border: 1.5px solid var(--border);
+            transition: all 0.2s;
+        }
+
+        .notif-item:hover {
+            border-color: var(--accent);
+        }
+
+        .notif-content {
+            flex: 1;
+        }
+
+        .notif-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--primary);
+            margin-bottom: 0.2rem;
+        }
+
+        .notif-msg {
+            font-size: 0.8rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .notif-time {
+            font-size: 0.72rem;
+            color: var(--gray);
+            margin-top: 0.3rem;
+        }
+
+        .footer {
+            background: var(--primary);
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            padding: 2rem;
+            margin-top: 4rem;
+            font-size: 0.85rem;
+        }
+
+        .footer strong {
+            color: var(--accent);
+        }
+
+        @keyframes fadeDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .stats-bar {
+                gap: 1.5rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .color-green {
+            background: #d4f8ee;
+        }
+
+        .color-blue {
+            background: #dce8ff;
+        }
+
+        .color-orange {
+            background: #ffebd4;
+        }
+
+        .color-red {
+            background: #ffd9d9;
+        }
+
+        .color-purple {
+            background: #ede7f6;
+        }
+
+        .color-teal {
+            background: #e0f5f5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-icon">🛡️</div>
+            <div>
+                <div class="logo-text">وقاية وأمان</div>
+                <span class="logo-sub">منصة السلامة والحماية المتكاملة</span>
+            </div>
+        </div>
+        <ul class="nav-links">
+            <li><a onclick="switchTab('services')">الخدمات</a></li>
+            <li><a onclick="switchTab('products')">المنتجات</a></li>
+            <li><a onclick="switchTab('requirements')">المتطلبات</a></li>
+            <li><a onclick="switchTab('notifications')">الإشعارات</a></li>
+        </ul>
+        <div class="nav-actions">
+            <button class="btn btn-outline">تسجيل الدخول</button>
+            <button class="btn btn-accent" onclick="openModal()">+ إضافة منتج</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-badge">🏅 معتمدة من الدفاع المدني السعودي</div>
+        <h1>منصة <span>وقاية وأمان</span></h1>
+        <p>منصتك المتكاملة لإدارة متطلبات السلامة والأمان وإنجاز جميع الالتزامات الحكومية والأمنية بكل سهولة واحترافية
+        </p>
+        <div>
+            <button class="btn btn-accent" style="padding:0.7rem 2rem;font-size:1rem;margin-left:10px"
+                onclick="switchTab('requirements')">المتطلبات الحكومية</button>
+            <button class="btn btn-outline" style="padding:0.7rem 2rem;font-size:1rem"
+                onclick="switchTab('products')">تصفح المنتجات</button>
+        </div>
+        <div class="hero-stats">
+            <div class="stat">
+                <div class="stat-num">+200</div>
+                <div class="stat-label">منتج سلامة</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">+50</div>
+                <div class="stat-label">خدمة حكومية</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">+1000</div>
+                <div class="stat-label">عميل راضٍ</div>
+            </div>
+            <div class="stat">
+                <div class="stat-num">24/7</div>
+                <div class="stat-label">دعم متواصل</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="stats-bar">
+        <div class="stats-bar-item">
+            <div class="stats-bar-icon green">✅</div>
+            <div>
+                <div class="stats-bar-num">18</div>
+                <div class="stats-bar-label">متطلب مكتمل</div>
+            </div>
+        </div>
+        <div class="stats-bar-item">
+            <div class="stats-bar-icon orange">⏳</div>
+            <div>
+                <div class="stats-bar-num">5</div>
+                <div class="stats-bar-label">قيد التنفيذ</div>
+            </div>
+        </div>
+        <div class="stats-bar-item">
+            <div class="stats-bar-icon red">🚨</div>
+            <div>
+                <div class="stats-bar-num">2</div>
+                <div class="stats-bar-label">يتطلب إجراء</div>
+            </div>
+        </div>
+        <div class="stats-bar-item">
+            <div class="stats-bar-icon blue">📋</div>
+            <div>
+                <div class="stats-bar-num">3</div>
+                <div class="stats-bar-label">تجديد قريب</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" style="margin-top:2rem">
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('services')" id="tab-services">🏢 الخدمات</button>
+            <button class="tab" onclick="switchTab('products')" id="tab-products">📦 المنتجات</button>
+            <button class="tab" onclick="switchTab('requirements')" id="tab-requirements">📋 المتطلبات الحكومية</button>
+            <button class="tab" onclick="switchTab('notifications')" id="tab-notifications">🔔 الإشعارات</button>
+        </div>
+
+        <!-- SERVICES -->
+        <div class="panel active" id="panel-services">
+            <div class="section-title">خدمات السلامة والأمان</div>
+            <div class="section-subtitle">جميع الخدمات المرتبطة بالسلامة الوقائية والأمن</div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon color-red">🔥</div>
+                    <h3>الحماية من الحرائق</h3>
+                    <p>تركيب وصيانة أنظمة الإنذار المبكر وطفايات الحريق وأنظمة الرش الآلي</p>
+                    <div class="service-status status-active">✅ مفعّل</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-blue">📹</div>
+                    <h3>أنظمة المراقبة الأمنية</h3>
+                    <p>تصميم وتركيب كاميرات المراقبة CCTV وأنظمة التحكم في الدخول</p>
+                    <div class="service-status status-active">✅ مفعّل</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-green">🚨</div>
+                    <h3>أنظمة الإنذار والتنبيه</h3>
+                    <p>تركيب أنظمة إنذار الاقتحام والإنذار المنزلي والتجاري المتكامل</p>
+                    <div class="service-status status-pending">⏳ تحت الإنشاء</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-orange">🏥</div>
+                    <h3>الإسعافات الأولية</h3>
+                    <p>توريد معدات الإسعافات الأولية وتدريب الموظفين وتجديد المستلزمات</p>
+                    <div class="service-status status-active">✅ مفعّل</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-purple">🔒</div>
+                    <h3>أمن المعلومات</h3>
+                    <p>حماية البيانات والشبكات وتأمين المعلومات الحساسة من الاختراق</p>
+                    <div class="service-status status-required">🚨 مطلوب</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-teal">🛗</div>
+                    <h3>مخارج الطوارئ</h3>
+                    <p>تصميم وتنفيذ مسارات الإخلاء وتركيب لافتات الطوارئ والإضاءة</p>
+                    <div class="service-status status-active">✅ مفعّل</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-blue">⚡</div>
+                    <h3>الحماية الكهربائية</h3>
+                    <p>فحص وصيانة اللوحات الكهربائية وتركيب الواقيات وكاسرات الدوائر</p>
+                    <div class="service-status status-pending">⏳ قيد المراجعة</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-orange">🧯</div>
+                    <h3>كيميائيات السلامة</h3>
+                    <p>توريد مواد إطفاء الحريق وتخزين المواد الخطرة بشكل آمن</p>
+                    <div class="service-status status-active">✅ مفعّل</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-red">🧰</div>
+                    <h3>فحص وصيانة دورية</h3>
+                    <p>برامج الصيانة الوقائية وجداول الفحص الدورية لجميع معدات السلامة</p>
+                    <div class="service-status status-active">✅ مفعّل</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-green">👷</div>
+                    <h3>تدريب السلامة</h3>
+                    <p>تصميم وتنفيذ برامج تدريب الموظفين على إجراءات السلامة والطوارئ</p>
+                    <div class="service-status status-active">✅ مفعّل</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-purple">📜</div>
+                    <h3>التراخيص والاعتمادات</h3>
+                    <p>استخراج تراخيص الدفاع المدني والاعتمادات الحكومية اللازمة</p>
+                    <div class="service-status status-required">🚨 مطلوب تجديد</div>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon color-blue">🌊</div>
+                    <h3>أنظمة إدارة الفيضانات</h3>
+                    <p>تركيب أنظمة الصرف الطارئ والحماية من مياه الأمطار والفيضانات</p>
+                    <div class="service-status status-pending">⏳ جديد</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUCTS -->
+        <div class="panel" id="panel-products">
+            <div class="section-title">منتجات السلامة والأمان</div>
+            <div class="section-subtitle">تصفح مجموعتنا الشاملة من معدات ومنتجات السلامة</div>
+            <div class="products-toolbar">
+                <div class="search-box">
+                    <span>🔍</span>
+                    <input type="text" placeholder="ابحث عن منتج..." id="productSearch" oninput="filterProducts()">
+                </div>
+                <div class="filter-btns">
+                    <button class="filter-btn active" onclick="filterCategory('all', this)">الكل</button>
+                    <button class="filter-btn" onclick="filterCategory('fire', this)">🔥 حرائق</button>
+                    <button class="filter-btn" onclick="filterCategory('security', this)">🔒 أمن</button>
+                    <button class="filter-btn" onclick="filterCategory('medical', this)">🏥 طبي</button>
+                    <button class="filter-btn" onclick="filterCategory('ppe', this)">👷 معدات وقاية</button>
+                </div>
+                <button class="btn btn-accent" onclick="openModal()">+ إضافة منتج</button>
+            </div>
+            <div class="products-grid" id="productsGrid"></div>
+        </div>
+
+        <!-- REQUIREMENTS -->
+        <div class="panel" id="panel-requirements">
+            <div class="section-title">المتطلبات الحكومية والأمنية</div>
+            <div class="section-subtitle">تتبع وإدارة جميع الالتزامات والمتطلبات التنظيمية</div>
+            <div class="req-grid">
+                <div class="req-card">
+                    <div class="req-header">
+                        <div class="req-icon color-red">🔥</div>
+                        <div class="req-progress">85%</div>
+                    </div>
+                    <h3>رخصة الدفاع المدني</h3>
+                    <p>ترخيص السلامة من الحريق وشهادة الفحص الدورية من الدفاع المدني السعودي</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:85%"></div>
+                    </div>
+                    <ul class="req-tasks">
+                        <li>
+                            <div class="task-check check-done">✓</div> تركيب طفايات الحريق
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> نظام الإنذار المبكر
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> لافتات مخارج الطوارئ
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> فحص نهائي من المفتش
+                        </li>
+                    </ul>
+                </div>
+                <div class="req-card">
+                    <div class="req-header">
+                        <div class="req-icon color-blue">🏛️</div>
+                        <div class="req-progress" style="background:#ffebd4;color:#f39c12">60%</div>
+                    </div>
+                    <h3>اشتراطات البلدية</h3>
+                    <p>متطلبات السلامة الصادرة من أمانة المنطقة الشرقية ومتطلبات المباني</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill warning" style="width:60%"></div>
+                    </div>
+                    <ul class="req-tasks">
+                        <li>
+                            <div class="task-check check-done">✓</div> تصاريح البناء
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> فحص الهياكل الإنشائية
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> توصيلات المياه والصرف
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> الشهادة النهائية
+                        </li>
+                    </ul>
+                </div>
+                <div class="req-card">
+                    <div class="req-header">
+                        <div class="req-icon color-green">💼</div>
+                        <div class="req-progress">100%</div>
+                    </div>
+                    <h3>اشتراطات العمل</h3>
+                    <p>متطلبات وزارة الموارد البشرية المتعلقة بسلامة بيئة العمل والموظفين</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:100%"></div>
+                    </div>
+                    <ul class="req-tasks">
+                        <li>
+                            <div class="task-check check-done">✓</div> معدات الحماية الشخصية
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> تدريب الموظفين
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> سجلات السلامة
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> التأمين الصحي
+                        </li>
+                    </ul>
+                </div>
+                <div class="req-card">
+                    <div class="req-header">
+                        <div class="req-icon color-purple">🔌</div>
+                        <div class="req-progress" style="background:#ffd9d9;color:#e74c3c">30%</div>
+                    </div>
+                    <h3>اشتراطات شركة الكهرباء</h3>
+                    <p>متطلبات شركة السعودية للكهرباء للتوصيلات والسلامة الكهربائية</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill danger" style="width:30%"></div>
+                    </div>
+                    <ul class="req-tasks">
+                        <li>
+                            <div class="task-check check-done">✓</div> فحص اللوحة الرئيسية
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> تركيب الواقيات الأرضية
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> فحص التوصيلات
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> شهادة الكهربائي المرخص
+                        </li>
+                    </ul>
+                </div>
+                <div class="req-card">
+                    <div class="req-header">
+                        <div class="req-icon color-orange">🌐</div>
+                        <div class="req-progress">75%</div>
+                    </div>
+                    <h3>أنظمة حماية البيانات</h3>
+                    <p>متطلبات الهيئة الوطنية للأمن السيبراني NCA وحماية المعلومات</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:75%"></div>
+                    </div>
+                    <ul class="req-tasks">
+                        <li>
+                            <div class="task-check check-done">✓</div> سياسة أمن المعلومات
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> نسخ احتياطية منتظمة
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> جدار ناري متقدم
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> تقرير الاختراق الأمني
+                        </li>
+                    </ul>
+                </div>
+                <div class="req-card">
+                    <div class="req-header">
+                        <div class="req-icon color-teal">🚑</div>
+                        <div class="req-progress">90%</div>
+                    </div>
+                    <h3>متطلبات الصحة والسلامة المهنية</h3>
+                    <p>اشتراطات وزارة الصحة والمؤسسة العامة للتأمينات الاجتماعية</p>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width:90%"></div>
+                    </div>
+                    <ul class="req-tasks">
+                        <li>
+                            <div class="task-check check-done">✓</div> الفحص الطبي الدوري
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> تأمين ضد الحوادث
+                        </li>
+                        <li>
+                            <div class="task-check check-done">✓</div> تدريب الإسعافات الأولية
+                        </li>
+                        <li>
+                            <div class="task-check check-pending">○</div> شهادة سلامة المنشأة
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <div class="panel" id="panel-notifications">
+            <div class="section-title">الإشعارات والتنبيهات</div>
+            <div class="section-subtitle">آخر التحديثات والتنبيهات المتعلقة بملف السلامة</div>
+            <div class="notifications-list">
+                <div class="notif-item">
+                    <div
+                        style="width:40px;height:40px;border-radius:10px;background:#ffd9d9;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        🚨</div>
+                    <div class="notif-content">
+                        <div class="notif-title">انتهاء ترخيص الدفاع المدني</div>
+                        <div class="notif-msg">ترخيص الدفاع المدني سينتهي خلال 15 يوماً. يرجى التجديد في أقرب وقت لتجنب
+                            الغرامات.</div>
+                        <div class="notif-time">⏰ منذ ساعتين</div>
+                    </div>
+                    <button class="btn btn-accent" style="white-space:nowrap">تجديد الآن</button>
+                </div>
+                <div class="notif-item">
+                    <div
+                        style="width:40px;height:40px;border-radius:10px;background:#ffebd4;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        ⚠️</div>
+                    <div class="notif-content">
+                        <div class="notif-title">موعد صيانة طفايات الحريق</div>
+                        <div class="notif-msg">حان موعد الصيانة الدورية لطفايات الحريق في الطابق الثاني. الرجاء جدولة
+                            الزيارة.</div>
+                        <div class="notif-time">⏰ منذ 5 ساعات</div>
+                    </div>
+                    <button class="btn btn-outline"
+                        style="color:var(--primary);white-space:nowrap;border-color:var(--border)">جدولة</button>
+                </div>
+                <div class="notif-item">
+                    <div
+                        style="width:40px;height:40px;border-radius:10px;background:#d4f8ee;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        ✅</div>
+                    <div class="notif-content">
+                        <div class="notif-title">اكتمال فحص أنظمة الإنذار</div>
+                        <div class="notif-msg">تم إجراء الفحص الدوري لأنظمة الإنذار بنجاح. جميع الأجهزة تعمل بكفاءة
+                            عالية.</div>
+                        <div class="notif-time">⏰ منذ يوم</div>
+                    </div>
+                </div>
+                <div class="notif-item">
+                    <div
+                        style="width:40px;height:40px;border-radius:10px;background:#dce8ff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        📋</div>
+                    <div class="notif-content">
+                        <div class="notif-title">طلب وثيقة جديد</div>
+                        <div class="notif-msg">طلب مفتش البلدية تقديم نسخة محدثة من سجلات الصيانة الشهرية.</div>
+                        <div class="notif-time">⏰ منذ يومين</div>
+                    </div>
+                    <button class="btn btn-outline"
+                        style="color:var(--primary);white-space:nowrap;border-color:var(--border)">رفع الوثيقة</button>
+                </div>
+                <div class="notif-item">
+                    <div
+                        style="width:40px;height:40px;border-radius:10px;background:#ede7f6;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        🎓</div>
+                    <div class="notif-content">
+                        <div class="notif-title">دورة تدريبية في السلامة</div>
+                        <div class="notif-msg">تذكير: دورة تدريب السلامة للموظفين الجدد ستبدأ غداً الساعة 9 صباحاً.
+                        </div>
+                        <div class="notif-time">⏰ منذ 3 أيام</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL -->
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModalIfOutside(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <div class="modal-title">➕ إضافة منتج جديد</div>
+                <button class="modal-close" onclick="closeModal()">✕</button>
+            </div>
+            <div class="form-group">
+                <label class="form-label">اسم المنتج *</label>
+                <input type="text" class="form-input" id="productName" placeholder="مثال: طفاية حريق CO2 6 كيلو">
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">الفئة *</label>
+                    <select class="form-select" id="productCategory">
+                        <option value="fire">🔥 معدات الحرائق</option>
+                        <option value="security">🔒 الأمن والمراقبة</option>
+                        <option value="medical">🏥 الإسعافات الأولية</option>
+                        <option value="ppe">👷 معدات الوقاية</option>
+                        <option value="detection">🔍 أجهزة الكشف</option>
+                        <option value="lighting">💡 إضاءة الطوارئ</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">السعر (ريال) *</label>
+                    <input type="number" class="form-input" id="productPrice" placeholder="0.00">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">وصف المنتج</label>
+                <textarea class="form-textarea" id="productDesc" placeholder="أدخل وصفاً تفصيلياً للمنتج..."></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label class="form-label">الشركة المصنعة</label>
+                    <input type="text" class="form-input" id="productBrand" placeholder="مثال: Ansul">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">رقم الموديل</label>
+                    <input type="text" class="form-input" id="productModel" placeholder="مثال: CO2-6K">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">صورة المنتج</label>
+                <div class="img-upload" onclick="document.getElementById('imgInput').click()">
+                    <div class="img-upload-icon" id="uploadPreview">📸</div>
+                    <p id="uploadText">انقر لرفع صورة المنتج</p>
+                    <input type="file" id="imgInput" accept="image/*" style="display:none"
+                        onchange="previewImage(this)">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">الشهادات والاعتمادات</label>
+                <input type="text" class="form-input" id="productCerts" placeholder="مثال: ISO 9001, CE, SASO">
+            </div>
+            <button class="btn-full" onclick="addProduct()">✅ إضافة المنتج</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>منصة <strong>وقاية وأمان</strong> — جميع الحقوق محفوظة © 2025 | للدعم الفني: support@wiqaya-aman.sa</p>
+    </footer>
+
+    <script>
+        const categoryEmojis = {
+            fire: { emoji: '🔥', bg: '#ffd9d9', label: 'معدات الحرائق' },
+            security: { emoji: '📹', bg: '#dce8ff', label: 'الأمن والمراقبة' },
+            medical: { emoji: '🏥', bg: '#d4f8ee', label: 'الإسعافات الأولية' },
+            ppe: { emoji: '👷', bg: '#ffebd4', label: 'معدات الوقاية' },
+            detection: { emoji: '🔍', bg: '#ede7f6', label: 'أجهزة الكشف' },
+            lighting: { emoji: '💡', bg: '#e0f5f5', label: 'إضاءة الطوارئ' }
+        };
+
+        let products = [
+            { id: 1, name: 'طفاية حريق CO2 6 كيلو', category: 'fire', price: '480', desc: 'طفاية ثاني أكسيد الكربون مناسبة للمختبرات والأجهزة الكهربائية، معتمدة SASO', brand: 'Kidde', certs: 'SASO, CE', img: '', badge: 'bestseller' },
+            { id: 2, name: 'كاميرا مراقبة IP 4K', category: 'security', price: '850', desc: 'كاميرا مراقبة داخلية وخارجية بدقة 4K مع رؤية ليلية 30م ودعم PoE', brand: 'Hikvision', certs: 'CE, FCC', img: '', badge: 'new' },
+            { id: 3, name: 'حقيبة إسعافات أولية احترافية', category: 'medical', price: '220', desc: 'حقيبة طبية كاملة مع أدوات الإسعافات الأولية الأساسية، مناسبة لـ 25 شخص', brand: '3M', certs: 'ISO 13485', img: '', badge: '' },
+            { id: 4, name: 'خوذة سلامة صناعية', category: 'ppe', price: '95', desc: 'خوذة بلاستيكية صلبة بمعيار EN397 مقاومة للصدمات والكهرباء', brand: 'MSA Safety', certs: 'EN397, ANSI', img: '', badge: '' },
+            { id: 5, name: 'كاشف الدخان الذكي', category: 'detection', price: '165', desc: 'كاشف دخان وحرارة ذكي متصل بالواي فاي مع إشعارات فورية على الهاتف', brand: 'Honeywell', certs: 'EN54, UL', img: '', badge: 'new' },
+            { id: 6, name: 'إضاءة طوارئ LED', category: 'lighting', price: '130', desc: 'وحدة إضاءة طوارئ LED تدوم 3 ساعات مع مؤشر شحن ولافتة EXIT', brand: 'Legrand', certs: 'IEC 60598', img: '', badge: '' },
+            { id: 7, name: 'نظام رش آلي للحريق', category: 'fire', price: '2800', desc: 'نظام sprinkler متكامل لمساحة 200م² مع صمامات أوتوماتيك وضغط عالٍ', brand: 'Tyco', certs: 'FM, UL, SASO', img: '', badge: 'sale' },
+            { id: 8, name: 'حزام الأمان ضد السقوط', category: 'ppe', price: '380', desc: 'حزام سلامة كامل الجسم مع حبل امتصاص الصدمات، يتحمل 150 كجم', brand: 'Petzl', certs: 'EN361, ANSI', img: '', badge: '' },
+            { id: 9, name: 'كاشف غاز CO متعدد', category: 'detection', price: '290', desc: 'كاشف متعدد لأول أكسيد الكربون والغازات القابلة للاشتعال مع صوت تحذيري', brand: 'BW Technologies', certs: 'ATEX, IECEx', img: '', badge: '' },
+            { id: 10, name: 'خزانة طوارئ للأدوية', category: 'medical', price: '450', desc: 'خزانة معدنية مقفلة تحتوي على أدوية الطوارئ الأساسية والمستلزمات الطبية', brand: 'First Voice', certs: 'ISO 13485', img: '', badge: 'new' },
+            { id: 11, name: 'لافتة طوارئ LED', category: 'lighting', price: '75', desc: 'لافتة مضيئة لمخرج الطوارئ بـ LED خضراء تعمل بالبطارية، تحمل 8 ساعات', brand: 'Olympia', certs: 'EN7010', img: '', badge: '' },
+            { id: 12, name: 'نظام إنذار متكامل', category: 'security', price: '4500', desc: 'لوحة تحكم مركزية مع 16 منطقة و50 كاشف دخان وزراير طوارئ', brand: 'Bosch', certs: 'EN54, UL, SASO', img: '', badge: 'bestseller' },
+        ];
+
+        let filteredProducts = [...products];
+        let currentFilter = 'all';
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+            const search = document.getElementById('productSearch')?.value?.toLowerCase() || '';
+            let display = filteredProducts;
+            if (search) display = filteredProducts.filter(p => p.name.toLowerCase().includes(search) || p.desc.toLowerCase().includes(search));
+            if (display.length === 0) { grid.innerHTML = '<p style="text-align:center;color:var(--gray);padding:3rem;grid-column:1/-1">لا توجد منتجات مطابقة</p>'; return; }
+            display.forEach(p => {
+                const cat = categoryEmojis[p.category] || { emoji: '📦', bg: '#f0f0f0', label: p.category };
+                const badgeHtml = p.badge ? `<div class="product-badge ${p.badge === 'new' ? 'new' : p.badge === 'sale' ? 'sale' : ''}">${p.badge === 'new' ? 'جديد' : p.badge === 'sale' ? 'تخفيض' : 'الأكثر مبيعاً'}</div>` : '';
+                grid.innerHTML += `
+      <div class="product-card">
+        <div class="product-img" style="background:${cat.bg}">
+          ${p.img ? `<img src="${p.img}" style="width:100%;height:100%;object-fit:cover">` : `<span style="font-size:4rem">${cat.emoji}</span>`}
+          ${badgeHtml}
+        </div>
+        <div class="product-body">
+          <div class="product-category">${cat.label}${p.certs ? ' · ' + p.certs : ''}</div>
+          <div class="product-name">${p.name}</div>
+          <div class="product-desc">${p.desc}</div>
+          <div class="product-footer">
+            <div class="product-price">${p.price} <span>ريال</span></div>
+            <button class="add-to-cart" onclick="addToCart('${p.name}')">🛒</button>
+          </div>
+        </div>
+      </div>`;
+            });
+        }
+
+        function filterCategory(cat, btn) {
+            currentFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            filteredProducts = cat === 'all' ? [...products] : products.filter(p => p.category === cat);
+            renderProducts();
+        }
+
+        function filterProducts() { renderProducts(); }
+
+        function addToCart(name) { showToast(`✅ تم إضافة "${name}" إلى السلة`); }
+
+        function showToast(msg) {
+            const t = document.createElement('div');
+            t.style.cssText = `position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);background:var(--primary);color:white;padding:0.8rem 1.5rem;border-radius:12px;font-family:Tajawal,sans-serif;font-size:0.9rem;z-index:9999;box-shadow:0 8px 25px rgba(0,0,0,0.3)`;
+            t.textContent = msg;
+            document.body.appendChild(t);
+            setTimeout(() => t.remove(), 3000);
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('tab-' + tab).classList.add('active');
+            document.getElementById('panel-' + tab).classList.add('active');
+            if (tab === 'products') renderProducts();
+        }
+
+        function openModal() { document.getElementById('modalOverlay').classList.add('open'); }
+        function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+        function closeModalIfOutside(e) { if (e.target.id === 'modalOverlay') closeModal(); }
+
+        function previewImage(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                document.getElementById('uploadPreview').innerHTML = `<img src="${e.target.result}" style="width:80px;height:80px;object-fit:cover;border-radius:10px">`;
+                document.getElementById('uploadText').textContent = file.name;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function addProduct() {
+            const name = document.getElementById('productName').value.trim();
+            const price = document.getElementById('productPrice').value.trim();
+            const desc = document.getElementById('productDesc').value.trim();
+            const category = document.getElementById('productCategory').value;
+            const brand = document.getElementById('productBrand').value.trim();
+            const certs = document.getElementById('productCerts').value.trim();
+            if (!name || !price) { showToast('❌ يرجى إدخال اسم المنتج والسعر'); return; }
+            const imgEl = document.getElementById('uploadPreview').querySelector('img');
+            const img = imgEl ? imgEl.src : '';
+            products.unshift({ id: Date.now(), name, category, price, desc, brand, certs, img, badge: 'new' });
+            filteredProducts = currentFilter === 'all' ? [...products] : products.filter(p => p.category === currentFilter);
+            closeModal();
+            switchTab('products');
+            showToast(`✅ تم إضافة "${name}" بنجاح`);
+            ['productName', 'productPrice', 'productDesc', 'productBrand', 'productModel', 'productCerts'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+            document.getElementById('uploadPreview').innerHTML = '📸';
+            document.getElementById('uploadText').textContent = 'انقر لرفع صورة المنتج';
+        }
+
+        renderProducts();
+    </script>
+</body>
+
+</html>
