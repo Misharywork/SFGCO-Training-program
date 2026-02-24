@@ -1,0 +1,1680 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منصة وقاية وأمان | النظام المتكامل</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+        }
+
+        .gov-green {
+            color: #006C35;
+        }
+
+        .bg-gov-green {
+            background-color: #006C35;
+        }
+
+        /* FIX 1: Single reliable hidden class, won't conflict with Tailwind */
+        .hidden-section {
+            display: none !important;
+        }
+
+        /* FIX 2: RTL-corrected step line — uses 'left' not 'right' for the connector */
+        .step-line::after {
+            content: "";
+            position: absolute;
+            top: 1.25rem;
+            left: 2rem;
+            /* was 'right: 2rem' which is wrong in RTL flow */
+            width: calc(100% - 4rem);
+            height: 2px;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        /* Signature canvas cursor */
+        #sig-canvas {
+            cursor: crosshair;
+            touch-action: none;
+        }
+
+        /* Product card hover */
+        .product-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.12);
+        }
+
+        /* Badge bounce */
+        @keyframes badgePop {
+            0% {
+                transform: scale(1)
+            }
+
+            50% {
+                transform: scale(1.5)
+            }
+
+            100% {
+                transform: scale(1)
+            }
+        }
+
+        .badge-pop {
+            animation: badgePop 0.3s ease;
+        }
+
+        /* Modal backdrop */
+        #modal-backdrop {
+            transition: opacity 0.2s;
+        }
+
+        /* Qty input */
+        input[type=number]::-webkit-inner-spin-button {
+            opacity: 1;
+        }
+
+        /* Category filter active */
+        .cat-btn.active {
+            background-color: #006C35;
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+
+    <!-- ═══════════════════════════════════════
+         SECTION: HOME
+    ═══════════════════════════════════════ -->
+    <div id="section-home">
+        <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+                <div class="flex items-center space-x-reverse space-x-3">
+                    <div class="bg-gov-green p-2 rounded-lg shadow-lg">
+                        <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                    </div>
+                    <button onclick="showSection('section-home')"
+                        class="text-2xl font-bold text-gov-green hover:opacity-80 transition">وقاية وأمان</button>
+                </div>
+                <div class="flex gap-4 items-center">
+                    <button onclick="showSection('section-shop')"
+                        class="text-gray-600 font-bold hover:text-gov-green transition text-sm">المنتجات</button>
+                    <button onclick="showSection('section-verify')"
+                        class="text-gray-600 font-bold hover:text-gov-green transition text-sm">التحقق من عقد</button>
+                    <button onclick="showSection('section-nafath')"
+                        class="bg-gov-green text-white px-6 py-2 rounded-md font-bold text-sm shadow-md hover:bg-opacity-90 flex items-center gap-2">
+                        <!-- FIX 3: Replaced unreliable external favicon with inline SVG shield icon -->
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        دخول نفاذ
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <header
+            class="max-w-7xl mx-auto px-4 pt-16 pb-12 text-center lg:text-right grid lg:grid-cols-2 gap-8 items-center">
+            <div>
+                <h1 class="text-5xl font-black text-gray-900 leading-tight">حلول الأمن والسلامة <br><span
+                        class="text-gov-green">بموثوقية رقمية</span></h1>
+                <p class="mt-6 text-lg text-gray-500 italic">نوفر للأفراد والمؤسسات رحلة مؤتمتة تبدأ من الطلب وتنتهي
+                    بعقد رسمي معتمد لدى الجهات المختصة.</p>
+                <div class="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start">
+                    <button onclick="showSection('section-nafath')"
+                        class="bg-gov-green text-white px-8 py-4 rounded-xl font-bold shadow-xl hover:scale-105 transition-transform">بدء
+                        طلب جديد</button>
+                    <button onclick="showSection('section-shop')"
+                        class="bg-white text-gov-green border-2 border-gov-green px-8 py-4 rounded-xl font-bold hover:bg-gray-50">تسوق
+                        المنتجات</button>
+                    <button onclick="showSection('section-verify')"
+                        class="bg-white text-gray-500 border-2 border-gray-200 px-8 py-4 rounded-xl font-bold hover:bg-gray-50">مركز
+                        التحقق</button>
+                </div>
+            </div>
+            <div
+                class="bg-gray-100 rounded-3xl h-64 flex items-center justify-center border-4 border-dashed border-gray-200">
+                <span class="text-gray-300 italic">مخطط تفاعلي للمنشآت الآمنة</span>
+            </div>
+        </header>
+
+        <section class="max-w-7xl mx-auto px-4 py-16">
+            <h2 class="text-2xl font-black text-center mb-12 italic">رحلتك في وقاية وأمان</h2>
+            <!-- FIX 2 applied here: RTL-correct step line -->
+            <div class="relative flex justify-between items-start step-line">
+                <div class="flex flex-col items-center text-center w-1/4 relative z-10">
+                    <div
+                        class="w-10 h-10 bg-gov-green text-white rounded-full flex items-center justify-center font-bold mb-3 shadow-lg">
+                        1</div>
+                    <h3 class="font-bold text-sm">تسجيل الدخول</h3>
+                    <p class="text-xs text-gray-400 mt-1">عبر النفاذ الوطني</p>
+                    <button onclick="showSection('section-nafath')"
+                        class="mt-2 text-gov-green text-xs italic underline">تجربة الدخول</button>
+                </div>
+                <div class="flex flex-col items-center text-center w-1/4 relative z-10">
+                    <div
+                        class="w-10 h-10 bg-white border-2 border-gov-green text-gov-green rounded-full flex items-center justify-center font-bold mb-3">
+                        2</div>
+                    <h3 class="font-bold text-sm">اختيار الخدمة</h3>
+                    <p class="text-xs text-gray-400 mt-1">تحديد نوع التعاقد</p>
+                </div>
+                <div class="flex flex-col items-center text-center w-1/4 relative z-10">
+                    <div
+                        class="w-10 h-10 bg-white border-2 border-gov-green text-gov-green rounded-full flex items-center justify-center font-bold mb-3">
+                        3</div>
+                    <h3 class="font-bold text-sm">التوقيع والدفع</h3>
+                    <p class="text-xs text-gray-400 mt-1">إلكترونياً وبأمان</p>
+                </div>
+                <div class="flex flex-col items-center text-center w-1/4 relative z-10">
+                    <div
+                        class="w-10 h-10 bg-white border-2 border-gov-green text-gov-green rounded-full flex items-center justify-center font-bold mb-3">
+                        4</div>
+                    <h3 class="font-bold text-sm">استلام العقد</h3>
+                    <p class="text-xs text-gray-400 mt-1">نسخة رقمية معتمدة</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: VERIFY CONTRACT
+    ═══════════════════════════════════════ -->
+    <div id="section-verify"
+        class="hidden-section min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center p-6">
+        <div class="max-w-md w-full text-center">
+            <div class="bg-gov-green/20 p-4 rounded-2xl mb-6 inline-block">
+                <svg class="w-12 h-12 text-gov-green mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+            </div>
+            <h2 class="text-3xl font-black mb-4 italic text-gov-green">مركز التحقق من العقود</h2>
+            <p class="text-gray-400 mb-8 italic">أدخل رقم العقد أو استخدم الماسح الضوئي للتأكد من موثوقية الوثيقة</p>
+
+            <div class="bg-gray-800 p-8 rounded-3xl shadow-2xl border border-gray-700">
+                <input id="verify-input" type="text" placeholder="رقم العقد (مثال: DS-2026-XXXX)"
+                    class="w-full bg-gray-900 border border-gray-700 rounded-xl p-4 mb-4 text-center text-lg font-bold tracking-widest focus:border-gov-green outline-none transition-colors"
+                    oninput="resetVerifyState()">
+
+                <!-- FIX 12: Added result feedback UI -->
+                <div id="verify-error" class="hidden mb-4 text-red-400 text-sm font-bold bg-red-900/20 rounded-xl p-3">
+                    ❌ الرجاء إدخال رقم عقد صحيح (مثال: DS-2026-1234)
+                </div>
+                <div id="verify-not-found"
+                    class="hidden mb-4 text-amber-400 text-sm font-bold bg-amber-900/20 rounded-xl p-3">
+                    ⚠️ لم يتم العثور على عقد بهذا الرقم. تحقق من الرقم وأعد المحاولة.
+                </div>
+                <div id="verify-success"
+                    class="hidden mb-4 text-gov-green text-sm font-bold bg-green-900/20 rounded-xl p-3 text-right">
+                    <div class="text-base mb-2">✅ العقد موثق وصالح</div>
+                    <div class="text-gray-300 font-normal space-y-1">
+                        <div>رقم العقد: <span class="font-bold text-white" id="verified-id"></span></div>
+                        <div>الحالة: <span class="font-bold text-gov-green">نشط</span></div>
+                        <div>تاريخ الإصدار: <span class="font-bold text-white">2026/02/15</span></div>
+                    </div>
+                </div>
+
+                <button onclick="verifyContract()"
+                    class="w-full bg-gov-green text-white py-4 rounded-xl font-bold text-lg mb-4 hover:bg-opacity-90 transition-opacity">تحقق
+                    الآن</button>
+
+                <div class="flex items-center justify-center gap-4 text-gray-500">
+                    <span class="h-px bg-gray-700 w-full"></span>
+                    <span>أو</span>
+                    <span class="h-px bg-gray-700 w-full"></span>
+                </div>
+                <button onclick="openQRScanner()"
+                    class="mt-4 flex items-center justify-center w-full gap-2 text-gov-green font-bold hover:text-green-400 transition-colors">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                    </svg>
+                    فتح ماسح QR
+                </button>
+            </div>
+            <button onclick="showSection('section-home')"
+                class="mt-8 text-gray-500 hover:text-white transition italic">العودة للرئيسية</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: NAFATH LOGIN
+    ═══════════════════════════════════════ -->
+    <div id="section-nafath" class="hidden-section min-h-screen bg-white flex flex-col items-center justify-center p-6">
+        <!-- FIX 3: Replaced broken external favicon with text logo fallback -->
+        <div class="flex items-center gap-3 mb-12">
+            <div class="bg-gov-green p-3 rounded-xl">
+                <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+            <span class="text-3xl font-black text-gov-green">نفاذ</span>
+        </div>
+
+        <div class="max-w-md w-full bg-white border border-gray-100 shadow-2xl rounded-3xl p-8">
+            <h3 class="text-center text-xl font-bold text-gray-700 mb-8 italic">النفاذ الوطني الموحد</h3>
+
+            <!-- FIX: Added error feedback for ID input -->
+            <div id="nafath-id-error" class="hidden mb-4 text-red-500 text-sm text-center font-bold">
+                رقم الهوية يجب أن يكون 10 أرقام
+            </div>
+
+            <input id="id-input" type="text" inputmode="numeric" maxlength="10" placeholder="رقم الهوية / الإقامة"
+                class="w-full border-b-2 border-gray-200 focus:border-gov-green text-center text-2xl font-bold py-3 outline-none mb-8 tracking-widest transition-colors"
+                oninput="this.value=this.value.replace(/[^0-9]/g,''); document.getElementById('nafath-id-error').classList.add('hidden')">
+
+            <button onclick="simulateNafathApp()"
+                class="w-full bg-gov-green text-white py-5 rounded-xl font-bold text-xl hover:bg-opacity-95 shadow-lg transition-opacity">دخول</button>
+
+            <!-- FIX 4: Reset state properly on show; bounce animation preserved -->
+            <div id="nafath-wait" class="hidden mt-8 text-center">
+                <p class="text-gray-500 mb-2 italic">افتح تطبيق نفاذ وأكد الرقم:</p>
+                <div class="text-6xl font-black text-gov-green animate-bounce">82</div>
+                <p class="text-xs text-gray-400 mt-4 italic">جارٍ الانتظار... سيتم تحويلك تلقائياً</p>
+            </div>
+
+            <button onclick="showSection('section-home')"
+                class="w-full mt-8 text-gray-400 text-sm italic hover:text-gray-600 transition-colors">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: DASHBOARD
+    ═══════════════════════════════════════ -->
+    <div id="section-dashboard" class="hidden-section min-h-screen flex">
+        <aside class="w-64 bg-gray-900 text-gray-400 flex flex-col p-6">
+            <button onclick="showSection('section-home')"
+                class="text-white font-black text-xl mb-12 italic tracking-tighter hover:opacity-80 transition text-right">وقاية
+                وأمان</button>
+            <nav class="flex-1 space-y-2">
+                <button onclick="showDashTab('tab-main')" id="nav-main"
+                    class="dash-nav-btn w-full text-right text-white bg-gov-green/20 p-3 rounded-lg font-bold border-r-4 border-gov-green italic">لوحة
+                    التحكم</button>
+                <button onclick="showDashTab('tab-contracts')" id="nav-contracts"
+                    class="dash-nav-btn w-full text-right text-gray-400 hover:text-white p-3 rounded-lg transition italic">العقود
+                    النشطة</button>
+                <button onclick="showDashTab('tab-payments')" id="nav-payments"
+                    class="dash-nav-btn w-full text-right text-gray-400 hover:text-white p-3 rounded-lg transition italic">سجل
+                    المدفوعات</button>
+            </nav>
+            <button onclick="logOut()"
+                class="text-red-400 text-right p-3 hover:text-red-600 transition italic text-sm">تسجيل الخروج</button>
+        </aside>
+
+        <main class="flex-1 overflow-auto">
+            <header class="flex justify-between items-center px-10 pt-10 pb-6 border-b">
+                <h2 class="text-3xl font-black italic">أهلاً بك، <span class="text-gov-green">شركة الأمان
+                        المتكاملة</span></h2>
+                <div class="flex items-center gap-4">
+                    <span class="text-xs bg-amber-100 text-amber-700 px-3 py-1 rounded-full font-bold">مؤسسة
+                        موثقة</span>
+                    <div
+                        class="w-10 h-10 bg-gov-green rounded-full flex items-center justify-center text-white font-bold text-sm">
+                        ش</div>
+                </div>
+            </header>
+
+            <!-- TAB: لوحة التحكم -->
+            <div id="tab-main" class="dash-tab p-10">
+                <!-- Stats -->
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                        <p class="text-xs text-gray-400 mb-1">العقود النشطة</p>
+                        <p class="text-4xl font-black text-gov-green">3</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                        <p class="text-xs text-gray-400 mb-1">إجمالي المدفوعات</p>
+                        <p class="text-4xl font-black text-gray-800">18,450 <span
+                                class="text-lg font-bold text-gray-400">ر.س</span></p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                        <p class="text-xs text-gray-400 mb-1">العقود المنتهية</p>
+                        <p class="text-4xl font-black text-gray-400">2</p>
+                    </div>
+                </div>
+
+                <!-- Signature box -->
+                <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 mb-8">
+                    <h3 class="text-xl font-black mb-1 italic">توقيع عقد جديد</h3>
+                    <p class="text-sm text-gray-500 mb-6 italic">يرجى رسم التوقيع داخل الصندوق أدناه لاعتماد العقد رقم
+                        <span class="font-bold text-gray-700">#DS-2026-99</span>
+                    </p>
+
+                    <div class="relative">
+                        <canvas id="sig-canvas"
+                            class="w-full h-48 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl block"
+                            style="touch-action: none;"></canvas>
+                        <span id="sig-placeholder"
+                            class="absolute inset-0 flex items-center justify-center text-gray-300 italic pointer-events-none">ارسم
+                            توقيعك هنا</span>
+                    </div>
+
+                    <!-- Signed preview -->
+                    <div id="sig-preview-wrap" class="hidden mt-4">
+                        <p class="text-xs text-gray-400 mb-2 italic">معاينة التوقيع المعتمد:</p>
+                        <div class="border-2 border-gov-green rounded-2xl p-3 bg-green-50 inline-block">
+                            <img id="sig-preview-img" src="" alt="التوقيع" class="h-16 object-contain">
+                        </div>
+                    </div>
+
+                    <div id="sig-error" class="hidden mt-2 text-red-500 text-sm font-bold">⚠️ الرجاء رسم توقيعك أولاً
+                        قبل الاعتماد</div>
+                    <div id="sig-success"
+                        class="hidden mt-4 text-gov-green font-bold text-center bg-green-50 rounded-xl p-4">
+                        ✅ تم اعتماد التوقيع وتوليد العقد بنجاح — رقم العقد: <span class="font-black">#DS-2026-99</span>
+                    </div>
+
+                    <div class="mt-4 flex justify-between items-center">
+                        <button onclick="clearSignature()"
+                            class="text-gray-400 text-xs italic underline hover:text-gray-600 transition-colors">مسح
+                            التوقيع</button>
+                        <button onclick="submitSignature()"
+                            class="bg-gov-green text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-opacity-90 transition-opacity">اعتماد
+                            وتوليد العقد</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: العقود النشطة -->
+            <div id="tab-contracts" class="dash-tab hidden p-10">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-black italic">العقود النشطة</h3>
+                    <span class="bg-gov-green text-white text-xs font-black px-4 py-1.5 rounded-full">3 عقود نشطة</span>
+                </div>
+                <div class="space-y-4">
+                    <!-- Contract Card 1 -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-6">
+                        <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-7 h-7 text-gov-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-1">
+                                <p class="font-black text-lg">#DS-2026-9901</p>
+                                <span
+                                    class="bg-green-100 text-gov-green text-xs font-black px-2 py-0.5 rounded-full">نشط</span>
+                            </div>
+                            <p class="text-sm text-gray-500">عقد تركيب كاميرات مراقبة — مجمع الشركة الرئيسي</p>
+                            <div class="flex gap-6 mt-2 text-xs text-gray-400">
+                                <span>📅 تاريخ البدء: 2026/01/15</span>
+                                <span>📅 تاريخ الانتهاء: 2027/01/14</span>
+                                <span>💰 القيمة: 12,500 ر.س</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button
+                                class="bg-gov-green text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-opacity-90 transition">تحميل
+                                PDF</button>
+                            <button
+                                class="border border-gray-200 text-gray-500 px-4 py-2 rounded-xl text-xs font-bold hover:bg-gray-50 transition">تجديد</button>
+                        </div>
+                    </div>
+                    <!-- Contract Card 2 -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-6">
+                        <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-7 h-7 text-gov-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-1">
+                                <p class="font-black text-lg">#DS-2026-9845</p>
+                                <span
+                                    class="bg-green-100 text-gov-green text-xs font-black px-2 py-0.5 rounded-full">نشط</span>
+                            </div>
+                            <p class="text-sm text-gray-500">عقد صيانة أنظمة الإطفاء — المستودع الشمالي</p>
+                            <div class="flex gap-6 mt-2 text-xs text-gray-400">
+                                <span>📅 تاريخ البدء: 2026/02/01</span>
+                                <span>📅 تاريخ الانتهاء: 2027/01/31</span>
+                                <span>💰 القيمة: 4,200 ر.س</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button
+                                class="bg-gov-green text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-opacity-90 transition">تحميل
+                                PDF</button>
+                            <button
+                                class="border border-gray-200 text-gray-500 px-4 py-2 rounded-xl text-xs font-bold hover:bg-gray-50 transition">تجديد</button>
+                        </div>
+                    </div>
+                    <!-- Contract Card 3 -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-6">
+                        <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-7 h-7 text-gov-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-1">
+                                <p class="font-black text-lg">#DS-2026-9762</p>
+                                <span
+                                    class="bg-amber-100 text-amber-700 text-xs font-black px-2 py-0.5 rounded-full">ينتهي
+                                    قريباً</span>
+                            </div>
+                            <p class="text-sm text-gray-500">عقد تركيب بوابات تحكم دخول — المبنى الإداري</p>
+                            <div class="flex gap-6 mt-2 text-xs text-gray-400">
+                                <span>📅 تاريخ البدء: 2025/03/10</span>
+                                <span>📅 تاريخ الانتهاء: 2026/03/09</span>
+                                <span>💰 القيمة: 1,750 ر.س</span>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 flex-shrink-0">
+                            <button
+                                class="bg-gov-green text-white px-4 py-2 rounded-xl text-xs font-bold hover:bg-opacity-90 transition">تحميل
+                                PDF</button>
+                            <button
+                                class="border border-amber-300 text-amber-600 px-4 py-2 rounded-xl text-xs font-bold hover:bg-amber-50 transition">تجديد
+                                الآن</button>
+                        </div>
+                    </div>
+                    <!-- Expired -->
+                    <h4 class="font-black text-gray-400 text-sm mt-8 mb-3">العقود المنتهية</h4>
+                    <div
+                        class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-6 opacity-60">
+                        <div class="w-14 h-14 bg-gray-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+                            <svg class="w-7 h-7 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-1">
+                                <p class="font-black text-lg">#DS-2025-8847</p>
+                                <span
+                                    class="bg-gray-100 text-gray-500 text-xs font-black px-2 py-0.5 rounded-full">منتهي</span>
+                            </div>
+                            <p class="text-sm text-gray-500">عقد صيانة شاملة — الفرع الجنوبي</p>
+                            <div class="flex gap-6 mt-2 text-xs text-gray-400">
+                                <span>📅 2024/11/01 — 2025/10/31</span>
+                                <span>💰 القيمة: 3,200 ر.س</span>
+                            </div>
+                        </div>
+                        <button
+                            class="border border-gray-200 text-gray-400 px-4 py-2 rounded-xl text-xs font-bold">أرشيف
+                            PDF</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB: سجل المدفوعات -->
+            <div id="tab-payments" class="dash-tab hidden p-10">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-2xl font-black italic">سجل المدفوعات</h3>
+                    <div class="flex gap-3 text-sm">
+                        <div class="bg-green-50 text-gov-green font-black px-4 py-2 rounded-xl">إجمالي: 18,450 ر.س</div>
+                    </div>
+                </div>
+                <!-- Summary cards -->
+                <div class="grid grid-cols-3 gap-4 mb-8">
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 text-center shadow-sm">
+                        <p class="text-xs text-gray-400 mb-1">مدفوع</p>
+                        <p class="text-2xl font-black text-gov-green">16,200 ر.س</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 text-center shadow-sm">
+                        <p class="text-xs text-gray-400 mb-1">قيد الانتظار</p>
+                        <p class="text-2xl font-black text-amber-500">2,250 ر.س</p>
+                    </div>
+                    <div class="bg-white rounded-2xl p-5 border border-gray-100 text-center shadow-sm">
+                        <p class="text-xs text-gray-400 mb-1">عدد الفواتير</p>
+                        <p class="text-2xl font-black text-gray-700">7</p>
+                    </div>
+                </div>
+                <!-- Payments table -->
+                <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                    <table class="w-full text-right text-sm">
+                        <thead class="bg-gray-50 text-gray-400 text-[10px] font-black tracking-widest border-b">
+                            <tr>
+                                <th class="p-4">رقم الفاتورة</th>
+                                <th class="p-4">رقم العقد</th>
+                                <th class="p-4">التاريخ</th>
+                                <th class="p-4">المبلغ</th>
+                                <th class="p-4">طريقة الدفع</th>
+                                <th class="p-4">الحالة</th>
+                                <th class="p-4">الإجراء</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                                <td class="p-4 font-bold">#INV-0071</td>
+                                <td class="p-4 text-gov-green font-bold">#DS-9901</td>
+                                <td class="p-4">2026/02/15</td>
+                                <td class="p-4 font-black">6,250 ر.س</td>
+                                <td class="p-4">مدى</td>
+                                <td class="p-4"><span
+                                        class="bg-green-100 text-gov-green text-xs font-black px-2 py-1 rounded-full">مدفوع</span>
+                                </td>
+                                <td class="p-4"><button class="text-gov-green font-black text-xs hover:underline">فاتورة
+                                        PDF</button></td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                                <td class="p-4 font-bold">#INV-0068</td>
+                                <td class="p-4 text-gov-green font-bold">#DS-9845</td>
+                                <td class="p-4">2026/02/01</td>
+                                <td class="p-4 font-black">4,200 ر.س</td>
+                                <td class="p-4">تحويل بنكي</td>
+                                <td class="p-4"><span
+                                        class="bg-green-100 text-gov-green text-xs font-black px-2 py-1 rounded-full">مدفوع</span>
+                                </td>
+                                <td class="p-4"><button class="text-gov-green font-black text-xs hover:underline">فاتورة
+                                        PDF</button></td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition">
+                                <td class="p-4 font-bold">#INV-0065</td>
+                                <td class="p-4 text-gov-green font-bold">#DS-9901</td>
+                                <td class="p-4">2026/01/15</td>
+                                <td class="p-4 font-black">6,250 ر.س</td>
+                                <td class="p-4">مدى</td>
+                                <td class="p-4"><span
+                                        class="bg-green-100 text-gov-green text-xs font-black px-2 py-1 rounded-full">مدفوع</span>
+                                </td>
+                                <td class="p-4"><button class="text-gov-green font-black text-xs hover:underline">فاتورة
+                                        PDF</button></td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition bg-amber-50/40">
+                                <td class="p-4 font-bold">#INV-0072</td>
+                                <td class="p-4 text-gov-green font-bold">#DS-9762</td>
+                                <td class="p-4">2026/03/01</td>
+                                <td class="p-4 font-black">1,750 ر.س</td>
+                                <td class="p-4">—</td>
+                                <td class="p-4"><span
+                                        class="bg-amber-100 text-amber-700 text-xs font-black px-2 py-1 rounded-full">مستحق</span>
+                                </td>
+                                <td class="p-4"><button
+                                        class="bg-gov-green text-white text-xs font-black px-3 py-1 rounded-lg hover:bg-opacity-90 transition">ادفع
+                                        الآن</button></td>
+                            </tr>
+                            <tr class="border-b border-gray-50 hover:bg-gray-50 transition bg-amber-50/40">
+                                <td class="p-4 font-bold">#INV-0073</td>
+                                <td class="p-4 text-gov-green font-bold">#DS-9845</td>
+                                <td class="p-4">2026/03/01</td>
+                                <td class="p-4 font-black">500 ر.س</td>
+                                <td class="p-4">—</td>
+                                <td class="p-4"><span
+                                        class="bg-amber-100 text-amber-700 text-xs font-black px-2 py-1 rounded-full">مستحق</span>
+                                </td>
+                                <td class="p-4"><button
+                                        class="bg-gov-green text-white text-xs font-black px-3 py-1 rounded-lg hover:bg-opacity-90 transition">ادفع
+                                        الآن</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         JAVASCRIPT — All fixes consolidated
+    ═══════════════════════════════════════ -->
+    <!-- ═══════════════════════════════════════
+         SECTION: SHOP
+    ═══════════════════════════════════════ -->
+    <div id="section-shop" class="hidden-section min-h-screen bg-gray-50">
+
+        <!-- Shop Navbar -->
+        <nav class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <button onclick="showSection('section-home')" class="text-gray-400 hover:text-gov-green transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <div class="bg-gov-green p-2 rounded-lg"><svg class="h-5 w-5 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg></div>
+                    <span class="text-xl font-bold text-gov-green">وقاية وأمان — المتجر</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Search -->
+                    <div class="relative hidden md:block">
+                        <input id="search-input" type="text" placeholder="ابحث عن منتج..." oninput="renderProducts()"
+                            class="bg-gray-100 rounded-xl px-4 py-2 pr-10 text-sm outline-none focus:ring-2 focus:ring-green-200 w-56 transition-all">
+                        <svg class="w-4 h-4 text-gray-400 absolute top-2.5 right-3" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
+                        </svg>
+                    </div>
+                    <!-- Add Product -->
+                    <button onclick="openAddModal()"
+                        class="border-2 border-gov-green text-gov-green px-5 py-2 rounded-xl font-bold text-sm hover:bg-green-50 transition flex items-center gap-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        إضافة منتج
+                    </button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main layout: Products + Cart side by side -->
+        <div class="max-w-[1400px] mx-auto px-4 pb-16 flex gap-6 items-start">
+
+            <!-- LEFT: Products area -->
+            <div class="flex-1 min-w-0">
+                <!-- Category Filter -->
+                <div class="pt-6 pb-4 flex flex-wrap gap-2">
+                    <button onclick="setCategory('الكل')"
+                        class="cat-btn active px-4 py-2 rounded-full border-2 border-gov-green text-sm font-bold transition-colors">الكل</button>
+                    <button onclick="setCategory('كاميرات')"
+                        class="cat-btn px-4 py-2 rounded-full border-2 border-gray-200 text-sm font-bold transition-colors hover:border-gov-green">📷
+                        كاميرات</button>
+                    <button onclick="setCategory('إطفاء')"
+                        class="cat-btn px-4 py-2 rounded-full border-2 border-gray-200 text-sm font-bold transition-colors hover:border-gov-green">🧯
+                        إطفاء</button>
+                    <button onclick="setCategory('إنذار')"
+                        class="cat-btn px-4 py-2 rounded-full border-2 border-gray-200 text-sm font-bold transition-colors hover:border-gov-green">🚨
+                        إنذار</button>
+                    <button onclick="setCategory('تحكم دخول')"
+                        class="cat-btn px-4 py-2 rounded-full border-2 border-gray-200 text-sm font-bold transition-colors hover:border-gov-green">🔐
+                        تحكم دخول</button>
+                    <button onclick="setCategory('إضاءة طوارئ')"
+                        class="cat-btn px-4 py-2 rounded-full border-2 border-gray-200 text-sm font-bold transition-colors hover:border-gov-green">🔦
+                        إضاءة طوارئ</button>
+                </div>
+                <div id="products-count" class="text-sm text-gray-400 mb-4 italic"></div>
+                <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+                <div id="no-products" class="hidden text-center py-20 text-gray-400">
+                    <svg class="w-16 h-16 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="font-bold text-lg">لا توجد منتجات مطابقة</p>
+                </div>
+            </div>
+
+            <!-- RIGHT: Cart sidebar — sticky next to products -->
+            <div class="w-80 flex-shrink-0 sticky top-24 pt-6">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 flex flex-col overflow-hidden">
+                    <!-- Cart header -->
+                    <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-5 h-5 text-gov-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <h2 class="text-base font-black">سلة المشتريات</h2>
+                        </div>
+                        <span id="cart-badge"
+                            class="bg-gov-green text-white text-xs font-black rounded-full w-6 h-6 flex items-center justify-center">0</span>
+                    </div>
+
+                    <!-- Cart empty state -->
+                    <div id="cart-empty" class="flex flex-col items-center justify-center py-12 text-gray-300">
+                        <svg class="w-14 h-14 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <p class="font-bold text-sm">السلة فارغة</p>
+                        <p class="text-xs mt-1">أضف منتجات للبدء</p>
+                    </div>
+
+                    <!-- Cart items list -->
+                    <div id="cart-items" class="hidden divide-y divide-gray-50 max-h-[420px] overflow-y-auto"></div>
+
+                    <!-- Cart footer -->
+                    <div id="cart-footer" class="hidden px-5 py-4 bg-gray-50 border-t border-gray-100 space-y-3">
+                        <!-- Subtotal rows -->
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span>عدد المنتجات</span>
+                            <span id="cart-count-label" class="font-bold text-gray-700"></span>
+                        </div>
+                        <div class="flex justify-between items-center pt-1 border-t border-gray-200">
+                            <span class="font-black text-gray-800">المجموع</span>
+                            <span id="cart-total" class="text-xl font-black text-gov-green"></span>
+                        </div>
+                        <button onclick="goToCheckout()"
+                            class="w-full bg-gov-green text-white py-3 rounded-xl font-black text-sm hover:bg-opacity-90 transition shadow-md">
+                            إتمام الطلب ←
+                        </button>
+                        <button onclick="clearCart()"
+                            class="w-full text-red-400 text-xs font-bold hover:text-red-600 transition py-1">
+                            🗑️ تفريغ السلة
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         SECTION: CHECKOUT (إتمام الطلب)
+    ═══════════════════════════════════════ -->
+    <div id="section-checkout" class="hidden-section min-h-screen bg-gray-50">
+        <nav class="bg-white border-b border-gray-100 sticky top-0 z-40 shadow-sm">
+            <div class="max-w-5xl mx-auto px-6 h-20 flex justify-between items-center">
+                <div class="flex items-center gap-3">
+                    <button onclick="showSection('section-shop')" class="text-gray-400 hover:text-gov-green transition">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <div class="bg-gov-green p-2 rounded-lg"><svg class="h-5 w-5 text-white" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg></div>
+                    <span class="text-xl font-bold text-gov-green">إتمام الطلب المؤسسي</span>
+                </div>
+                <!-- Steps -->
+                <div class="hidden md:flex items-center gap-2 text-xs font-bold">
+                    <span class="bg-gov-green text-white px-3 py-1 rounded-full">① بيانات المؤسسة</span>
+                    <span class="text-gray-300">——</span>
+                    <span id="step2-label" class="text-gray-400 px-3 py-1 rounded-full border border-gray-200">②
+                        المراجعة والدفع</span>
+                    <span class="text-gray-300">——</span>
+                    <span id="step3-label" class="text-gray-400 px-3 py-1 rounded-full border border-gray-200">③
+                        التأكيد</span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="max-w-5xl mx-auto px-6 py-10 grid lg:grid-cols-3 gap-8">
+
+            <!-- STEP 1: Institution data -->
+            <div id="checkout-step1" class="lg:col-span-2 space-y-6">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                    <h3 class="font-black text-xl mb-6 flex items-center gap-2">
+                        <span
+                            class="w-8 h-8 bg-gov-green text-white rounded-full flex items-center justify-center text-sm font-black">1</span>
+                        بيانات المؤسسة
+                    </h3>
+                    <div class="grid grid-cols-2 gap-5">
+                        <div class="col-span-2">
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">اسم المؤسسة / الشركة *</label>
+                            <input id="co-name" type="text" placeholder="مثال: شركة الأمان المتكاملة"
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">السجل التجاري *</label>
+                            <input id="co-cr" type="text" maxlength="10" placeholder="1234567890"
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors font-bold tracking-widest">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">رقم الضريبة (VAT)</label>
+                            <input id="co-vat" type="text" placeholder="300XXXXXXXXXX003"
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">اسم المسؤول *</label>
+                            <input id="co-contact" type="text" placeholder="محمد عبدالله"
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                        </div>
+                        <div>
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">رقم الجوال *</label>
+                            <input id="co-phone" type="tel" placeholder="05XXXXXXXX"
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني للفواتير
+                                *</label>
+                            <input id="co-email" type="email" placeholder="finance@company.com"
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">عنوان التوصيل *</label>
+                            <input id="co-addr" type="text" placeholder="الرياض، حي العليا، شارع التحلية"
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="text-xs font-bold text-gray-500 mb-1 block">ملاحظات إضافية</label>
+                            <textarea id="co-notes" rows="2" placeholder="أي تعليمات خاصة للتوصيل أو التركيب..."
+                                class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors resize-none"></textarea>
+                        </div>
+                    </div>
+                    <div id="checkout-error"
+                        class="hidden mt-4 text-red-500 text-sm font-bold bg-red-50 rounded-xl p-3">⚠️ يرجى ملء جميع
+                        الحقول المطلوبة بشكل صحيح</div>
+                </div>
+
+                <!-- Payment method -->
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                    <h3 class="font-black text-xl mb-6 flex items-center gap-2">
+                        <span
+                            class="w-8 h-8 bg-gov-green text-white rounded-full flex items-center justify-center text-sm font-black">2</span>
+                        طريقة الدفع
+                    </h3>
+                    <div class="grid grid-cols-3 gap-4">
+                        <label class="pay-method cursor-pointer">
+                            <input type="radio" name="payment" value="mada" class="hidden" checked>
+                            <div
+                                class="border-2 border-gov-green bg-green-50 rounded-xl p-4 text-center transition-colors">
+                                <div class="text-2xl mb-1">💳</div>
+                                <p class="font-black text-sm text-gov-green">مدى</p>
+                            </div>
+                        </label>
+                        <label class="pay-method cursor-pointer">
+                            <input type="radio" name="payment" value="transfer" class="hidden">
+                            <div
+                                class="border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gov-green transition-colors">
+                                <div class="text-2xl mb-1">🏦</div>
+                                <p class="font-black text-sm text-gray-600">تحويل بنكي</p>
+                            </div>
+                        </label>
+                        <label class="pay-method cursor-pointer">
+                            <input type="radio" name="payment" value="invoice" class="hidden">
+                            <div
+                                class="border-2 border-gray-200 rounded-xl p-4 text-center hover:border-gov-green transition-colors">
+                                <div class="text-2xl mb-1">📄</div>
+                                <p class="font-black text-sm text-gray-600">فاتورة آجلة</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button onclick="submitCheckout()"
+                    class="w-full bg-gov-green text-white py-4 rounded-2xl font-black text-lg shadow-xl hover:bg-opacity-90 transition">
+                    تأكيد الطلب ←
+                </button>
+            </div>
+
+            <!-- Order summary sidebar -->
+            <div class="space-y-4">
+                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 sticky top-28">
+                    <h3 class="font-black text-base mb-4 border-b pb-3">ملخص الطلب</h3>
+                    <div id="checkout-items-list" class="space-y-3 text-sm max-h-64 overflow-y-auto mb-4"></div>
+                    <div class="border-t pt-4 space-y-2 text-sm">
+                        <div class="flex justify-between text-gray-500"><span>المجموع قبل الضريبة</span><span
+                                id="co-subtotal" class="font-bold"></span></div>
+                        <div class="flex justify-between text-gray-500"><span>ضريبة القيمة المضافة 15%</span><span
+                                id="co-tax" class="font-bold text-amber-600"></span></div>
+                        <div class="flex justify-between items-center pt-2 border-t font-black text-base">
+                            <span>الإجمالي</span>
+                            <span id="co-grand" class="text-gov-green text-xl"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SUCCESS OVERLAY -->
+        <div id="checkout-success" class="hidden fixed inset-0 bg-white z-50 flex items-center justify-center">
+            <div class="text-center max-w-md px-6">
+                <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="w-12 h-12 text-gov-green" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-black text-gray-900 mb-3">تم تأكيد طلبك!</h2>
+                <p class="text-gray-500 mb-2">رقم الطلب: <span class="font-black text-gov-green"
+                        id="order-number"></span></p>
+                <p class="text-gray-500 text-sm mb-8">سيتواصل معك فريقنا خلال 24 ساعة لتحديد موعد التوصيل والتركيب</p>
+                <div class="flex gap-4 justify-center">
+                    <button onclick="showSection('section-dashboard')"
+                        class="bg-gov-green text-white px-8 py-3 rounded-xl font-bold hover:bg-opacity-90 transition">لوحة
+                        التحكم</button>
+                    <button onclick="showSection('section-home')"
+                        class="border-2 border-gray-200 px-8 py-3 rounded-xl font-bold hover:bg-gray-50 transition">الرئيسية</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════
+         QR SCANNER MODAL
+    ═══════════════════════════════════════ -->
+    <div id="qr-modal" class="fixed inset-0 bg-black/80 z-[80] hidden items-center justify-center">
+        <div class="bg-white rounded-3xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl">
+            <h3 class="text-xl font-black mb-2">ماسح QR</h3>
+            <p class="text-gray-400 text-sm mb-6">ضع رمز QR الخاص بالعقد أمام الكاميرا</p>
+
+            <!-- Camera viewfinder simulation -->
+            <div class="relative bg-gray-900 rounded-2xl overflow-hidden mb-6" style="height:240px">
+                <video id="qr-video" class="w-full h-full object-cover" autoplay playsinline muted></video>
+                <!-- Scanning frame overlay -->
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-44 h-44 relative">
+                        <div
+                            class="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-gov-green rounded-tr-lg">
+                        </div>
+                        <div class="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-gov-green rounded-tl-lg">
+                        </div>
+                        <div
+                            class="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-gov-green rounded-br-lg">
+                        </div>
+                        <div
+                            class="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-gov-green rounded-bl-lg">
+                        </div>
+                        <!-- Scanning line animation -->
+                        <div id="qr-scan-line" class="absolute left-2 right-2 h-0.5 bg-gov-green opacity-80"
+                            style="top:50%;animation:scanLine 2s ease-in-out infinite;"></div>
+                    </div>
+                </div>
+                <p id="qr-status"
+                    class="absolute bottom-3 left-0 right-0 text-center text-white text-xs font-bold opacity-80">جارٍ
+                    البحث عن رمز QR...</p>
+            </div>
+
+            <!-- Manual fallback -->
+            <p class="text-xs text-gray-400 mb-3">أو أدخل الرقم يدوياً:</p>
+            <div class="flex gap-2 mb-4">
+                <input id="qr-manual-input" type="text" placeholder="DS-2026-XXXX"
+                    class="flex-1 border-2 border-gray-200 rounded-xl p-2.5 text-sm font-bold tracking-widest focus:border-gov-green outline-none text-center">
+                <button onclick="applyQRManual()"
+                    class="bg-gov-green text-white px-4 rounded-xl font-bold text-sm hover:bg-opacity-90 transition">موافق</button>
+            </div>
+            <button onclick="closeQRScanner()"
+                class="w-full border-2 border-gray-200 py-3 rounded-xl font-bold text-gray-500 hover:bg-gray-50 transition">إغلاق</button>
+        </div>
+    </div>
+    <style>
+        @keyframes scanLine {
+            0% {
+                top: 10%
+            }
+
+            50% {
+                top: 85%
+            }
+
+            100% {
+                top: 10%
+            }
+        }
+
+        .dash-tab {
+            display: block;
+        }
+
+        .dash-tab.hidden {
+            display: none;
+        }
+    </style>
+
+    <!-- ═══════════════════════════════════════
+         ADD / EDIT PRODUCT MODAL
+    ═══════════════════════════════════════ -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-black/50 z-[60] hidden items-center justify-center p-4"
+        onclick="closeModal(event)">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8" onclick="event.stopPropagation()">
+            <h3 id="modal-title" class="text-2xl font-black mb-6">إضافة منتج جديد</h3>
+            <input type="hidden" id="modal-product-id">
+            <div class="space-y-4">
+                <div>
+                    <label class="text-xs font-bold text-gray-500 mb-1 block">اسم المنتج *</label>
+                    <input id="modal-name" type="text" placeholder="مثال: كاميرا مراقبة 4K"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 mb-1 block">السعر (ريال) *</label>
+                        <input id="modal-price" type="number" min="0" placeholder="450"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 mb-1 block">الفئة *</label>
+                        <select id="modal-category"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors bg-white">
+                            <option value="كاميرات">📷 كاميرات</option>
+                            <option value="إطفاء">🧯 إطفاء</option>
+                            <option value="إنذار">🚨 إنذار</option>
+                            <option value="تحكم دخول">🔐 تحكم دخول</option>
+                            <option value="إضاءة طوارئ">🔦 إضاءة طوارئ</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 mb-1 block">الوصف *</label>
+                    <textarea id="modal-desc" rows="3" placeholder="وصف مختصر للمنتج..."
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة (URL)</label>
+                    <input id="modal-img" type="url" placeholder="https://..."
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-gov-green outline-none transition-colors">
+                    <p class="text-xs text-gray-400 mt-1">اتركه فارغاً لاستخدام صورة افتراضية</p>
+                </div>
+            </div>
+            <div id="modal-error" class="hidden mt-4 text-red-500 text-sm font-bold bg-red-50 rounded-xl p-3">⚠️ يرجى
+                ملء جميع الحقول المطلوبة</div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="saveProduct()"
+                    class="flex-1 bg-gov-green text-white py-3 rounded-xl font-bold hover:bg-opacity-90 transition shadow-md">حفظ
+                    المنتج</button>
+                <button onclick="closeModal()"
+                    class="flex-1 border-2 border-gray-200 py-3 rounded-xl font-bold hover:bg-gray-50 transition">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirm Modal -->
+    <div id="delete-modal" class="fixed inset-0 bg-black/50 z-[70] hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-sm p-8 text-center">
+            <div class="text-5xl mb-4">🗑️</div>
+            <h3 class="text-xl font-black mb-2">حذف المنتج؟</h3>
+            <p class="text-gray-500 text-sm mb-6">هذا الإجراء لا يمكن التراجع عنه</p>
+            <input type="hidden" id="delete-product-id">
+            <div class="flex gap-3">
+                <button onclick="confirmDelete()"
+                    class="flex-1 bg-red-500 text-white py-3 rounded-xl font-bold hover:bg-red-600 transition">حذف</button>
+                <button onclick="closeDeleteModal()"
+                    class="flex-1 border-2 border-gray-200 py-3 rounded-xl font-bold hover:bg-gray-50 transition">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ─── Section switcher (defined in shop section below) ─────────────────────
+
+        // ─── Dashboard tab switching ───────────────────────────────────────────────
+        function showDashTab(tabId) {
+            document.querySelectorAll('.dash-tab').forEach(t => t.classList.add('hidden'));
+            document.getElementById(tabId).classList.remove('hidden');
+            // Update sidebar nav highlight
+            document.querySelectorAll('.dash-nav-btn').forEach(b => {
+                b.classList.remove('text-white', 'bg-gov-green/20', 'border-r-4', 'border-gov-green');
+                b.classList.add('text-gray-400');
+            });
+            const map = { 'tab-main': 'nav-main', 'tab-contracts': 'nav-contracts', 'tab-payments': 'nav-payments' };
+            const activeBtn = document.getElementById(map[tabId]);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-gray-400');
+                activeBtn.classList.add('text-white', 'bg-gov-green/20', 'border-r-4', 'border-gov-green');
+            }
+        }
+
+        // ─── FIX 4 & Nafath simulation ───────────────────────────────────────────
+        function simulateNafathApp() {
+            const val = document.getElementById('id-input').value.trim();
+            if (val.length < 10) {
+                document.getElementById('nafath-id-error').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('nafath-id-error').classList.add('hidden');
+            document.getElementById('nafath-wait').classList.remove('hidden');
+            setTimeout(() => { showSection('section-dashboard'); }, 2500);
+        }
+
+        // ─── Verify contract ──────────────────────────────────────────────────────
+        function verifyContract() {
+            const val = document.getElementById('verify-input').value.trim().toUpperCase();
+            const errEl = document.getElementById('verify-error');
+            const notFoundEl = document.getElementById('verify-not-found');
+            const successEl = document.getElementById('verify-success');
+            errEl.classList.add('hidden');
+            notFoundEl.classList.add('hidden');
+            successEl.classList.add('hidden');
+            const pattern = /^DS-\d{4}-\d{2,6}$/;
+            if (!val || !pattern.test(val)) { errEl.classList.remove('hidden'); return; }
+            if (val === 'DS-2026-9901' || val === 'DS-9901') {
+                document.getElementById('verified-id').textContent = val;
+                successEl.classList.remove('hidden');
+            } else {
+                notFoundEl.classList.remove('hidden');
+            }
+        }
+
+        function resetVerifyState() {
+            ['verify-error', 'verify-not-found', 'verify-success'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+        }
+
+        // ─── FIX 5, 6, 7: Real working signature canvas ───────────────────────────
+        let sigHasContent = false;
+
+        function initSignatureCanvas() {
+            const canvas = document.getElementById('sig-canvas');
+            if (!canvas) return;
+
+            // Size canvas to its CSS display size
+            function resizeCanvas() {
+                const rect = canvas.getBoundingClientRect();
+                canvas.width = rect.width;
+                canvas.height = rect.height;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+
+            const ctx = canvas.getContext('2d');
+            ctx.strokeStyle = '#006C35';
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+
+            let drawing = false;
+            let lastX = 0, lastY = 0;
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const src = e.touches ? e.touches[0] : e;
+                return [src.clientX - rect.left, src.clientY - rect.top];
+            }
+
+            function startDraw(e) {
+                e.preventDefault();
+                drawing = true;
+                [lastX, lastY] = getPos(e);
+            }
+
+            function draw(e) {
+                e.preventDefault();
+                if (!drawing) return;
+                const [x, y] = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                lastX = x; lastY = y;
+
+                if (!sigHasContent) {
+                    sigHasContent = true;
+                    document.getElementById('sig-placeholder').classList.add('hidden');
+                    document.getElementById('sig-error').classList.add('hidden');
+                    document.getElementById('sig-success').classList.add('hidden');
+                }
+            }
+
+            function endDraw() { drawing = false; }
+
+            // Mouse events
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', endDraw);
+            canvas.addEventListener('mouseleave', endDraw);
+
+            // Touch events
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', endDraw);
+        }
+
+        // FIX 6: Clear signature actually works now
+        function clearSignature() {
+            const canvas = document.getElementById('sig-canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            sigHasContent = false;
+            document.getElementById('sig-placeholder').classList.remove('hidden');
+            document.getElementById('sig-error').classList.add('hidden');
+            document.getElementById('sig-success').classList.add('hidden');
+            const previewWrap = document.getElementById('sig-preview-wrap');
+            if (previewWrap) previewWrap.classList.add('hidden');
+        }
+
+        // FIX 7: Submit button validates signature exists + shows preview
+        function submitSignature() {
+            if (!sigHasContent) {
+                document.getElementById('sig-error').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('sig-error').classList.add('hidden');
+            document.getElementById('sig-success').classList.remove('hidden');
+            // Show the signature image preview
+            const canvas = document.getElementById('sig-canvas');
+            const previewImg = document.getElementById('sig-preview-img');
+            const previewWrap = document.getElementById('sig-preview-wrap');
+            if (previewImg && previewWrap) {
+                previewImg.src = canvas.toDataURL('image/png');
+                previewWrap.classList.remove('hidden');
+            }
+        }
+
+        // ─── Logout ────────────────────────────────────────────────────────────────
+        function logOut() {
+            sigHasContent = false;
+            showSection('section-home');
+        }
+
+        // ═══════════════════════════════════════════════════════════════
+        //  SHOP — Products & Cart
+        // ═══════════════════════════════════════════════════════════════
+
+        // Default product images per category (using placeholder services)
+        const CATEGORY_IMAGES = {
+            'كاميرات': 'https://images.unsplash.com/photo-1588007375246-3ee823ef4851?w=400&q=80',
+            'إطفاء': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+            'إنذار': 'https://images.unsplash.com/photo-1604754742629-3e5728249d73?w=400&q=80',
+            'تحكم دخول': 'https://images.unsplash.com/photo-1558618047-f4e80c5ccf9b?w=400&q=80',
+            'إضاءة طوارئ': 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=400&q=80',
+        };
+
+        // ── Initial product catalogue ──────────────────────────────────
+        let products = [
+            { id: 1, name: 'كاميرا مراقبة 4K خارجية', category: 'كاميرات', price: 549, desc: 'كاميرا IP لاسلكية بدقة 4K مع رؤية ليلية 30م ومقاومة للماء IP67.', img: '' },
+            { id: 2, name: 'كاميرا PTZ دوارة 360°', category: 'كاميرات', price: 1250, desc: 'كاميرا قبة دوارة بزوم بصري 20x ومتابعة ذكية للحركة.', img: '' },
+            { id: 3, name: 'كاميرا داخلية واي فاي', category: 'كاميرات', price: 299, desc: 'كاميرا منزلية صغيرة مع ميكروفون ثنائي الاتجاه وتنبيهات فورية.', img: '' },
+            { id: 4, name: 'طفاية CO₂ 5 كغ', category: 'إطفاء', price: 180, desc: 'طفاية ثاني أكسيد الكربون مثالية للسيرفرات والأجهزة الكهربائية.', img: '' },
+            { id: 5, name: 'طفاية مسحوق ABC 6 كغ', category: 'إطفاء', price: 95, desc: 'طفاية متعددة الأغراض بمسحوق جاف معتمدة من الدفاع المدني.', img: '' },
+            { id: 6, name: 'نظام رش تلقائي للحريق', category: 'إطفاء', price: 2800, desc: 'نظام sprinkler أوتوماتيكي يغطي حتى 200م² مع صمامات ضغط.', img: '' },
+            { id: 7, name: 'جرس إنذار حريق ذكي', category: 'إنذار', price: 350, desc: 'كاشف دخان وحرارة مزدوج مع إرسال تنبيه للجوال فوراً.', img: '' },
+            { id: 8, name: 'لوحة تحكم إنذار 8 مناطق', category: 'إنذار', price: 1450, desc: 'لوحة مركزية تدعم 8 مناطق استشعار مع شاشة LCD وبطارية احتياطية.', img: '' },
+            { id: 9, name: 'قارئ بصمة باب ذكي', category: 'تحكم دخول', price: 780, desc: 'قارئ بصمة الإصبع + كارت RFID مع سجل دخول وخروج مفصّل.', img: '' },
+            { id: 10, name: 'بوابة تحكم دخول مزدوجة', category: 'تحكم دخول', price: 3200, desc: 'بوابة ذراع أمنية مزدوجة مع كاميرا تعرف وجه مدمجة.', img: '' },
+            { id: 11, name: 'لوحة مفاتيح PIN دخول', category: 'تحكم دخول', price: 420, desc: 'لوحة أرقام سرية مضادة للعبث مع مؤشر LED واضح.', img: '' },
+            { id: 12, name: 'كشاف طوارئ LED 120W', category: 'إضاءة طوارئ', price: 260, desc: 'كشاف بقدرة 120W يعمل تلقائياً عند انقطاع الكهرباء لـ 6 ساعات.', img: '' },
+            { id: 13, name: 'لافتة خروج طوارئ LED', category: 'إضاءة طوارئ', price: 85, desc: 'لافتة EXIT مضيئة مع بطارية نيكل معتمدة لمخارج الطوارئ.', img: '' },
+        ];
+        let nextId = 14;
+        let cart = [];       // [{id, name, price, img, qty}]
+        let currentCategory = 'الكل';
+        let cartOpen = false;
+
+        // ── Helpers ───────────────────────────────────────────────────
+        function getImg(product) {
+            return product.img || CATEGORY_IMAGES[product.category] || 'https://via.placeholder.com/400x300?text=منتج';
+        }
+
+        function formatPrice(n) {
+            return n.toLocaleString('ar-SA') + ' ر.س';
+        }
+
+        // ── Category filter ───────────────────────────────────────────
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(b => {
+                b.classList.toggle('active', b.textContent.includes(cat) || (cat === 'الكل' && b.textContent === 'الكل'));
+            });
+            renderProducts();
+        }
+
+        // ── Render products grid ──────────────────────────────────────
+        function renderProducts() {
+            const search = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
+            let filtered = products.filter(p => {
+                const matchCat = currentCategory === 'الكل' || p.category === currentCategory;
+                const matchSearch = !search || p.name.includes(search) || p.desc.includes(search) || p.category.includes(search);
+                return matchCat && matchSearch;
+            });
+
+            const grid = document.getElementById('products-grid');
+            const noProducts = document.getElementById('no-products');
+            const countEl = document.getElementById('products-count');
+
+            countEl.textContent = `عرض ${filtered.length} منتج`;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                noProducts.classList.remove('hidden');
+                return;
+            }
+            noProducts.classList.add('hidden');
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="product-card bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
+                    <div class="relative">
+                        <img src="${getImg(p)}" alt="${p.name}"
+                            class="w-full h-48 object-cover"
+                            onerror="this.src='https://placehold.co/400x300/e5e7eb/9ca3af?text=صورة+غير+متاحة'">
+                        <span class="absolute top-3 right-3 bg-white/90 backdrop-blur text-xs font-bold px-3 py-1 rounded-full text-gray-600 shadow-sm">${p.category}</span>
+                        <div class="absolute top-3 left-3 flex gap-1">
+                            <button onclick="openEditModal(${p.id})" title="تعديل"
+                                class="bg-white/90 backdrop-blur p-1.5 rounded-full shadow-sm hover:bg-blue-50 transition text-blue-500">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                            </button>
+                            <button onclick="openDeleteModal(${p.id})" title="حذف"
+                                class="bg-white/90 backdrop-blur p-1.5 rounded-full shadow-sm hover:bg-red-50 transition text-red-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-5 flex flex-col flex-1">
+                        <h3 class="font-black text-gray-900 text-base leading-tight mb-2">${p.name}</h3>
+                        <p class="text-gray-400 text-xs leading-relaxed flex-1 mb-4">${p.desc}</p>
+                        <div class="flex items-center justify-between mt-auto">
+                            <span class="text-gov-green font-black text-lg">${formatPrice(p.price)}</span>
+                            <button onclick="addToCart(${p.id})"
+                                class="bg-gov-green text-white px-4 py-2 rounded-xl text-sm font-bold hover:bg-opacity-90 transition flex items-center gap-1 shadow-sm">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                أضف للسلة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ── Cart ──────────────────────────────────────────────────────
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product) return;
+            const existing = cart.find(i => i.id === productId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({ id: product.id, name: product.name, price: product.price, img: getImg(product), qty: 1 });
+            }
+            updateCartUI();
+            // Pop animation on badge
+            const badge = document.getElementById('cart-badge');
+            badge.classList.remove('badge-pop');
+            void badge.offsetWidth;
+            badge.classList.add('badge-pop');
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        }
+
+        function changeQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+            item.qty += delta;
+            if (item.qty <= 0) removeFromCart(productId);
+            else updateCartUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const total = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+            const count = cart.reduce((sum, i) => sum + i.qty, 0);
+
+            // Update badge
+            const badge = document.getElementById('cart-badge');
+            if (badge) badge.textContent = count;
+
+            const cartItemsEl = document.getElementById('cart-items');
+            const cartEmptyEl = document.getElementById('cart-empty');
+            const cartFooterEl = document.getElementById('cart-footer');
+            const cartTotalEl = document.getElementById('cart-total');
+            const cartCountLabel = document.getElementById('cart-count-label');
+
+            if (cart.length === 0) {
+                if (cartItemsEl) cartItemsEl.classList.add('hidden');
+                if (cartEmptyEl) cartEmptyEl.classList.remove('hidden');
+                if (cartFooterEl) cartFooterEl.classList.add('hidden');
+            } else {
+                if (cartItemsEl) cartItemsEl.classList.remove('hidden');
+                if (cartEmptyEl) cartEmptyEl.classList.add('hidden');
+                if (cartFooterEl) cartFooterEl.classList.remove('hidden');
+                if (cartTotalEl) cartTotalEl.textContent = formatPrice(total);
+                if (cartCountLabel) cartCountLabel.textContent = count + ' قطعة';
+                if (cartItemsEl) cartItemsEl.innerHTML = cart.map(item => `
+                    <div class="flex gap-3 items-center px-4 py-3 hover:bg-gray-50 transition">
+                        <img src="${item.img}" class="w-12 h-12 object-cover rounded-xl flex-shrink-0"
+                            onerror="this.src='https://placehold.co/48x48/e5e7eb/9ca3af?text=؟'">
+                        <div class="flex-1 min-w-0">
+                            <p class="font-bold text-xs leading-tight truncate">${item.name}</p>
+                            <p class="text-gov-green font-black text-sm mt-0.5">${formatPrice(item.price)}</p>
+                        </div>
+                        <div class="flex flex-col items-center gap-1 flex-shrink-0">
+                            <div class="flex items-center gap-1">
+                                <button onclick="changeQty(${item.id}, -1)" class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 hover:bg-red-100 hover:text-red-500 transition text-xs">−</button>
+                                <span class="font-black text-sm w-4 text-center">${item.qty}</span>
+                                <button onclick="changeQty(${item.id}, 1)" class="w-6 h-6 rounded-full bg-gray-100 flex items-center justify-center font-bold text-gray-600 hover:bg-green-100 hover:text-gov-green transition text-xs">+</button>
+                            </div>
+                            <button onclick="removeFromCart(${item.id})" class="text-red-300 hover:text-red-500 transition text-xs">حذف</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() { /* no-op: cart is now inline */ }
+
+        // ── Add / Edit Product Modal ──────────────────────────────────
+        function openAddModal() {
+            document.getElementById('modal-title').textContent = 'إضافة منتج جديد';
+            document.getElementById('modal-product-id').value = '';
+            document.getElementById('modal-name').value = '';
+            document.getElementById('modal-price').value = '';
+            document.getElementById('modal-desc').value = '';
+            document.getElementById('modal-img').value = '';
+            document.getElementById('modal-category').value = 'كاميرات';
+            document.getElementById('modal-error').classList.add('hidden');
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+            document.getElementById('modal-backdrop').classList.add('flex');
+        }
+
+        function openEditModal(productId) {
+            const p = products.find(pr => pr.id === productId);
+            if (!p) return;
+            document.getElementById('modal-title').textContent = 'تعديل المنتج';
+            document.getElementById('modal-product-id').value = p.id;
+            document.getElementById('modal-name').value = p.name;
+            document.getElementById('modal-price').value = p.price;
+            document.getElementById('modal-desc').value = p.desc;
+            document.getElementById('modal-img').value = p.img;
+            document.getElementById('modal-category').value = p.category;
+            document.getElementById('modal-error').classList.add('hidden');
+            document.getElementById('modal-backdrop').classList.remove('hidden');
+            document.getElementById('modal-backdrop').classList.add('flex');
+        }
+
+        function closeModal(e) {
+            if (e && e.target !== document.getElementById('modal-backdrop')) return;
+            document.getElementById('modal-backdrop').classList.add('hidden');
+            document.getElementById('modal-backdrop').classList.remove('flex');
+        }
+
+        function saveProduct() {
+            const name = document.getElementById('modal-name').value.trim();
+            const price = parseFloat(document.getElementById('modal-price').value);
+            const desc = document.getElementById('modal-desc').value.trim();
+            const img = document.getElementById('modal-img').value.trim();
+            const category = document.getElementById('modal-category').value;
+            const idVal = document.getElementById('modal-product-id').value;
+
+            if (!name || !price || !desc) {
+                document.getElementById('modal-error').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('modal-error').classList.add('hidden');
+
+            if (idVal) {
+                // Edit existing
+                const p = products.find(pr => pr.id === parseInt(idVal));
+                if (p) { p.name = name; p.price = price; p.desc = desc; p.img = img; p.category = category; }
+            } else {
+                // Add new
+                products.push({ id: nextId++, name, price, desc, img, category });
+            }
+
+            document.getElementById('modal-backdrop').classList.add('hidden');
+            document.getElementById('modal-backdrop').classList.remove('flex');
+            renderProducts();
+        }
+
+        // ── Delete Modal ──────────────────────────────────────────────
+        function openDeleteModal(productId) {
+            document.getElementById('delete-product-id').value = productId;
+            document.getElementById('delete-modal').classList.remove('hidden');
+            document.getElementById('delete-modal').classList.add('flex');
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.add('hidden');
+            document.getElementById('delete-modal').classList.remove('flex');
+        }
+
+        function confirmDelete() {
+            const id = parseInt(document.getElementById('delete-product-id').value);
+            products = products.filter(p => p.id !== id);
+            cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+            closeDeleteModal();
+            renderProducts();
+        }
+
+        // ── Init shop when section shown ──────────────────────────────
+        function showSection(id) {
+            document.querySelectorAll('body > div[id^="section-"]').forEach(div => {
+                div.classList.add('hidden-section');
+            });
+            const target = document.getElementById(id);
+            if (target) {
+                target.classList.remove('hidden-section');
+                window.scrollTo(0, 0);
+            }
+            if (id === 'section-nafath') {
+                document.getElementById('nafath-wait').classList.add('hidden');
+                document.getElementById('id-input').value = '';
+                document.getElementById('nafath-id-error').classList.add('hidden');
+            }
+            if (id === 'section-verify') {
+                resetVerifyState();
+                document.getElementById('verify-input').value = '';
+            }
+            if (id === 'section-shop') {
+                renderProducts();
+                updateCartUI();
+            }
+            if (id === 'section-dashboard') {
+                showDashTab('tab-main');
+                // Re-init canvas after section becomes visible
+                setTimeout(() => initSignatureCanvas(), 50);
+            }
+            if (id === 'section-checkout') {
+                renderCheckoutSummary();
+                document.getElementById('checkout-success').classList.add('hidden');
+            }
+        }
+
+        // ── QR Scanner ────────────────────────────────────────────────
+        let qrStream = null;
+        let qrSimTimer = null;
+
+        function openQRScanner() {
+            document.getElementById('qr-modal').classList.remove('hidden');
+            document.getElementById('qr-modal').classList.add('flex');
+            document.getElementById('qr-manual-input').value = '';
+            document.getElementById('qr-status').textContent = 'جارٍ البحث عن رمز QR...';
+
+            // Try to open real camera
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+                    .then(stream => {
+                        qrStream = stream;
+                        const video = document.getElementById('qr-video');
+                        video.srcObject = stream;
+                        // Simulate a successful QR scan after 4 seconds for demo
+                        qrSimTimer = setTimeout(() => simulateQRDetected('DS-2026-9901'), 4000);
+                    })
+                    .catch(() => {
+                        document.getElementById('qr-status').textContent = '⚠️ تعذر الوصول للكاميرا — استخدم الإدخال اليدوي';
+                    });
+            } else {
+                document.getElementById('qr-status').textContent = 'الكاميرا غير مدعومة — استخدم الإدخال اليدوي';
+            }
+        }
+
+        function simulateQRDetected(contractId) {
+            document.getElementById('qr-status').textContent = '✅ تم اكتشاف رمز QR!';
+            setTimeout(() => {
+                closeQRScanner();
+                document.getElementById('verify-input').value = contractId;
+                verifyContract();
+            }, 800);
+        }
+
+        function applyQRManual() {
+            const val = document.getElementById('qr-manual-input').value.trim();
+            if (!val) return;
+            closeQRScanner();
+            document.getElementById('verify-input').value = val;
+            verifyContract();
+        }
+
+        function closeQRScanner() {
+            if (qrStream) { qrStream.getTracks().forEach(t => t.stop()); qrStream = null; }
+            if (qrSimTimer) { clearTimeout(qrSimTimer); qrSimTimer = null; }
+            const video = document.getElementById('qr-video');
+            video.srcObject = null;
+            document.getElementById('qr-modal').classList.add('hidden');
+            document.getElementById('qr-modal').classList.remove('flex');
+        }
+
+        // ── Checkout ──────────────────────────────────────────────────
+        function goToCheckout() {
+            if (cart.length === 0) return;
+            showSection('section-checkout');
+        }
+
+        function renderCheckoutSummary() {
+            const listEl = document.getElementById('checkout-items-list');
+            const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+            const tax = subtotal * 0.15;
+            const grand = subtotal + tax;
+            if (listEl) listEl.innerHTML = cart.map(item => `
+                <div class="flex justify-between items-center gap-2">
+                    <div class="flex items-center gap-2 flex-1 min-w-0">
+                        <img src="${item.img}" class="w-8 h-8 rounded-lg object-cover flex-shrink-0" onerror="this.src='https://placehold.co/32x32/e5e7eb/9ca3af?text=؟'">
+                        <span class="truncate text-xs font-bold">${item.name}</span>
+                    </div>
+                    <span class="text-xs text-gray-500 flex-shrink-0">×${item.qty}</span>
+                    <span class="text-xs font-black text-gov-green flex-shrink-0">${formatPrice(item.price * item.qty)}</span>
+                </div>
+            `).join('');
+            const fmt = n => n.toLocaleString('ar-SA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ر.س';
+            if (document.getElementById('co-subtotal')) document.getElementById('co-subtotal').textContent = fmt(subtotal);
+            if (document.getElementById('co-tax')) document.getElementById('co-tax').textContent = fmt(tax);
+            if (document.getElementById('co-grand')) document.getElementById('co-grand').textContent = fmt(grand);
+        }
+
+        function submitCheckout() {
+            const required = ['co-name', 'co-cr', 'co-contact', 'co-phone', 'co-email', 'co-addr'];
+            const allFilled = required.every(id => document.getElementById(id)?.value.trim());
+            if (!allFilled) {
+                document.getElementById('checkout-error').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('checkout-error').classList.add('hidden');
+            // Generate order number
+            const orderNum = 'ORD-' + Date.now().toString().slice(-6);
+            document.getElementById('order-number').textContent = orderNum;
+            document.getElementById('checkout-success').classList.remove('hidden');
+            // Clear cart after successful order
+            cart = [];
+            updateCartUI();
+        }
+
+        // ── Payment method card toggle ─────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('verify-input').addEventListener('keydown', e => {
+                if (e.key === 'Enter') verifyContract();
+            });
+            document.getElementById('id-input').addEventListener('keydown', e => {
+                if (e.key === 'Enter') simulateNafathApp();
+            });
+            initSignatureCanvas();
+
+            // Payment method cards - highlight selected
+            document.querySelectorAll('.pay-method').forEach(label => {
+                label.addEventListener('click', () => {
+                    document.querySelectorAll('.pay-method > div').forEach(d => {
+                        d.classList.remove('border-gov-green', 'bg-green-50');
+                        d.classList.add('border-gray-200');
+                    });
+                    label.querySelector('div').classList.remove('border-gray-200');
+                    label.querySelector('div').classList.add('border-gov-green', 'bg-green-50');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

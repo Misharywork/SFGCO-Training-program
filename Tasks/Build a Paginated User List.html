@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Users Pagination</title>
+</head>
+
+<body>
+
+    <h1>Users List</h1>
+
+    <div id="users"></div>
+
+    <button id="prev">Previous</button>
+    <span id="pages"></span>
+    <button id="next">Next</button>
+
+    <script>
+
+        const users = [];
+        for (let i = 1; i <= 50; i++) {
+            users.push({ id: i, name: "User " + i });
+        }
+
+        let currentPage = 1;
+        let perPage = 5;
+
+        const usersDiv = document.getElementById("users");
+        const pagesSpan = document.getElementById("pages");
+        const prevBtn = document.getElementById("prev");
+        const nextBtn = document.getElementById("next");
+
+        let totalPages = users.length / perPage;
+        if (users.length % perPage !== 0) {
+            totalPages = parseInt(totalPages) + 1;
+        }
+
+        function showUsers() {
+            usersDiv.innerHTML = "";
+
+            let start = (currentPage - 1) * perPage;
+            let end = start + perPage;
+
+            for (let i = start; i < end && i < users.length; i++) {
+                usersDiv.innerHTML += users[i].id + " - " + users[i].name + "<br>";
+            }
+
+            showPages();
+        }
+
+        function showPages() {
+            pagesSpan.innerHTML = "";
+
+            for (let i = 1; i <= totalPages; i++) {
+                pagesSpan.innerHTML += "<button class='page-btn'>" + i + "</button>";
+            }
+
+            let buttons = document.querySelectorAll(".page-btn");
+
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].addEventListener("click", function () {
+                    currentPage = i + 1;
+                    showUsers();
+                });
+            }
+        }
+
+        prevBtn.addEventListener("click", function () {
+            if (currentPage > 1) {
+                currentPage--;
+                showUsers();
+            }
+        });
+
+        nextBtn.addEventListener("click", function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                showUsers();
+            }
+        });
+
+        showUsers();
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Store</title>
+</head>
+
+<body>
+
+    <h1>My Store</h1>
+
+    <h2>Products</h2>
+    <div id="products"></div>
+
+    <h2>Cart (<span id="count">0</span>)</h2>
+    <div id="cart"></div>
+    <p>Total: $<span id="total">0</span></p>
+    <button id="clear">Clear Cart</button>
+
+    <script>
+
+        const products = [
+            { id: 1, name: "Rice", price: 34 },
+            { id: 2, name: "Bread", price: 19 },
+            { id: 3, name: "Coffee", price: 12 },
+            { id: 4, name: "Pasta", price: 9 }
+        ];
+
+        let cart = [];
+        let total = 0;
+
+        const productsDiv = document.getElementById("products");
+        const cartDiv = document.getElementById("cart");
+        const countSpan = document.getElementById("count");
+        const totalSpan = document.getElementById("total");
+        const clearBtn = document.getElementById("clear");
+
+
+        function showProducts() {
+            for (let i = 0; i < products.length; i++) {
+                const p = products[i];
+
+                const div = document.createElement("div");
+                div.innerHTML = `
+            ${p.name} - $${p.price}
+            <button>Add</button>
+        `;
+
+                const button = div.querySelector("button");
+                button.addEventListener("click", function () {
+                    addToCart(p);
+                });
+
+                productsDiv.appendChild(div);
+            }
+        }
+
+
+        function addToCart(product) {
+            cart.push(product);
+            total = total + product.price;
+            updateCart();
+        }
+
+
+        function updateCart() {
+            cartDiv.innerHTML = "";
+
+            for (let i = 0; i < cart.length; i++) {
+                const item = cart[i];
+                const div = document.createElement("div");
+                div.textContent = item.name + " - $" + item.price;
+                cartDiv.appendChild(div);
+            }
+
+            countSpan.textContent = cart.length;
+            totalSpan.textContent = total;
+        }
+
+
+        clearBtn.addEventListener("click", function () {
+            cart = [];
+            total = 0;
+            updateCart();
+        });
+
+
+        showProducts();
+
+    </script>
+
+</body>
+
+</html>
