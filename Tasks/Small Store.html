@@ -3,52 +3,492 @@
 
 <head>
     <title>Simple Store</title>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        :root {
+            --bg: #0f172a10;
+            /* subtle */
+            --card: #ffffff;
+            --muted: #6b7280;
+            --accent: #0b74ff;
+            /* blue */
+            --accent-2: #7c3aed;
+            /* purple */
+            --accent-contrast: #ffffff;
+            --success: #16a34a;
+            --danger: #ef4444;
+            --radius: 12px;
+            --shadow-lg: 0 10px 30px rgba(2, 6, 23, 0.12);
+            --shadow-sm: 0 4px 10px rgba(2, 6, 23, 0.06);
+            --max-width: 1100px;
+            font-family: Inter, 'Segoe UI', Roboto, system-ui, -apple-system, 'Helvetica Neue', Arial;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            background: linear-gradient(180deg, #f8fafc, #eef2ff);
+            color: #071024
+        }
+
+        body {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 28px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 32px;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .tagline {
+            color: var(--muted);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        h2 {
+            margin: 24px 0 12px;
+            color: var(--muted);
+            font-weight: 600
+        }
+
+        /* Layout */
+        .container {
+            width: 100%;
+            max-width: var(--max-width)
+        }
+
+        .store-grid {
+            display: grid;
+            grid-template-columns: 1fr 360px;
+            gap: 28px;
+            align-items: start
+        }
+
+        @media (max-width:900px) {
+            .store-grid {
+                grid-template-columns: 1fr;
+                padding: 0 16px
+            }
+        }
+
+        /* Search bar */
+        .search-wrap {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e6eefc;
+            border-radius: 10px;
+            font-size: 14px;
+            background: #ffffff;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-wrap input:focus {
+            outline: 0;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(11, 116, 255, 0.1);
+        }
+
+        /* Products */
+        #products {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 18px
+        }
+
+        .product-card {
+            background: linear-gradient(180deg, var(--card), #fbfdff);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+            animation: slideUp 0.5s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(2, 6, 23, 0.15);
+            filter: brightness(1.02);
+        }
+
+        .img-placeholder {
+            height: 130px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #7c3aed 0%, #0b74ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-contrast);
+            font-size: 56px;
+            margin-bottom: 14px;
+            box-shadow: 0 10px 30px rgba(123, 58, 237, 0.2);
+            font-family: Arial, sans-serif;
+            transition: transform 0.2s ease;
+        }
+
+        .product-card:hover .img-placeholder {
+            transform: scale(1.05);
+        }
+
+        .product-card strong {
+            display: block;
+            font-size: 15px;
+            margin-bottom: 6px
+        }
+
+        .price-tag {
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            color: var(--accent-contrast);
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            margin-left: auto
+        }
+
+        .meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--muted);
+            font-size: 13px
+        }
+
+        .product-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 12px
+        }
+
+        /* stock badge */
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge.low {
+            background: linear-gradient(90deg, #fef3c7, #fde68a);
+            color: #92400e;
+            box-shadow: 0 2px 6px rgba(217, 119, 6, 0.1);
+        }
+
+        .badge.out {
+            background: linear-gradient(90deg, #fee2e2, #fecaca);
+            color: #7f1d1d;
+            box-shadow: 0 2px 6px rgba(127, 29, 29, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            color: var(--accent-contrast);
+            border: 0;
+            padding: 9px 14px;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            font-weight: 600;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(11, 116, 255, 0.3);
+        }
+
+        .btn:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid #e6eefc;
+            color: var(--accent);
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(11, 116, 255, 0.05);
+            border-color: var(--accent);
+        }
+
+        /* Cart */
+        #cart {
+            background: linear-gradient(180deg, #ffffff, #f8fbff);
+            padding: 18px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-lg);
+            animation: slideUp 0.5s ease;
+        }
+
+        #cart-wrapper {
+            position: sticky;
+            top: 40px;
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eef4ff;
+            animation: slideUp 0.3s ease;
+        }
+
+        .cart-item:last-child {
+            border-bottom: 0
+        }
+
+        .cart-empty {
+            color: var(--muted);
+            padding: 24px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .cart-summary {
+            margin-top: 14px;
+            padding: 12px;
+            background: linear-gradient(90deg, rgba(11, 116, 255, 0.05), rgba(124, 58, 237, 0.05));
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        /* Utilities */
+        .muted {
+            color: var(--muted)
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .img-placeholder {
+                height: 100px;
+                font-size: 42px;
+            }
+
+            #products {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            }
+
+            .store-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1>My Store</h1>
-
-    <h2>Products</h2>
-    <div id="products"></div>
-
-    <h2>Cart (<span id="count">0</span>)</h2>
-    <div id="cart"></div>
-    <p>Total: $<span id="total">0</span></p>
-    <button id="clear">Clear Cart</button>
+    <div class="container">
+        <div class="header">
+            <h1>🛍️ Prime Store</h1>
+            <p class="tagline">Premium groceries delivered to your door</p>
+        </div>
+        <div class="store-grid">
+            <main>
+                <div class="search-wrap">
+                    <input type="text" id="search" placeholder="🔍 Search products...">
+                </div>
+                <h2>Products</h2>
+                <div id="products"></div>
+                <div id="no-results" style="display:none; text-align:center; color:var(--muted); padding:40px 0;">
+                    <p>No products found</p>
+                </div>
+            </main>
+            <aside>
+                <div id="cart-wrapper">
+                    <h2>🛒 Cart (<span id="count">0</span>)</h2>
+                    <div id="cart"></div>
+                    <p class="cart-summary">Total: $<span id="total">0</span></p>
+                    <div style="margin-top:10px"><button id="clear" class="btn-ghost">Clear Cart</button></div>
+                </div>
+            </aside>
+        </div>
+    </div>
 
     <script>
 
         const products = [
-            { id: 1, name: "Rice", price: 34 },
-            { id: 2, name: "Bread", price: 19 },
-            { id: 3, name: "Coffee", price: 12 },
-            { id: 4, name: "Pasta", price: 9 }
+            { id: 1, name: "Rice", price: 34, quantity: 10, emoji: "🍚", category: "grains" },
+            { id: 2, name: "Bread", price: 19, quantity: 20, emoji: "🍞", category: "bakery" },
+            { id: 3, name: "Coffee", price: 12, quantity: 15, emoji: "☕", category: "beverages" },
+            { id: 4, name: "Pasta", price: 9, quantity: 8, emoji: "🍝", category: "grains" },
+            { id: 5, name: "Tomatoes", price: 14, quantity: 25, emoji: "🍅", category: "vegetables" },
+            { id: 6, name: "Cheese", price: 28, quantity: 12, emoji: "🧀", category: "dairy" },
+            { id: 7, name: "Milk", price: 8, quantity: 30, emoji: "🥛", category: "dairy" },
+            { id: 8, name: "Apples", price: 11, quantity: 40, emoji: "🍎", category: "fruits" }
         ];
 
         let cart = [];
         let total = 0;
+        let filteredProducts = [...products];
 
         const productsDiv = document.getElementById("products");
         const cartDiv = document.getElementById("cart");
+        const noResults = document.getElementById("no-results");
         const countSpan = document.getElementById("count");
         const totalSpan = document.getElementById("total");
         const clearBtn = document.getElementById("clear");
+        const searchInput = document.getElementById("search");
 
+
+        function filterProducts() {
+            const query = searchInput.value.toLowerCase();
+            filteredProducts = products.filter(p =>
+                p.name.toLowerCase().includes(query) || p.category.includes(query)
+            );
+            showProducts();
+        }
 
         function showProducts() {
-            for (let i = 0; i < products.length; i++) {
-                const p = products[i];
+            productsDiv.innerHTML = "";
+            noResults.style.display = filteredProducts.length === 0 ? 'block' : 'none';
+
+            for (let i = 0; i < filteredProducts.length; i++) {
+                const p = filteredProducts[i];
 
                 const div = document.createElement("div");
+                div.className = "product-card";
+                let badgeHtml = '';
+                if (p.quantity === 0) badgeHtml = '<span class="badge out">Out</span>';
+                else if (p.quantity <= 3) badgeHtml = '<span class="badge low">Low</span>';
+
                 div.innerHTML = `
-            ${p.name} - $${p.price}
-            <button>Add</button>
-        `;
+                        <div class="img-placeholder">${p.emoji}</div>
+                        <div>
+                            <strong>${p.name}</strong>
+                            <div class="meta">
+                                <span class="price-tag">$${p.price}</span>
+                                ${badgeHtml}
+                            </div>
+                        </div>
+                        <div class="product-footer">
+                            <div class="meta">Stock: <span class="stock">${p.quantity}</span></div>
+                            <div><button class="btn" ${p.quantity === 0 ? 'disabled' : ''}>Add</button></div>
+                        </div>
+                `;
 
                 const button = div.querySelector("button");
+
                 button.addEventListener("click", function () {
-                    addToCart(p);
+                    addToCart(p.id);
                 });
 
                 productsDiv.appendChild(div);
@@ -56,34 +496,66 @@
         }
 
 
-        function addToCart(product) {
-            cart.push(product);
-            total = total + product.price;
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (!product || product.quantity === 0) return;
+
+            // decrement stock
+            product.quantity--;
+
+            // add to cart (increase quantity if already there)
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.quantity++;
+            } else {
+                cart.push({ id: product.id, name: product.name, price: product.price, quantity: 1 });
+            }
+
+            // recalc total
+            total = cart.reduce((sum, it) => sum + it.price * it.quantity, 0);
+
             updateCart();
+            showProducts();
         }
 
 
         function updateCart() {
             cartDiv.innerHTML = "";
 
-            for (let i = 0; i < cart.length; i++) {
-                const item = cart[i];
-                const div = document.createElement("div");
-                div.textContent = item.name + " - $" + item.price;
-                cartDiv.appendChild(div);
+            if (cart.length === 0) {
+                cartDiv.innerHTML = '<div class="cart-empty">Your cart is empty</div>';
+            } else {
+                for (let i = 0; i < cart.length; i++) {
+                    const item = cart[i];
+                    const div = document.createElement("div");
+                    div.className = "cart-item";
+                    div.innerHTML = `<span>${item.name} x${item.quantity}</span><span>$${(item.price * item.quantity)}</span>`;
+                    cartDiv.appendChild(div);
+                }
             }
 
-            countSpan.textContent = cart.length;
+            const count = cart.reduce((sum, it) => sum + it.quantity, 0);
+            countSpan.textContent = count;
             totalSpan.textContent = total;
         }
 
 
         clearBtn.addEventListener("click", function () {
+            // Restore stock from cart items
+            for (let i = 0; i < cart.length; i++) {
+                const cartItem = cart[i];
+                const product = products.find(p => p.id === cartItem.id);
+                if (product) {
+                    product.quantity += cartItem.quantity;
+                }
+            }
             cart = [];
             total = 0;
             updateCart();
+            showProducts();
         });
 
+        searchInput.addEventListener("input", filterProducts);
 
         showProducts();
 

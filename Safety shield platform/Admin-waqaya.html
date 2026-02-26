@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سلامة | saftey | لوحة الإدارة</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+        }
+
+        .g {
+            color: #006C35;
+        }
+
+        .bg-g {
+            background-color: #006C35;
+        }
+
+        .hs {
+            display: none !important;
+        }
+
+        .tab.active {
+            background-color: #006C35;
+            color: white;
+        }
+
+        .tr:hover {
+            background: #f9fafb;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0)
+            }
+        }
+
+        .fade {
+            animation: fadeIn .3s ease forwards
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 108, 53, .1);
+        }
+
+        .stat-card {
+            transition: transform .2s, box-shadow .2s;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- ══════════════════════════════════════
+     LOGIN PAGE
+══════════════════════════════════════ -->
+    <div id="p-login"
+        class="min-h-screen bg-gradient-to-br from-gray-900 via-green-950 to-gray-900 flex items-center justify-center p-6">
+        <div class="w-full max-w-md fade">
+            <div class="text-center mb-10">
+                <div class="w-16 h-16 bg-g rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-xl">
+                    <svg class="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <h1 class="text-3xl font-black text-white">سلامة | saftey</h1>
+                <p class="text-green-400 text-sm mt-1 font-bold">لوحة تحكم المنصة</p>
+            </div>
+            <div class="bg-white rounded-3xl shadow-2xl p-8">
+                <h2 class="text-xl font-black text-gray-800 mb-6 text-center">دخول المشرف</h2>
+                <div id="login-err"
+                    class="hidden mb-4 bg-red-50 text-red-600 text-sm font-bold rounded-xl p-3 text-center">بيانات
+                    الدخول غير صحيحة</div>
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني</label>
+                        <input id="adm-email" type="email" placeholder="admin@waqaya.sa" value="admin@waqaya.sa"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none transition-colors">
+                    </div>
+                    <div>
+                        <label class="text-xs font-bold text-gray-500 mb-1 block">كلمة المرور</label>
+                        <input id="adm-pass" type="password" placeholder="••••••••" value="admin123"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none transition-colors">
+                    </div>
+                </div>
+                <button onclick="adminLogin()"
+                    class="w-full bg-g text-white py-4 rounded-xl font-black text-lg mt-6 hover:opacity-90 shadow-lg transition">
+                    دخول
+                </button>
+                <p class="text-center text-xs text-gray-400 mt-4"><a href="/cdn-cgi/l/email-protection"
+                        class="__cf_email__" data-cfemail="2a4b4e4743446a5d4b5b4b534b04594b">[email&#160;protected]</a>
+                    / admin123</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+     MAIN DASHBOARD
+══════════════════════════════════════ -->
+    <div id="p-dash" class="hs min-h-screen flex">
+
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-900 text-gray-400 flex flex-col p-5 fixed h-full z-30 overflow-y-auto">
+            <div class="flex items-center gap-3 mb-10">
+                <div class="w-9 h-9 bg-g rounded-xl flex items-center justify-center flex-shrink-0">
+                    <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                </div>
+                <div>
+                    <p class="text-white font-black text-sm">سلامة | saftey</p>
+                    <p class="text-green-400 text-xs">لوحة الإدارة</p>
+                </div>
+            </div>
+
+            <p class="text-xs font-bold text-gray-600 uppercase tracking-widest mb-3 px-2">الرئيسية</p>
+            <nav class="space-y-1 mb-6">
+                <button onclick="showPage('pg-overview')" id="nav-overview"
+                    class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-white bg-green-900/30 border-r-2 border-green-500 transition text-right">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    نظرة عامة
+                </button>
+            </nav>
+
+            <p class="text-xs font-bold text-gray-600 uppercase tracking-widest mb-3 px-2">الإدارة</p>
+            <nav class="space-y-1 mb-6">
+                <button onclick="showPage('pg-clients')" id="nav-clients"
+                    class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white hover:bg-gray-800 transition text-right">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    إدارة العملاء
+                    <span
+                        class="mr-auto bg-green-900/40 text-green-400 text-xs font-black px-2 py-0.5 rounded-full">12</span>
+                </button>
+                <button onclick="showPage('pg-orders')" id="nav-orders"
+                    class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white hover:bg-gray-800 transition text-right">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    الطلبات
+                    <span
+                        class="mr-auto bg-amber-900/40 text-amber-400 text-xs font-black px-2 py-0.5 rounded-full">5</span>
+                </button>
+                <button onclick="showPage('pg-contracts')" id="nav-contracts"
+                    class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white hover:bg-gray-800 transition text-right">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    إدارة العقود
+                </button>
+                <button onclick="showPage('pg-products')" id="nav-products"
+                    class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white hover:bg-gray-800 transition text-right">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                    </svg>
+                    المنتجات
+                </button>
+            </nav>
+
+            <p class="text-xs font-bold text-gray-600 uppercase tracking-widest mb-3 px-2">المالية</p>
+            <nav class="space-y-1 mb-6">
+                <button onclick="showPage('pg-finance')" id="nav-finance"
+                    class="nav-btn w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-bold text-gray-400 hover:text-white hover:bg-gray-800 transition text-right">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    التقارير المالية
+                </button>
+            </nav>
+
+            <div class="mt-auto pt-4 border-t border-gray-800">
+                <div class="flex items-center gap-3 mb-4 px-2">
+                    <div
+                        class="w-8 h-8 bg-g rounded-full flex items-center justify-center text-white text-xs font-black">
+                        م</div>
+                    <div>
+                        <p class="text-white text-xs font-bold">المشرف العام</p>
+                        <p class="text-gray-500 text-xs"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                data-cfemail="c5a4a1a8acab85b2a4b4a4bca4ebb6a4">[email&#160;protected]</a></p>
+                    </div>
+                </div>
+                <button onclick="adminLogout()"
+                    class="w-full flex items-center gap-2 px-3 py-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-xl text-sm font-bold transition text-right">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
+                    تسجيل الخروج
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main content -->
+        <div class="flex-1 mr-64 flex flex-col min-h-screen">
+            <!-- Top bar -->
+            <header
+                class="bg-white border-b border-gray-200 px-8 py-4 flex justify-between items-center sticky top-0 z-20 shadow-sm">
+                <div>
+                    <h2 id="page-title" class="text-xl font-black text-gray-900">نظرة عامة</h2>
+                    <p class="text-xs text-gray-400 mt-0.5" id="page-sub">الأربعاء، 25 فبراير 2026</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <!-- Notification bell -->
+                    <div class="relative" id="notif-wrapper">
+                        <button onclick="toggleNotifs()"
+                            class="relative p-2 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-xl transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                            </svg>
+                            <span id="notif-badge"
+                                class="absolute top-0 right-0 w-5 h-5 bg-red-500 rounded-full text-white text-xs font-black flex items-center justify-center leading-none">3</span>
+                        </button>
+                        <div id="notif-panel"
+                            class="hidden absolute left-0 top-14 w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50">
+                            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                                <div>
+                                    <h4 class="font-black text-gray-900 text-sm">الإشعارات</h4>
+                                    <p class="text-xs text-gray-400 mt-0.5" id="notif-count-label">3 إشعارات غير مقروءة
+                                    </p>
+                                </div>
+                                <button onclick="markAllRead()" class="text-xs g font-bold hover:underline">تحديد الكل
+                                    كمقروء</button>
+                            </div>
+                            <div id="notif-list" style="max-height:320px;overflow-y:auto"></div>
+                            <div class="px-5 py-3 border-t border-gray-100 text-center"><button
+                                    onclick="showAllNotifications()" class="text-xs g font-bold hover:underline">عرض
+                                    جميع الإشعارات</button></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2">
+                        <div
+                            class="w-7 h-7 bg-g rounded-full flex items-center justify-center text-white text-xs font-black">
+                            م</div>
+                        <span class="text-sm font-bold text-gray-700">المشرف العام</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="flex-1 p-8">
+
+                <!-- ══ PAGE: OVERVIEW ══ -->
+                <div id="pg-overview" class="pg fade">
+                    <!-- KPI Cards -->
+                    <div class="grid grid-cols-4 gap-5 mb-8">
+                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="text-xs text-gray-400 font-bold">إجمالي العملاء</p>
+                                <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-black text-gray-900">12</p>
+                            <p class="text-xs text-green-600 font-bold mt-2">↑ 3 هذا الشهر</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="text-xs text-gray-400 font-bold">الطلبات النشطة</p>
+                                <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-black text-gray-900">5</p>
+                            <p class="text-xs text-amber-600 font-bold mt-2">2 بانتظار الموافقة</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="text-xs text-gray-400 font-bold">العقود النشطة</p>
+                                <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 g" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-black text-gray-900">18</p>
+                            <p class="text-xs text-green-600 font-bold mt-2">↑ 4 هذا الشهر</p>
+                        </div>
+                        <div class="stat-card bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <div class="flex items-center justify-between mb-4">
+                                <p class="text-xs text-gray-400 font-bold">الإيرادات (فبراير)</p>
+                                <div class="w-10 h-10 bg-purple-50 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-purple-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="text-3xl font-black text-gray-900">87,450</p>
+                            <p class="text-xs text-gray-400 mt-2">ريال سعودي</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6 mb-6">
+                        <!-- Recent orders -->
+                        <div class="col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                            <div class="flex items-center justify-between mb-5">
+                                <h3 class="font-black text-gray-900">آخر الطلبات</h3>
+                                <button onclick="showPage('pg-orders')" class="text-xs g font-bold hover:underline">عرض
+                                    الكل</button>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition">
+                                    <div
+                                        class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span class="text-lg">📦</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-bold text-sm">طلب #ORD-947821 — شركة النور</p>
+                                        <p class="text-xs text-gray-400">كاميرات مراقبة × 3 + طفايات × 2</p>
+                                    </div>
+                                    <div class="text-left flex-shrink-0">
+                                        <span
+                                            class="bg-amber-100 text-amber-700 text-xs font-black px-2 py-1 rounded-full">بانتظار
+                                            الموافقة</span>
+                                        <p class="text-xs text-gray-400 mt-1">منذ ساعة</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition">
+                                    <div
+                                        class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span class="text-lg">✅</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-bold text-sm">طلب #ORD-947806 — مجموعة الخليج</p>
+                                        <p class="text-xs text-gray-400">نظام إنذار شامل — 8 مناطق</p>
+                                    </div>
+                                    <div class="text-left flex-shrink-0">
+                                        <span
+                                            class="bg-green-100 text-green-700 text-xs font-black px-2 py-1 rounded-full">مكتمل</span>
+                                        <p class="text-xs text-gray-400 mt-1">منذ 3 ساعات</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition">
+                                    <div
+                                        class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span class="text-lg">🚚</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-bold text-sm">طلب #ORD-947791 — شركة الأمان</p>
+                                        <p class="text-xs text-gray-400">بوابة تحكم دخول + قارئ بصمة</p>
+                                    </div>
+                                    <div class="text-left flex-shrink-0">
+                                        <span
+                                            class="bg-blue-100 text-blue-700 text-xs font-black px-2 py-1 rounded-full">جارٍ
+                                            التوصيل</span>
+                                        <p class="text-xs text-gray-400 mt-1">منذ يوم</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-gray-50 transition">
+                                    <div
+                                        class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                                        <span class="text-lg">📦</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <p class="font-bold text-sm">طلب #ORD-947778 — برج الأعمال</p>
+                                        <p class="text-xs text-gray-400">رش تلقائي × 1 — 200م²</p>
+                                    </div>
+                                    <div class="text-left flex-shrink-0">
+                                        <span
+                                            class="bg-amber-100 text-amber-700 text-xs font-black px-2 py-1 rounded-full">بانتظار
+                                            الموافقة</span>
+                                        <p class="text-xs text-gray-400 mt-1">منذ يومين</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick stats -->
+                        <div class="space-y-4">
+                            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                                <h3 class="font-black text-gray-900 mb-4">توزيع العقود</h3>
+                                <div class="space-y-3">
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1"><span class="font-bold">كاميرات
+                                                مراقبة</span><span class="text-gray-400">7 عقد</span></div>
+                                        <div class="bg-gray-100 rounded-full h-2">
+                                            <div class="bg-g h-2 rounded-full" style="width:58%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1"><span class="font-bold">أنظمة
+                                                إطفاء</span><span class="text-gray-400">5 عقود</span></div>
+                                        <div class="bg-gray-100 rounded-full h-2">
+                                            <div class="bg-blue-500 h-2 rounded-full" style="width:42%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1"><span class="font-bold">تحكم
+                                                دخول</span><span class="text-gray-400">4 عقود</span></div>
+                                        <div class="bg-gray-100 rounded-full h-2">
+                                            <div class="bg-amber-500 h-2 rounded-full" style="width:33%"></div>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="flex justify-between text-xs mb-1"><span class="font-bold">أنظمة
+                                                إنذار</span><span class="text-gray-400">2 عقد</span></div>
+                                        <div class="bg-gray-100 rounded-full h-2">
+                                            <div class="bg-purple-500 h-2 rounded-full" style="width:17%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-2xl p-6 text-white">
+                                <p class="text-green-200 text-xs font-bold mb-1">إيرادات هذا العام</p>
+                                <p class="text-3xl font-black mb-1">324,800</p>
+                                <p class="text-green-300 text-xs">ريال سعودي</p>
+                                <p class="text-green-200 text-xs font-bold mt-3">↑ 18% مقارنة بالعام الماضي</p>
+                            </div>
+                            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                                <h3 class="font-black text-gray-900 mb-3 text-sm">عقود تنتهي قريباً</h3>
+                                <div class="space-y-2 text-xs">
+                                    <div class="flex justify-between items-center"><span class="text-gray-600">شركة
+                                            الأمان #9762</span><span
+                                            class="bg-red-100 text-red-600 font-black px-2 py-0.5 rounded-full">13
+                                            يوم</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-gray-600">برج
+                                            الأعمال #9544</span><span
+                                            class="bg-amber-100 text-amber-600 font-black px-2 py-0.5 rounded-full">28
+                                            يوم</span></div>
+                                    <div class="flex justify-between items-center"><span class="text-gray-600">مجموعة
+                                            النخيل #9301</span><span
+                                            class="bg-yellow-100 text-yellow-600 font-black px-2 py-0.5 rounded-full">45
+                                            يوم</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ══ PAGE: CLIENTS ══ -->
+                <div id="pg-clients" class="pg hs fade">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-xl font-black">إدارة العملاء</h3>
+                            <p class="text-sm text-gray-400 mt-1">12 مؤسسة مسجلة</p>
+                        </div>
+                        <button onclick="openModal('modal-add-client')"
+                            class="bg-g text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 flex items-center gap-2 shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            إضافة عميل
+                        </button>
+                    </div>
+                    <!-- Search & filter -->
+                    <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-4 flex gap-4 items-center shadow-sm">
+                        <div class="relative flex-1">
+                            <input type="text" placeholder="بحث بالاسم أو السجل التجاري..."
+                                class="w-full bg-gray-50 rounded-xl px-4 py-2.5 pr-10 text-sm outline-none focus:ring-2 focus:ring-green-200">
+                            <svg class="w-4 h-4 text-gray-400 absolute top-3 right-3" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
+                            </svg>
+                        </div>
+                        <select
+                            class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-200">
+                            <option>كل الحالات</option>
+                            <option>موثق</option>
+                            <option>معلق</option>
+                        </select>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                        <table class="w-full text-right text-sm">
+                            <thead class="bg-gray-50 text-gray-400 text-xs font-black tracking-widest border-b">
+                                <tr>
+                                    <th class="p-4">المؤسسة</th>
+                                    <th class="p-4">السجل التجاري</th>
+                                    <th class="p-4">المسؤول</th>
+                                    <th class="p-4">العقود</th>
+                                    <th class="p-4">الحالة</th>
+                                    <th class="p-4">تاريخ التسجيل</th>
+                                    <th class="p-4">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clients-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ══ PAGE: ORDERS ══ -->
+                <div id="pg-orders" class="pg hs fade">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-xl font-black">إدارة الطلبات</h3>
+                            <p class="text-sm text-gray-400 mt-1" id="orders-count">5 طلبات نشطة</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="filterOrders('الكل')"
+                                class="order-tab active px-4 py-2 rounded-xl text-xs font-bold border-2 border-green-600 bg-green-600 text-white transition">الكل</button>
+                            <button onclick="filterOrders('بانتظار الموافقة')"
+                                class="order-tab px-4 py-2 rounded-xl text-xs font-bold border-2 border-gray-200 hover:border-green-600 transition">بانتظار
+                                الموافقة</button>
+                            <button onclick="filterOrders('جارٍ التوصيل')"
+                                class="order-tab px-4 py-2 rounded-xl text-xs font-bold border-2 border-gray-200 hover:border-green-600 transition">جارٍ
+                                التوصيل</button>
+                            <button onclick="filterOrders('مكتمل')"
+                                class="order-tab px-4 py-2 rounded-xl text-xs font-bold border-2 border-gray-200 hover:border-green-600 transition">مكتمل</button>
+                        </div>
+                    </div>
+                    <div class="space-y-4" id="orders-list"></div>
+                </div>
+
+                <!-- ══ PAGE: CONTRACTS ══ -->
+                <div id="pg-contracts" class="pg hs fade">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-xl font-black">إدارة العقود</h3>
+                            <p class="text-sm text-gray-400 mt-1">18 عقد نشط</p>
+                        </div>
+                        <button onclick="openModal('modal-add-contract')"
+                            class="bg-g text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 flex items-center gap-2 shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            عقد جديد
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                        <table class="w-full text-right text-sm">
+                            <thead class="bg-gray-50 text-gray-400 text-xs font-black tracking-widest border-b">
+                                <tr>
+                                    <th class="p-4">رقم العقد</th>
+                                    <th class="p-4">المؤسسة</th>
+                                    <th class="p-4">نوع الخدمة</th>
+                                    <th class="p-4">تاريخ البدء</th>
+                                    <th class="p-4">تاريخ الانتهاء</th>
+                                    <th class="p-4">القيمة</th>
+                                    <th class="p-4">الحالة</th>
+                                    <th class="p-4">إجراءات</th>
+                                </tr>
+                            </thead>
+                            <tbody id="contracts-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ══ PAGE: PRODUCTS ══ -->
+                <div id="pg-products" class="pg hs fade">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-xl font-black">إدارة المنتجات</h3>
+                            <p class="text-sm text-gray-400 mt-1">13 منتج في الكتالوج</p>
+                        </div>
+                        <button onclick="openModal('modal-add-product')"
+                            class="bg-g text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:opacity-90 flex items-center gap-2 shadow-md">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4" />
+                            </svg>
+                            إضافة منتج
+                        </button>
+                    </div>
+                    <div id="products-grid" class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4"></div>
+                </div>
+
+                <!-- ══ PAGE: FINANCE ══ -->
+                <div id="pg-finance" class="pg hs fade">
+                    <div class="mb-6">
+                        <h3 class="text-xl font-black">التقارير المالية</h3>
+                        <p class="text-sm text-gray-400 mt-1">السنة المالية 2026</p>
+                    </div>
+                    <!-- Summary -->
+                    <div class="grid grid-cols-4 gap-5 mb-8">
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <p class="text-xs text-gray-400 font-bold mb-2">إجمالي الإيرادات</p>
+                            <p class="text-3xl font-black g">324,800</p>
+                            <p class="text-xs text-gray-400 mt-1">ريال سعودي</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <p class="text-xs text-gray-400 font-bold mb-2">المحصّل</p>
+                            <p class="text-3xl font-black text-gray-900">298,550</p>
+                            <p class="text-xs text-green-600 font-bold mt-1">↑ 92% من الإجمالي</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <p class="text-xs text-gray-400 font-bold mb-2">المستحق</p>
+                            <p class="text-3xl font-black text-amber-500">26,250</p>
+                            <p class="text-xs text-amber-600 font-bold mt-1">7 فواتير معلقة</p>
+                        </div>
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+                            <p class="text-xs text-gray-400 font-bold mb-2">ضريبة القيمة المضافة</p>
+                            <p class="text-3xl font-black text-purple-500">44,717</p>
+                            <p class="text-xs text-gray-400 mt-1">15% من الإجمالي</p>
+                        </div>
+                    </div>
+                    <!-- Monthly breakdown -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-6">
+                        <h4 class="font-black mb-6">الإيرادات الشهرية — 2026</h4>
+                        <div class="flex items-end gap-2 h-40">
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-g rounded-lg w-full" style="height:55%"></div><span
+                                    class="text-xs text-gray-400">يناير</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-g rounded-lg w-full" style="height:70%"></div><span
+                                    class="text-xs text-gray-400">فبراير</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:30%"></div><span
+                                    class="text-xs text-gray-400">مارس</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:10%"></div><span
+                                    class="text-xs text-gray-400">أبريل</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">مايو</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">يونيو</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">يوليو</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">أغسطس</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">سبتمبر</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">أكتوبر</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">نوفمبر</span>
+                            </div>
+                            <div class="flex flex-col items-center flex-1 gap-2">
+                                <div class="bg-gray-200 rounded-lg w-full" style="height:5%"></div><span
+                                    class="text-xs text-gray-400">ديسمبر</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Invoice table -->
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                        <div class="p-5 border-b flex items-center justify-between">
+                            <h4 class="font-black">الفواتير المستحقة</h4>
+                            <span class="bg-amber-100 text-amber-700 text-xs font-black px-3 py-1 rounded-full">7 فواتير
+                                — 26,250 ر.س</span>
+                        </div>
+                        <table class="w-full text-right text-sm">
+                            <thead class="bg-gray-50 text-gray-400 text-xs font-black tracking-widest border-b">
+                                <tr>
+                                    <th class="p-4">رقم الفاتورة</th>
+                                    <th class="p-4">المؤسسة</th>
+                                    <th class="p-4">العقد</th>
+                                    <th class="p-4">المبلغ</th>
+                                    <th class="p-4">تاريخ الاستحقاق</th>
+                                    <th class="p-4">الحالة</th>
+                                    <th class="p-4">إجراء</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="border-b bg-red-50/30 tr">
+                                    <td class="p-4 font-bold">#INV-0078</td>
+                                    <td class="p-4 font-bold">مجموعة الخليج</td>
+                                    <td class="p-4 g font-bold">#DS-9920</td>
+                                    <td class="p-4 font-black">8,400 ر.س</td>
+                                    <td class="p-4 text-red-600 font-bold">2026/02/20 (متأخر)</td>
+                                    <td class="p-4"><span
+                                            class="bg-red-100 text-red-600 text-xs font-black px-2 py-1 rounded-full">متأخر</span>
+                                    </td>
+                                    <td class="p-4"><button
+                                            class="bg-red-500 text-white text-xs font-black px-3 py-1 rounded-lg hover:opacity-90">متابعة</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b bg-amber-50/30 tr">
+                                    <td class="p-4 font-bold">#INV-0072</td>
+                                    <td class="p-4 font-bold">شركة الأمان</td>
+                                    <td class="p-4 g font-bold">#DS-9762</td>
+                                    <td class="p-4 font-black">1,750 ر.س</td>
+                                    <td class="p-4">2026/03/01</td>
+                                    <td class="p-4"><span
+                                            class="bg-amber-100 text-amber-700 text-xs font-black px-2 py-1 rounded-full">مستحق</span>
+                                    </td>
+                                    <td class="p-4"><button
+                                            class="bg-g text-white text-xs font-black px-3 py-1 rounded-lg hover:opacity-90">تذكير</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b bg-amber-50/30 tr">
+                                    <td class="p-4 font-bold">#INV-0073</td>
+                                    <td class="p-4 font-bold">شركة الأمان</td>
+                                    <td class="p-4 g font-bold">#DS-9845</td>
+                                    <td class="p-4 font-black">500 ر.س</td>
+                                    <td class="p-4">2026/03/01</td>
+                                    <td class="p-4"><span
+                                            class="bg-amber-100 text-amber-700 text-xs font-black px-2 py-1 rounded-full">مستحق</span>
+                                    </td>
+                                    <td class="p-4"><button
+                                            class="bg-g text-white text-xs font-black px-3 py-1 rounded-lg hover:opacity-90">تذكير</button>
+                                    </td>
+                                </tr>
+                                <tr class="border-b tr">
+                                    <td class="p-4 font-bold">#INV-0081</td>
+                                    <td class="p-4 font-bold">برج الأعمال</td>
+                                    <td class="p-4 g font-bold">#DS-9931</td>
+                                    <td class="p-4 font-black">15,600 ر.س</td>
+                                    <td class="p-4">2026/03/15</td>
+                                    <td class="p-4"><span
+                                            class="bg-gray-100 text-gray-500 text-xs font-black px-2 py-1 rounded-full">قادم</span>
+                                    </td>
+                                    <td class="p-4"><button
+                                            class="border border-gray-200 text-gray-500 text-xs font-black px-3 py-1 rounded-lg hover:bg-gray-50">عرض</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div><!-- end content -->
+        </div><!-- end main -->
+    </div><!-- end dash -->
+
+    <!-- ══════════════════════════════
+     MODALS
+══════════════════════════════ -->
+    <!-- Add Client -->
+    <div id="modal-add-client" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black">إضافة عميل جديد</h3>
+                <button onclick="closeModal('modal-add-client')" class="text-gray-400 hover:text-gray-700"><svg
+                        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg></button>
+            </div>
+            <div class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المؤسسة
+                            *</label><input type="text" placeholder="شركة ..."
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">السجل التجاري *</label><input
+                            type="text" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الضريبة <span
+                                class="text-gray-400 font-normal">(15 رقم)</span></label><input type="text"
+                            maxlength="15" placeholder="300XXXXXXXXXX003"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none font-bold tracking-widest">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المسؤول *</label><input
+                            type="text"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الجوال * <span
+                                class="text-gray-400 font-normal">(10 أرقام)</span></label><input type="tel"
+                            maxlength="10" placeholder="05XXXXXXXX"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none font-bold tracking-widest">
+                    </div>
+                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني
+                            *</label><input type="email"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">المدينة</label>
+                        <select
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
+                            <option>الرياض</option>
+                            <option>جدة</option>
+                            <option>الدمام</option>
+                            <option>مكة المكرمة</option>
+                            <option>المدينة المنورة</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="addClient()"
+                    class="flex-1 bg-g text-white py-3 rounded-xl font-bold hover:opacity-90">حفظ العميل</button>
+                <button onclick="closeModal('modal-add-client')"
+                    class="flex-1 border-2 border-gray-200 py-3 rounded-xl font-bold hover:bg-gray-50">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Contract -->
+    <div id="modal-add-contract" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black">إنشاء عقد جديد</h3>
+                <button onclick="closeModal('modal-add-contract')" class="text-gray-400 hover:text-gray-700"><svg
+                        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg></button>
+            </div>
+            <div class="space-y-4">
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">المؤسسة *</label>
+                    <select
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
+                        <option>اختر مؤسسة...</option>
+                        <option>شركة الأمان المتكاملة</option>
+                        <option>مجموعة الخليج</option>
+                        <option>برج الأعمال</option>
+                    </select>
+                </div>
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">نوع الخدمة *</label>
+                    <select
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
+                        <option>تركيب كاميرات مراقبة</option>
+                        <option>تركيب نظام إطفاء</option>
+                        <option>تركيب نظام إنذار</option>
+                        <option>تركيب تحكم دخول</option>
+                        <option>صيانة شاملة</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">تاريخ البدء *</label><input
+                            type="date"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">تاريخ الانتهاء *</label><input
+                            type="date"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">قيمة العقد (ر.س) *</label><input
+                            type="number" placeholder="0"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">طريقة الدفع</label>
+                        <select
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
+                            <option>مدى</option>
+                            <option>تحويل بنكي</option>
+                            <option>فاتورة آجلة</option>
+                        </select>
+                    </div>
+                </div>
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">ملاحظات</label><textarea rows="2"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none resize-none"></textarea>
+                </div>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="addContract()"
+                    class="flex-1 bg-g text-white py-3 rounded-xl font-bold hover:opacity-90">إنشاء العقد</button>
+                <button onclick="closeModal('modal-add-contract')"
+                    class="flex-1 border-2 border-gray-200 py-3 rounded-xl font-bold hover:bg-gray-50">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product -->
+    <div id="modal-add-product" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-6">
+                <h3 id="prod-modal-title" class="text-xl font-black">إضافة منتج جديد</h3>
+                <button onclick="closeModal('modal-add-product')" class="text-gray-400 hover:text-gray-700"><svg
+                        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg></button>
+            </div>
+            <input type="hidden" id="edit-prod-id">
+            <div class="space-y-4">
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المنتج *</label><input id="pm-name"
+                        type="text" placeholder="كاميرا مراقبة 4K"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">السعر (ر.س) *</label><input
+                            id="pm-price" type="number" placeholder="0"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">الفئة *</label>
+                        <select id="pm-cat"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
+                            <option value="كاميرات">📷 كاميرات</option>
+                            <option value="إطفاء">🧯 إطفاء</option>
+                            <option value="إنذار">🚨 إنذار</option>
+                            <option value="تحكم دخول">🔐 تحكم دخول</option>
+                            <option value="إضاءة طوارئ">🔦 إضاءة طوارئ</option>
+                        </select>
+                    </div>
+                </div>
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">الوصف *</label><textarea id="pm-desc"
+                        rows="3"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="text-xs font-bold text-gray-500 mb-1 block">رابط الصورة</label>
+                    <input id="pm-img" type="url" placeholder="https://..."
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">المخزون</label><input id="pm-stock"
+                            type="number" placeholder="0"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">الحالة</label>
+                        <select id="pm-status"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
+                            <option value="active">متاح</option>
+                            <option value="inactive">غير متاح</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="pm-err" class="hidden mt-3 text-red-500 text-sm font-bold bg-red-50 rounded-xl p-3">⚠️ يرجى ملء
+                الحقول المطلوبة</div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="saveProduct()"
+                    class="flex-1 bg-g text-white py-3 rounded-xl font-bold hover:opacity-90">حفظ المنتج</button>
+                <button onclick="closeModal('modal-add-product')"
+                    class="flex-1 border-2 border-gray-200 py-3 rounded-xl font-bold hover:bg-gray-50">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script>
+        // ── Data ─────────────────────────────────────────────────────
+        let clients = [
+            { id: 1, name: 'شركة الأمان المتكاملة', cr: '1010234567', contact: 'محمد العمري', phone: '0501234567', email: 'info@alsaman.sa', city: 'الرياض', contracts: 3, status: 'موثق', date: '2025/08/12' },
+            { id: 2, name: 'مجموعة الخليج للأمن', cr: '2050897612', contact: 'فهد الشمري', phone: '0559876543', email: 'f.shamri@gulf-sec.sa', city: 'الدمام', contracts: 2, status: 'موثق', date: '2025/10/03' },
+            { id: 3, name: 'برج الأعمال للخدمات', cr: '1070345123', contact: 'سالم الغامدي', phone: '0534561234', email: 'salem@burjsa.com', city: 'جدة', contracts: 1, status: 'معلق', date: '2026/01/20' },
+            { id: 4, name: 'شركة النور للمقاولات', cr: '1090112233', contact: 'خالد الدوسري', phone: '0512345678', email: 'k.dosri@alnoor.sa', city: 'الرياض', contracts: 0, status: 'موثق', date: '2026/02/01' },
+            { id: 5, name: 'مجموعة النخيل العقارية', cr: '1030556677', contact: 'عبدالله القحطاني', phone: '0567890123', email: 'info@nakheel-grp.sa', city: 'مكة المكرمة', contracts: 2, status: 'موثق', date: '2025/09/15' },
+        ];
+        let nextClientId = 6;
+
+        let contracts = [
+            { id: 'DS-2026-9901', client: 'شركة الأمان المتكاملة', type: 'كاميرات مراقبة', start: '2026/01/15', end: '2027/01/14', value: 12500, status: 'نشط' },
+            { id: 'DS-2026-9845', client: 'شركة الأمان المتكاملة', type: 'صيانة أنظمة إطفاء', start: '2026/02/01', end: '2027/01/31', value: 4200, status: 'نشط' },
+            { id: 'DS-2026-9920', client: 'مجموعة الخليج للأمن', type: 'نظام إنذار شامل', start: '2026/01/20', end: '2027/01/19', value: 28000, status: 'نشط' },
+            { id: 'DS-2026-9931', client: 'برج الأعمال للخدمات', type: 'رش تلقائي — 200م²', start: '2026/02/10', end: '2027/02/09', value: 15600, status: 'نشط' },
+            { id: 'DS-2026-9762', client: 'شركة الأمان المتكاملة', type: 'تحكم دخول', start: '2025/03/10', end: '2026/03/09', value: 1750, status: 'ينتهي قريباً' },
+            { id: 'DS-2025-8847', client: 'مجموعة النخيل العقارية', type: 'صيانة شاملة', start: '2024/11/01', end: '2025/10/31', value: 3200, status: 'منتهي' },
+        ];
+        let nextContractId = 9940;
+
+        const IMGS = {
+            'كاميرات': 'https://images.unsplash.com/photo-1588007375246-3ee823ef4851?w=400&q=80',
+            'إطفاء': 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80',
+            'إنذار': 'https://images.unsplash.com/photo-1604754742629-3e5728249d73?w=400&q=80',
+            'تحكم دخول': 'https://images.unsplash.com/photo-1558618047-f4e80c5ccf9b?w=400&q=80',
+            'إضاءة طوارئ': 'https://images.unsplash.com/photo-1565814329452-e1efa11c5b89?w=400&q=80'
+        };
+        let products = [
+            { id: 1, name: 'كاميرا مراقبة 4K خارجية', cat: 'كاميرات', price: 549, desc: 'كاميرا IP لاسلكية بدقة 4K مع رؤية ليلية 30م.', img: '', stock: 24, status: 'active' },
+            { id: 2, name: 'كاميرا PTZ دوارة 360°', cat: 'كاميرات', price: 1250, desc: 'كاميرا قبة دوارة بزوم بصري 20x.', img: '', stock: 8, status: 'active' },
+            { id: 3, name: 'كاميرا داخلية واي فاي', cat: 'كاميرات', price: 299, desc: 'كاميرا منزلية مع ميكروفون ثنائي الاتجاه.', img: '', stock: 35, status: 'active' },
+            { id: 4, name: 'طفاية CO₂ 5 كغ', cat: 'إطفاء', price: 180, desc: 'طفاية ثاني أكسيد الكربون للأجهزة الكهربائية.', img: '', stock: 50, status: 'active' },
+            { id: 5, name: 'طفاية مسحوق ABC 6 كغ', cat: 'إطفاء', price: 95, desc: 'طفاية متعددة الأغراض معتمدة من الدفاع المدني.', img: '', stock: 80, status: 'active' },
+            { id: 6, name: 'نظام رش تلقائي', cat: 'إطفاء', price: 2800, desc: 'نظام sprinkler يغطي 200م².', img: '', stock: 6, status: 'active' },
+            { id: 7, name: 'جرس إنذار حريق ذكي', cat: 'إنذار', price: 350, desc: 'كاشف دخان وحرارة مع تنبيه للجوال.', img: '', stock: 20, status: 'active' },
+            { id: 8, name: 'لوحة تحكم إنذار 8 مناطق', cat: 'إنذار', price: 1450, desc: 'لوحة مركزية مع شاشة LCD وبطارية احتياطية.', img: '', stock: 5, status: 'active' },
+            { id: 9, name: 'قارئ بصمة باب ذكي', cat: 'تحكم دخول', price: 780, desc: 'بصمة الإصبع + RFID مع سجل دخول.', img: '', stock: 15, status: 'active' },
+            { id: 10, name: 'بوابة تحكم دخول مزدوجة', cat: 'تحكم دخول', price: 3200, desc: 'بوابة أمنية مع كاميرا تعرف وجه.', img: '', stock: 3, status: 'active' },
+            { id: 11, name: 'لوحة مفاتيح PIN', cat: 'تحكم دخول', price: 420, desc: 'لوحة أرقام سرية مضادة للعبث.', img: '', stock: 18, status: 'active' },
+            { id: 12, name: 'كشاف طوارئ LED 120W', cat: 'إضاءة طوارئ', price: 260, desc: 'يعمل تلقائياً عند انقطاع الكهرباء لـ 6 ساعات.', img: '', stock: 30, status: 'active' },
+            { id: 13, name: 'لافتة خروج طوارئ LED', cat: 'إضاءة طوارئ', price: 85, desc: 'لافتة EXIT معتمدة لمخارج الطوارئ.', img: '', stock: 60, status: 'active' },
+        ];
+        let nextProdId = 14;
+
+        const orders = [
+            { id: 'ORD-947821', client: 'شركة النور', clientType: 'شركة', items: 'كاميرات × 3 + طفايات × 2', total: 1623, date: '2026/02/25', status: 'بانتظار الموافقة' },
+            { id: 'ORD-947778', client: 'برج الأعمال', clientType: 'شركة', items: 'نظام رش تلقائي × 1', total: 2800, date: '2026/02/22', status: 'بانتظار الموافقة' },
+            { id: 'ORD-947810', client: 'محمد العمري', clientType: 'فرد', items: 'طفاية CO₂ × 2 + كاشف دخان × 1', total: 710, date: '2026/02/24', status: 'بانتظار الموافقة' },
+            { id: 'ORD-947806', client: 'مجموعة الخليج', clientType: 'شركة', items: 'نظام إنذار شامل — 8 مناطق', total: 1450, date: '2026/02/24', status: 'مكتمل' },
+            { id: 'ORD-947791', client: 'شركة الأمان', clientType: 'شركة', items: 'بوابة تحكم + قارئ بصمة', total: 3980, date: '2026/02/23', status: 'جارٍ التوصيل' },
+            { id: 'ORD-947750', client: 'مجموعة النخيل', clientType: 'شركة', items: 'كشاف طوارئ × 5 + لافتات × 10', total: 2150, date: '2026/02/20', status: 'مكتمل' },
+            { id: 'ORD-947815', client: 'خالد الدوسري', clientType: 'فرد', items: 'كاميرا داخلية × 1', total: 299, date: '2026/02/25', status: 'مرفوض' },
+        ];
+
+        // ── Auth ──────────────────────────────────────────────────────
+        function adminLogin() {
+            const e = document.getElementById('adm-email').value;
+            const p = document.getElementById('adm-pass').value;
+            if (e === 'admin@waqaya.sa' && p === 'admin123') {
+                document.getElementById('p-login').classList.add('hs');
+                document.getElementById('p-dash').classList.remove('hs');
+                showPage('pg-overview');
+            } else {
+                document.getElementById('login-err').classList.remove('hidden');
+            }
+        }
+        function adminLogout() {
+            document.getElementById('p-dash').classList.add('hs');
+            document.getElementById('p-login').classList.remove('hs');
+        }
+        document.addEventListener('keydown', e => { if (e.key === 'Enter' && !document.getElementById('p-login').classList.contains('hs')) adminLogin(); });
+
+        // ── Page nav ──────────────────────────────────────────────────
+        const PAGE_TITLES = {
+            'pg-overview': ['نظرة عامة', 'مرحباً بك في لوحة التحكم'],
+            'pg-clients': ['إدارة العملاء', '12 مؤسسة مسجلة'],
+            'pg-orders': ['الطلبات', '5 طلبات نشطة'],
+            'pg-contracts': ['إدارة العقود', '18 عقد نشط'],
+            'pg-products': ['المنتجات', '13 منتج في الكتالوج'],
+            'pg-finance': ['التقارير المالية', 'السنة المالية 2026'],
+        };
+        function showPage(id) {
+            document.querySelectorAll('.pg').forEach(p => p.classList.add('hs'));
+            document.getElementById(id)?.classList.remove('hs');
+            document.querySelectorAll('.nav-btn').forEach(b => {
+                b.classList.remove('text-white', 'bg-green-900/30', 'border-r-2', 'border-green-500');
+                b.classList.add('text-gray-400');
+            });
+            const navId = 'nav-' + id.replace('pg-', '');
+            const nb = document.getElementById(navId);
+            if (nb) { nb.classList.remove('text-gray-400'); nb.classList.add('text-white', 'bg-green-900/30', 'border-r-2', 'border-green-500'); }
+            const [title, sub] = PAGE_TITLES[id] || ['', ''];
+            document.getElementById('page-title').textContent = title;
+            document.getElementById('page-sub').textContent = sub;
+            // Render dynamic pages
+            if (id === 'pg-clients') renderClients();
+            if (id === 'pg-orders') renderOrders();
+            if (id === 'pg-contracts') renderContracts();
+            if (id === 'pg-products') renderProducts();
+        }
+
+        // ── Clients ───────────────────────────────────────────────────
+        function renderClients() {
+            const tb = document.getElementById('clients-tbody');
+            tb.innerHTML = clients.map(c => `
+        <tr class="border-b border-gray-50 tr">
+            <td class="p-4">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-g rounded-xl flex items-center justify-center text-white font-black text-sm flex-shrink-0">${c.name[0]}</div>
+                    <div><p class="font-bold text-sm">${c.name}</p><p class="text-xs text-gray-400">${c.city}</p></div>
+                </div>
+            </td>
+            <td class="p-4 font-bold text-sm">${c.cr}</td>
+            <td class="p-4">
+                <p class="font-bold text-sm">${c.contact}</p>
+                <p class="text-xs text-gray-400">${c.phone}</p>
+            </td>
+            <td class="p-4 text-center"><span class="bg-green-100 g text-xs font-black px-2 py-1 rounded-full">${c.contracts}</span></td>
+            <td class="p-4"><span class="text-xs font-black px-2 py-1 rounded-full ${c.status === 'موثق' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}">${c.status}</span></td>
+            <td class="p-4 text-xs text-gray-400">${c.date}</td>
+            <td class="p-4">
+                <div class="flex gap-2">
+                    <button class="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 font-bold text-gray-600">تفاصيل</button>
+                    <button onclick="deleteClient(${c.id})" class="text-xs border border-red-200 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-50 font-bold">حذف</button>
+                </div>
+            </td>
+        </tr>`).join('');
+        }
+        function addClient() {
+            closeModal('modal-add-client');
+            // In real app: would save form data. Demo: just show toast
+            showToast('تم إضافة العميل بنجاح ✅');
+        }
+        function deleteClient(id) {
+            if (!confirm('هل أنت متأكد من حذف هذا العميل؟')) return;
+            clients = clients.filter(c => c.id !== id);
+            renderClients();
+            showToast('تم حذف العميل');
+        }
+
+        // ── Orders ────────────────────────────────────────────────────
+        let currentOrderFilter = 'الكل';
+
+        function filterOrders(status) {
+            currentOrderFilter = status;
+            document.querySelectorAll('.order-tab').forEach(b => {
+                const isActive = b.textContent.trim() === status || (status === 'الكل' && b.textContent.trim() === 'الكل');
+                b.classList.toggle('active', isActive);
+                b.classList.toggle('bg-green-600', isActive);
+                b.classList.toggle('text-white', isActive);
+                b.classList.toggle('border-green-600', isActive);
+                if (!isActive) { b.classList.remove('bg-green-600', 'text-white'); }
+            });
+            renderOrders();
+        }
+
+        function approveOrder(id) {
+            const o = orders.find(x => x.id === id);
+            if (o) { o.status = 'جارٍ التوصيل'; renderOrders(); showToast('✅ تم قبول الطلب #' + id); }
+        }
+        function rejectOrder(id) {
+            const o = orders.find(x => x.id === id);
+            if (o) { o.status = 'مرفوض'; renderOrders(); showToast('❌ تم رفض الطلب #' + id); }
+        }
+
+        function renderOrders() {
+            const statusColors = {
+                'بانتظار الموافقة': 'bg-amber-100 text-amber-700',
+                'مكتمل': 'bg-green-100 text-green-700',
+                'جارٍ التوصيل': 'bg-blue-100 text-blue-700',
+                'مرفوض': 'bg-red-100 text-red-600'
+            };
+            const icons = { 'بانتظار الموافقة': '📦', 'مكتمل': '✅', 'جارٍ التوصيل': '🚚', 'مرفوض': '❌' };
+
+            // Sort: pending approval first, then by date desc
+            const statusPriority = { 'بانتظار الموافقة': 0, 'جارٍ التوصيل': 1, 'مكتمل': 2, 'مرفوض': 3 };
+            const sorted = [...orders].sort((a, b) => {
+                const pa = statusPriority[a.status] ?? 9;
+                const pb = statusPriority[b.status] ?? 9;
+                if (pa !== pb) return pa - pb;
+                return b.date.localeCompare(a.date);
+            });
+
+            // Filter
+            const filtered = currentOrderFilter === 'الكل' ? sorted : sorted.filter(o => o.status === currentOrderFilter);
+
+            // Update count
+            const pendingCount = filtered.filter(o => o.status === 'بانتظار الموافقة').length;
+            const countEl = document.getElementById('orders-count');
+            if (countEl) countEl.textContent = `${filtered.length} طلب — ${pendingCount} بانتظار الموافقة`;
+
+            // Separate by type if showing all
+            let html = '';
+            if (currentOrderFilter === 'الكل') {
+                const companies = filtered.filter(o => o.clientType === 'شركة');
+                const individuals = filtered.filter(o => o.clientType === 'فرد');
+                if (companies.length) {
+                    html += `<div class="flex items-center gap-3 mb-3 mt-2"><div class="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center text-sm">🏢</div><p class="font-black text-sm text-gray-700">طلبات الشركات</p><span class="bg-blue-100 text-blue-700 text-xs font-black px-2 py-0.5 rounded-full">${companies.length}</span></div>`;
+                    html += companies.map(o => orderCard(o, statusColors, icons)).join('');
+                }
+                if (individuals.length) {
+                    html += `<div class="flex items-center gap-3 mb-3 mt-5"><div class="w-6 h-6 bg-purple-100 rounded-lg flex items-center justify-center text-sm">🙍</div><p class="font-black text-sm text-gray-700">طلبات الأفراد</p><span class="bg-purple-100 text-purple-700 text-xs font-black px-2 py-0.5 rounded-full">${individuals.length}</span></div>`;
+                    html += individuals.map(o => orderCard(o, statusColors, icons)).join('');
+                }
+                if (!companies.length && !individuals.length) html = '<div class="text-center py-12 text-gray-400 font-bold">لا توجد طلبات</div>';
+            } else {
+                if (!filtered.length) html = '<div class="text-center py-12 text-gray-400 font-bold">لا توجد طلبات في هذه الفئة</div>';
+                else html = filtered.map(o => orderCard(o, statusColors, icons)).join('');
+            }
+
+            document.getElementById('orders-list').innerHTML = html;
+        }
+
+        function orderCard(o, statusColors, icons) {
+            const isPending = o.status === 'بانتظار الموافقة';
+            const typeTag = o.clientType === 'شركة'
+                ? '<span class="bg-blue-50 text-blue-600 text-xs font-black px-2 py-0.5 rounded-full">🏢 شركة</span>'
+                : '<span class="bg-purple-50 text-purple-600 text-xs font-black px-2 py-0.5 rounded-full">🙍 فرد</span>';
+            return `
+        <div class="bg-white rounded-2xl border ${isPending ? 'border-amber-200 shadow-md' : 'border-gray-100 shadow-sm'} p-6 flex items-center gap-5 ${isPending ? 'ring-1 ring-amber-200' : ''}">
+            <div class="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center text-2xl flex-shrink-0">${icons[o.status] || '📦'}</div>
+            <div class="flex-1">
+                <div class="flex items-center gap-3 mb-1 flex-wrap">
+                    <p class="font-black">#${o.id}</p>
+                    <span class="text-xs font-black px-2 py-0.5 rounded-full ${statusColors[o.status] || 'bg-gray-100 text-gray-600'}">${o.status}</span>
+                    ${typeTag}
+                    ${isPending ? '<span class="text-xs bg-amber-500 text-white font-black px-2 py-0.5 rounded-full animate-pulse">يحتاج إجراء</span>' : ''}
+                </div>
+                <p class="text-sm text-gray-600 font-bold">${o.client}</p>
+                <p class="text-xs text-gray-400 mt-1">${o.items}</p>
+            </div>
+            <div class="text-left flex-shrink-0">
+                <p class="font-black g text-lg">${o.total.toLocaleString('ar-SA')} ر.س</p>
+                <p class="text-xs text-gray-400 mt-1">${o.date}</p>
+            </div>
+            <div class="flex gap-2 flex-shrink-0">
+                ${isPending ? `
+                    <button onclick="approveOrder('${o.id}')" class="bg-g text-white text-xs font-black px-4 py-2 rounded-xl hover:opacity-90 shadow-sm">✅ قبول</button>
+                    <button onclick="rejectOrder('${o.id}')" class="border border-red-300 bg-red-50 text-red-500 text-xs font-black px-4 py-2 rounded-xl hover:bg-red-100">❌ رفض</button>
+                ` : `<button class="border border-gray-200 text-gray-500 text-xs font-black px-4 py-2 rounded-xl hover:bg-gray-50">تفاصيل</button>`}
+            </div>
+        </div>`;
+        }
+
+        // ── Contracts ─────────────────────────────────────────────────
+        function renderContracts() {
+            const statusColors = { 'نشط': 'bg-green-100 text-green-700', 'ينتهي قريباً': 'bg-amber-100 text-amber-700', 'منتهي': 'bg-gray-100 text-gray-500' };
+            document.getElementById('contracts-tbody').innerHTML = contracts.map(c => `
+        <tr class="border-b border-gray-50 tr">
+            <td class="p-4 font-black text-sm g">#${c.id}</td>
+            <td class="p-4 font-bold text-sm">${c.client}</td>
+            <td class="p-4 text-sm text-gray-600">${c.type}</td>
+            <td class="p-4 text-sm text-gray-500">${c.start}</td>
+            <td class="p-4 text-sm text-gray-500">${c.end}</td>
+            <td class="p-4 font-black text-sm">${c.value.toLocaleString('ar-SA')} ر.س</td>
+            <td class="p-4"><span class="text-xs font-black px-2 py-1 rounded-full ${statusColors[c.status] || 'bg-gray-100'}">${c.status}</span></td>
+            <td class="p-4">
+                <div class="flex gap-2">
+                    <button class="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 font-bold text-gray-600">PDF</button>
+                    <button onclick="deleteContract('${c.id}')" class="text-xs border border-red-200 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-50 font-bold">حذف</button>
+                </div>
+            </td>
+        </tr>`).join('');
+        }
+        function addContract() {
+            closeModal('modal-add-contract');
+            showToast('تم إنشاء العقد بنجاح ✅');
+        }
+        function deleteContract(id) {
+            if (!confirm('حذف هذا العقد؟')) return;
+            contracts = contracts.filter(c => c.id !== id);
+            renderContracts();
+            showToast('تم حذف العقد');
+        }
+
+        // ── Products ──────────────────────────────────────────────────
+        function renderProducts() {
+            const g = document.getElementById('products-grid');
+            g.innerHTML = products.map(p => `
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition">
+            <div class="relative">
+                <img src="${p.img || IMGS[p.cat]}" alt="${p.name}" class="w-full h-36 object-cover" onerror="this.src='https://placehold.co/400x200/e5e7eb/9ca3af?text=منتج'">
+                <span class="absolute top-2 right-2 bg-white/90 text-xs font-bold px-2 py-0.5 rounded-full">${p.cat}</span>
+                <span class="absolute top-2 left-2 ${p.status === 'active' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-500'} text-xs font-black px-2 py-0.5 rounded-full">${p.status === 'active' ? 'متاح' : 'غير متاح'}</span>
+            </div>
+            <div class="p-4">
+                <h4 class="font-black text-sm mb-1 leading-tight">${p.name}</h4>
+                <p class="text-xs text-gray-400 mb-3 leading-relaxed line-clamp-2">${p.desc}</p>
+                <div class="flex items-center justify-between mb-3">
+                    <span class="g font-black text-base">${p.price.toLocaleString('ar-SA')} ر.س</span>
+                    <span class="text-xs text-gray-400">مخزون: ${p.stock}</span>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="editProduct(${p.id})" class="flex-1 border border-green-200 g text-xs font-bold py-1.5 rounded-xl hover:bg-green-50 transition">تعديل</button>
+                    <button onclick="deleteProduct(${p.id})" class="flex-1 border border-red-200 text-red-400 text-xs font-bold py-1.5 rounded-xl hover:bg-red-50 transition">حذف</button>
+                </div>
+            </div>
+        </div>`).join('');
+        }
+        function editProduct(id) {
+            const p = products.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('prod-modal-title').textContent = 'تعديل المنتج';
+            document.getElementById('edit-prod-id').value = id;
+            document.getElementById('pm-name').value = p.name;
+            document.getElementById('pm-price').value = p.price;
+            document.getElementById('pm-cat').value = p.cat;
+            document.getElementById('pm-desc').value = p.desc;
+            document.getElementById('pm-img').value = p.img;
+            document.getElementById('pm-stock').value = p.stock;
+            document.getElementById('pm-status').value = p.status;
+            openModal('modal-add-product');
+        }
+        function saveProduct() {
+            const name = document.getElementById('pm-name').value.trim();
+            const price = parseFloat(document.getElementById('pm-price').value);
+            const desc = document.getElementById('pm-desc').value.trim();
+            if (!name || !price || !desc) { document.getElementById('pm-err').classList.remove('hidden'); return; }
+            document.getElementById('pm-err').classList.add('hidden');
+            const eid = document.getElementById('edit-prod-id').value;
+            const data = { name, price, cat: document.getElementById('pm-cat').value, desc, img: document.getElementById('pm-img').value, stock: parseInt(document.getElementById('pm-stock').value) || 0, status: document.getElementById('pm-status').value };
+            if (eid) { const p = products.find(x => x.id === parseInt(eid)); if (p) Object.assign(p, data); }
+            else { products.push({ id: nextProdId++, ...data }); }
+            closeModal('modal-add-product');
+            renderProducts();
+            showToast('تم حفظ المنتج ✅');
+        }
+        function deleteProduct(id) {
+            if (!confirm('حذف هذا المنتج؟')) return;
+            products = products.filter(p => p.id !== id);
+            renderProducts();
+            showToast('تم حذف المنتج');
+        }
+
+        // ── Modal helpers ─────────────────────────────────────────────
+        function openModal(id) {
+            const m = document.getElementById(id);
+            m.classList.remove('hidden'); m.classList.add('flex');
+            // Reset edit state for product modal
+            if (id === 'modal-add-product') {
+                document.getElementById('prod-modal-title').textContent = 'إضافة منتج جديد';
+                document.getElementById('edit-prod-id').value = '';
+                ['pm-name', 'pm-price', 'pm-desc', 'pm-img', 'pm-stock'].forEach(i => document.getElementById(i).value = '');
+                document.getElementById('pm-cat').value = 'كاميرات';
+                document.getElementById('pm-status').value = 'active';
+                document.getElementById('pm-err').classList.add('hidden');
+            }
+        }
+        function closeModal(id) { const m = document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); }
+        document.querySelectorAll('.fixed').forEach(m => m.addEventListener('click', e => { if (e.target === m) closeModal(m.id); }));
+
+        // Toast notification
+        function showToast(msg) {
+            var t = document.getElementById('toast-el');
+            if (!t) { t = document.createElement('div'); t.id = 'toast-el'; t.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:9999;padding:12px 24px;border-radius:16px;font-weight:700;font-size:14px;background:#111827;color:#fff;transition:opacity .3s;white-space:nowrap;'; document.body.appendChild(t); }
+            t.textContent = msg; t.style.opacity = '1';
+            clearTimeout(t._t);
+            t._t = setTimeout(function () { t.style.opacity = '0'; }, 3000);
+        }
+
+        // Notifications system
+        var notifications = [
+            { id: 1, title: 'عقد ينتهي قريباً', body: 'عقد شركة النخبة للأمن ينتهي خلال 14 يوم', time: 'منذ 10 دقائق', read: false, icon: '⚠️' },
+            { id: 2, title: 'طلب جديد بانتظار الموافقة', body: 'طلب ORD-004 من مستشفى الأمل — كاميرات 4K', time: 'منذ 45 دقيقة', read: false, icon: '🛒' },
+            { id: 3, title: 'عقد آخر ينتهي قريباً', body: 'عقد مجموعة الرياض ينتهي خلال 30 يوم', time: 'منذ ساعتين', read: false, icon: '📋' },
+            { id: 4, title: 'تم إتمام الدفع', body: 'استلمنا دفعة 12,500 ر.س من شركة الخليج', time: 'منذ 5 ساعات', read: true, icon: '✅' },
+            { id: 5, title: 'عميل جديد مسجل', body: 'انضمت شركة درع الأمان إلى المنصة', time: 'أمس', read: true, icon: '🏢' }
+        ];
+
+        function renderNotifs() {
+            var unread = notifications.filter(function (n) { return !n.read; }).length;
+            var badge = document.getElementById('notif-badge');
+            var label = document.getElementById('notif-count-label');
+            if (badge) { badge.textContent = unread; badge.style.display = unread ? 'flex' : 'none'; }
+            if (label) label.textContent = unread ? (unread + ' إشعارات غير مقروءة') : 'جميع الإشعارات مقروءة';
+            var list = document.getElementById('notif-list');
+            if (!list) return;
+            list.innerHTML = notifications.map(function (n) {
+                return '<div onclick="markRead(' + n.id + ')" style="display:flex;gap:12px;padding:16px 20px;cursor:pointer;border-bottom:1px solid #f9fafb;background:' + (n.read ? 'transparent' : 'rgba(0,108,53,.04)') + ';opacity:' + (n.read ? '0.65' : '1') + '">' +
+                    '<div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:18px;background:' + (n.read ? '#f3f4f6' : '#fff') + ';box-shadow:' + (n.read ? 'none' : '0 1px 4px rgba(0,0,0,.08)') + '">' + n.icon + '</div>' +
+                    '<div style="flex:1;min-width:0">' +
+                    '<p style="font-weight:900;font-size:13px;color:#111827;margin:0 0 2px">' + n.title + '</p>' +
+                    '<p style="font-size:12px;color:#6b7280;margin:0 0 4px;line-height:1.4">' + n.body + '</p>' +
+                    '<p style="font-size:11px;color:#9ca3af;margin:0">' + n.time + '</p>' +
+                    '</div>' +
+                    (!n.read ? '<span style="width:8px;height:8px;background:#006C35;border-radius:50%;flex-shrink:0;margin-top:6px"></span>' : '') +
+                    '</div>';
+            }).join('');
+        }
+
+        function markRead(id) {
+            var n = notifications.find(function (x) { return x.id === id; });
+            if (n) { n.read = true; renderNotifs(); }
+        }
+
+        function markAllRead() {
+            notifications.forEach(function (n) { n.read = true; });
+            renderNotifs();
+            showToast('تم تحديد جميع الإشعارات كمقروءة ✅');
+        }
+
+        function toggleNotifs() {
+            var panel = document.getElementById('notif-panel');
+            if (!panel) return;
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                renderNotifs();
+            } else {
+                panel.classList.add('hidden');
+            }
+        }
+
+        document.addEventListener('click', function (e) {
+            var wrapper = document.getElementById('notif-wrapper');
+            if (wrapper && !wrapper.contains(e.target)) {
+                var panel = document.getElementById('notif-panel');
+                if (panel) panel.classList.add('hidden');
+            }
+        });
+
+        function showAllNotifications() {
+            // Mark all as read and show panel expanded
+            renderNotifs();
+            const panel = document.getElementById('notif-panel');
+            if (panel) {
+                panel.classList.remove('hidden');
+                const list = panel.querySelector('#notif-list');
+                if (list) list.style.maxHeight = 'none';
+            }
+            showToast('عرض جميع الإشعارات (' + notifications.length + ')');
+        }
+
+        // Init
+        showPage('pg-overview');
+        renderClients(); renderOrders(); renderContracts(); renderProducts();
+    </script>
+</body>
+
+</html>
