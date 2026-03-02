@@ -98,16 +98,16 @@
                 <h2 class="text-xl font-black text-gray-800 mb-6 text-center">دخول المشرف</h2>
                 <div id="login-err"
                     class="hidden mb-4 bg-red-50 text-red-600 text-sm font-bold rounded-xl p-3 text-center">بيانات
-                    الدخول غير صحيحة</div>
+                    الدخول غير صحيحة — الإيميل أو كلمة المرور غير صحيحة</div>
                 <div class="space-y-4">
                     <div>
                         <label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني</label>
-                        <input id="adm-email" type="email" placeholder="admin@waqaya.sa" value="admin@waqaya.sa"
+                        <input id="adm-email" type="email" placeholder="admin@salamah.sa"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none transition-colors">
                     </div>
                     <div>
                         <label class="text-xs font-bold text-gray-500 mb-1 block">كلمة المرور</label>
-                        <input id="adm-pass" type="password" placeholder="••••••••" value="admin123"
+                        <input id="adm-pass" type="password" placeholder="••••••••"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none transition-colors">
                     </div>
                 </div>
@@ -115,9 +115,7 @@
                     class="w-full bg-g text-white py-4 rounded-xl font-black text-lg mt-6 hover:opacity-90 shadow-lg transition">
                     دخول
                 </button>
-                <p class="text-center text-xs text-gray-400 mt-4"><a href="/cdn-cgi/l/email-protection"
-                        class="__cf_email__" data-cfemail="2a4b4e4743446a5d4b5b4b534b04594b">[email&#160;protected]</a>
-                    / admin123</p>
+                <p class="text-center text-xs text-gray-400 mt-4">الدخول مخصص للمشرفين المعتمدين فقط</p>
             </div>
         </div>
     </div>
@@ -207,15 +205,20 @@
             </nav>
 
             <div class="mt-auto pt-4 border-t border-gray-800">
-                <div class="flex items-center gap-3 mb-4 px-2">
-                    <div
-                        class="w-8 h-8 bg-g rounded-full flex items-center justify-center text-white text-xs font-black">
-                        م</div>
-                    <div>
-                        <p class="text-white text-xs font-bold">المشرف العام</p>
-                        <p class="text-gray-500 text-xs"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                data-cfemail="c5a4a1a8acab85b2a4b4a4bca4ebb6a4">[email&#160;protected]</a></p>
+                <div class="flex items-center gap-3 mb-4 px-2 cursor-pointer hover:bg-gray-800 rounded-xl p-2 transition"
+                    onclick="openModal('modal-admin-profile')" title="تعديل بيانات المشرف">
+                    <div id="sidebar-avatar"
+                        class="w-8 h-8 bg-g rounded-full flex items-center justify-center text-white text-xs font-black flex-shrink-0">
+                        M</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-white text-xs font-bold" id="sidebar-name">Mishary</p>
+                        <p class="text-gray-500 text-xs truncate" id="sidebar-email">admin@salamah.sa</p>
                     </div>
+                    <svg class="w-3 h-3 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
                 </div>
                 <button onclick="adminLogout()"
                     class="w-full flex items-center gap-2 px-3 py-2 text-red-400 hover:text-red-300 hover:bg-red-900/20 rounded-xl text-sm font-bold transition text-right">
@@ -265,12 +268,6 @@
                                     onclick="showAllNotifications()" class="text-xs g font-bold hover:underline">عرض
                                     جميع الإشعارات</button></div>
                         </div>
-                    </div>
-                    <div class="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2">
-                        <div
-                            class="w-7 h-7 bg-g rounded-full flex items-center justify-center text-white text-xs font-black">
-                            م</div>
-                        <span class="text-sm font-bold text-gray-700">المشرف العام</span>
                     </div>
                 </div>
             </header>
@@ -494,7 +491,8 @@
                     <!-- Search & filter -->
                     <div class="bg-white rounded-2xl border border-gray-100 p-4 mb-4 flex gap-4 items-center shadow-sm">
                         <div class="relative flex-1">
-                            <input type="text" placeholder="بحث بالاسم أو السجل التجاري..."
+                            <input id="client-search" type="text"
+                                placeholder="بحث بالاسم أو السجل التجاري أو رقم الجوال..." oninput="renderClients()"
                                 class="w-full bg-gray-50 rounded-xl px-4 py-2.5 pr-10 text-sm outline-none focus:ring-2 focus:ring-green-200">
                             <svg class="w-4 h-4 text-gray-400 absolute top-3 right-3" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -502,7 +500,7 @@
                                     d="M21 21l-4.35-4.35M17 11A6 6 0 111 11a6 6 0 0116 0z" />
                             </svg>
                         </div>
-                        <select
+                        <select id="client-status-filter" onchange="renderClients()"
                             class="bg-gray-50 border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-green-200">
                             <option>كل الحالات</option>
                             <option>موثق</option>
@@ -772,10 +770,82 @@
     <!-- ══════════════════════════════
      MODALS
 ══════════════════════════════ -->
+
+    <!-- Admin Profile Modal -->
+    <div id="modal-admin-profile" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8" onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-black">تعديل بيانات المشرف</h3>
+                <button onclick="closeModal('modal-admin-profile')" class="text-gray-400 hover:text-gray-700"><svg
+                        class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg></button>
+            </div>
+            <div class="flex justify-center mb-6">
+                <div id="profile-avatar-preview"
+                    class="w-20 h-20 bg-g rounded-full flex items-center justify-center text-white text-3xl font-black">
+                    M</div>
+            </div>
+            <div class="space-y-4">
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم الكامل *</label>
+                    <input id="prof-name" type="text" placeholder="Mishary" value="Mishary"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none"
+                        oninput="document.getElementById('profile-avatar-preview').textContent=this.value.trim()[0]||'M'">
+                </div>
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني *</label>
+                    <input id="prof-email" type="email" placeholder="admin@salamah.sa" value="admin@salamah.sa"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                </div>
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">كلمة المرور الجديدة <span
+                            class="text-gray-400 font-normal">(اتركها فارغة للإبقاء على الحالية)</span></label>
+                    <input id="prof-pass" type="password" placeholder="••••••••"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                </div>
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">تأكيد كلمة المرور</label>
+                    <input id="prof-pass2" type="password" placeholder="••••••••"
+                        class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                </div>
+                <div id="prof-err" class="hidden text-red-500 text-sm font-bold bg-red-50 rounded-xl p-3">⚠️ كلمتا
+                    المرور غير متطابقتين</div>
+            </div>
+            <div class="flex gap-3 mt-6">
+                <button onclick="saveAdminProfile()"
+                    class="flex-1 bg-g text-white py-3 rounded-xl font-bold hover:opacity-90">حفظ التعديلات</button>
+                <button onclick="closeModal('modal-admin-profile')"
+                    class="flex-1 border-2 border-gray-200 py-3 rounded-xl font-bold hover:bg-gray-50">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Contract Modal -->
+    <div id="modal-pdf-contract" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+            onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between p-6 border-b sticky top-0 bg-white rounded-t-3xl z-10">
+                <h3 class="text-lg font-black flex items-center gap-2">📄 <span id="pdf-contract-title">عقد رقم</span>
+                </h3>
+                <div class="flex gap-2">
+                    <button onclick="window.print()"
+                        class="bg-g text-white text-xs font-bold px-4 py-2 rounded-xl hover:opacity-90 flex items-center gap-1">🖨️
+                        طباعة</button>
+                    <button onclick="closeModal('modal-pdf-contract')"
+                        class="text-gray-400 hover:text-gray-700 p-2"><svg class="w-5 h-5" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg></button>
+                </div>
+            </div>
+            <div id="pdf-contract-body" class="p-8 text-sm leading-relaxed"></div>
+        </div>
+    </div>
+
     <!-- Add Client -->
     <div id="modal-add-client" class="fixed inset-0 bg-black/50 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8" onclick="event.stopPropagation()">
-            <div class="flex items-center justify-between mb-6">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg p-8 max-h-[90vh] overflow-y-auto"
+            onclick="event.stopPropagation()">
+            <div class="flex items-center justify-between mb-5">
                 <h3 class="text-xl font-black">إضافة عميل جديد</h3>
                 <button onclick="closeModal('modal-add-client')" class="text-gray-400 hover:text-gray-700"><svg
                         class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -783,38 +853,46 @@
                             d="M6 18L18 6M6 6l12 12" />
                     </svg></button>
             </div>
-            <div class="space-y-4">
+            <!-- Client type toggle -->
+            <div class="flex bg-gray-100 rounded-2xl p-1 mb-6">
+                <button id="cl-tab-company" onclick="setClientType('company')"
+                    class="flex-1 py-2.5 rounded-xl font-black text-sm bg-white text-green-700 shadow-sm transition">🏢
+                    شركة</button>
+                <button id="cl-tab-individual" onclick="setClientType('individual')"
+                    class="flex-1 py-2.5 rounded-xl font-black text-sm text-gray-400 transition">🙍 فرد</button>
+            </div>
+            <!-- Company fields -->
+            <div id="cl-company-fields" class="space-y-4">
                 <div class="grid grid-cols-2 gap-4">
-                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المؤسسة
-                            *</label><input type="text" placeholder="شركة ..."
+                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">اسم الشركة /
+                            المؤسسة *</label><input id="cl-co-name" type="text" placeholder="شركة الأمان المتكاملة"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
                     </div>
-                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">السجل التجاري *</label><input
-                            type="text" maxlength="10" oninput="this.value=this.value.replace(/[^0-9]/g,'')"
-                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">السجل التجاري * (10
+                            أرقام)</label><input id="cl-co-cr" type="text" maxlength="10" placeholder="1234567890"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none font-bold tracking-widest">
                     </div>
-                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الضريبة <span
-                                class="text-gray-400 font-normal">(15 رقم)</span></label><input type="text"
-                            maxlength="15" placeholder="300XXXXXXXXXX003"
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الضريبة (15 رقم)</label><input
+                            id="cl-co-vat" type="text" maxlength="15" placeholder="300XXXXXXXXXX003"
                             oninput="this.value=this.value.replace(/[^0-9]/g,'')"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none font-bold tracking-widest">
                     </div>
                     <div><label class="text-xs font-bold text-gray-500 mb-1 block">اسم المسؤول *</label><input
-                            type="text"
+                            id="cl-co-contact" type="text" placeholder="محمد العمري"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
                     </div>
-                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الجوال * <span
-                                class="text-gray-400 font-normal">(10 أرقام)</span></label><input type="tel"
-                            maxlength="10" placeholder="05XXXXXXXX"
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الجوال * (10 أرقام)</label><input
+                            id="cl-co-phone" type="tel" maxlength="10" placeholder="05XXXXXXXX"
                             oninput="this.value=this.value.replace(/[^0-9]/g,'')"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none font-bold tracking-widest">
                     </div>
                     <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني
-                            *</label><input type="email"
+                            *</label><input id="cl-co-email" type="email" placeholder="info@company.sa"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
                     </div>
                     <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">المدينة</label>
-                        <select
+                        <select id="cl-co-city"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
                             <option>الرياض</option>
                             <option>جدة</option>
@@ -825,6 +903,41 @@
                     </div>
                 </div>
             </div>
+            <!-- Individual fields -->
+            <div id="cl-individual-fields" class="space-y-4 hidden">
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">الاسم الكامل
+                            *</label><input id="cl-ind-name" type="text" placeholder="محمد عبدالله العمري"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الهوية الوطنية * (10
+                            أرقام)</label><input id="cl-ind-id" type="text" maxlength="10" placeholder="10XXXXXXXX"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none font-bold tracking-widest">
+                    </div>
+                    <div><label class="text-xs font-bold text-gray-500 mb-1 block">رقم الجوال * (10 أرقام)</label><input
+                            id="cl-ind-phone" type="tel" maxlength="10" placeholder="05XXXXXXXX"
+                            oninput="this.value=this.value.replace(/[^0-9]/g,'')"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none font-bold tracking-widest">
+                    </div>
+                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">البريد الإلكتروني
+                            *</label><input id="cl-ind-email" type="email" placeholder="user@email.com"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
+                    </div>
+                    <div class="col-span-2"><label class="text-xs font-bold text-gray-500 mb-1 block">المدينة</label>
+                        <select id="cl-ind-city"
+                            class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
+                            <option>الرياض</option>
+                            <option>جدة</option>
+                            <option>الدمام</option>
+                            <option>مكة المكرمة</option>
+                            <option>المدينة المنورة</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="cl-err" class="hidden mt-3 text-red-500 text-sm font-bold bg-red-50 rounded-xl p-3">⚠️ يرجى ملء
+                الحقول المطلوبة</div>
             <div class="flex gap-3 mt-6">
                 <button onclick="addClient()"
                     class="flex-1 bg-g text-white py-3 rounded-xl font-bold hover:opacity-90">حفظ العميل</button>
@@ -846,51 +959,51 @@
                     </svg></button>
             </div>
             <div class="space-y-4">
-                <div><label class="text-xs font-bold text-gray-500 mb-1 block">المؤسسة *</label>
-                    <select
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">المؤسسة / العميل *</label>
+                    <select id="ct-client"
                         class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
-                        <option>اختر مؤسسة...</option>
-                        <option>شركة الأمان المتكاملة</option>
-                        <option>مجموعة الخليج</option>
-                        <option>برج الأعمال</option>
+                        <option value="">اختر عميلاً...</option>
                     </select>
                 </div>
                 <div><label class="text-xs font-bold text-gray-500 mb-1 block">نوع الخدمة *</label>
-                    <select
+                    <select id="ct-type"
                         class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
-                        <option>تركيب كاميرات مراقبة</option>
-                        <option>تركيب نظام إطفاء</option>
-                        <option>تركيب نظام إنذار</option>
-                        <option>تركيب تحكم دخول</option>
-                        <option>صيانة شاملة</option>
+                        <option value="تركيب كاميرات مراقبة">تركيب كاميرات مراقبة</option>
+                        <option value="تركيب نظام إطفاء">تركيب نظام إطفاء</option>
+                        <option value="تركيب نظام إنذار">تركيب نظام إنذار</option>
+                        <option value="تركيب تحكم دخول">تركيب تحكم دخول</option>
+                        <option value="صيانة شاملة">صيانة شاملة</option>
                     </select>
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div><label class="text-xs font-bold text-gray-500 mb-1 block">تاريخ البدء *</label><input
-                            type="date"
+                            id="ct-start" type="date"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
                     </div>
                     <div><label class="text-xs font-bold text-gray-500 mb-1 block">تاريخ الانتهاء *</label><input
-                            type="date"
+                            id="ct-end" type="date"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
                     </div>
                     <div><label class="text-xs font-bold text-gray-500 mb-1 block">قيمة العقد (ر.س) *</label><input
-                            type="number" placeholder="0"
+                            id="ct-value" type="number" placeholder="0"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none">
                     </div>
                     <div><label class="text-xs font-bold text-gray-500 mb-1 block">طريقة الدفع</label>
-                        <select
+                        <select id="ct-pay"
                             class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none bg-white">
-                            <option>مدى</option>
-                            <option>تحويل بنكي</option>
-                            <option>فاتورة آجلة</option>
+                            <option value="مدى">مدى</option>
+                            <option value="تحويل بنكي">تحويل بنكي</option>
+                            <option value="فاتورة آجلة">فاتورة آجلة</option>
                         </select>
                     </div>
                 </div>
-                <div><label class="text-xs font-bold text-gray-500 mb-1 block">ملاحظات</label><textarea rows="2"
+                <div><label class="text-xs font-bold text-gray-500 mb-1 block">ملاحظات</label><textarea id="ct-notes"
+                        rows="2"
                         class="w-full border-2 border-gray-200 rounded-xl p-3 focus:border-green-600 outline-none resize-none"></textarea>
                 </div>
             </div>
+            <div id="ct-err" class="hidden mt-3 text-red-500 text-sm font-bold bg-red-50 rounded-xl p-3">⚠️ يرجى ملء
+                الحقول المطلوبة</div>
             <div class="flex gap-3 mt-6">
                 <button onclick="addContract()"
                     class="flex-1 bg-g text-white py-3 rounded-xl font-bold hover:opacity-90">إنشاء العقد</button>
@@ -1024,31 +1137,72 @@
         ];
 
         // ── Auth ──────────────────────────────────────────────────────
+        // Allowed admin accounts
+        const ADMIN_ACCOUNTS = [
+            { email: 'admin@salamah.sa', pass: 'Admin@2026', name: 'Mishary', initial: 'M' },
+            { email: 'saud@salamah.sa', pass: 'Saud@2026', name: 'سعود الإداري', initial: 'س' }
+        ];
+        let currentAdmin = null;
+
         function adminLogin() {
-            const e = document.getElementById('adm-email').value;
+            const e = document.getElementById('adm-email').value.trim().toLowerCase();
             const p = document.getElementById('adm-pass').value;
-            if (e === 'admin@waqaya.sa' && p === 'admin123') {
+            const acct = ADMIN_ACCOUNTS.find(a => a.email === e && a.pass === p);
+            if (acct) {
+                currentAdmin = acct;
                 document.getElementById('p-login').classList.add('hs');
                 document.getElementById('p-dash').classList.remove('hs');
+                // Update sidebar profile
+                document.getElementById('sidebar-name').textContent = acct.name;
+                document.getElementById('sidebar-email').textContent = acct.email;
+                document.getElementById('sidebar-avatar').textContent = acct.initial;
+                document.getElementById('prof-name').value = acct.name;
+                document.getElementById('prof-email').value = acct.email;
                 showPage('pg-overview');
             } else {
                 document.getElementById('login-err').classList.remove('hidden');
             }
         }
         function adminLogout() {
+            currentAdmin = null;
             document.getElementById('p-dash').classList.add('hs');
             document.getElementById('p-login').classList.remove('hs');
+            document.getElementById('adm-email').value = '';
+            document.getElementById('adm-pass').value = '';
         }
         document.addEventListener('keydown', e => { if (e.key === 'Enter' && !document.getElementById('p-login').classList.contains('hs')) adminLogin(); });
+
+        // Admin profile save
+        function saveAdminProfile() {
+            const name = document.getElementById('prof-name').value.trim();
+            const email = document.getElementById('prof-email').value.trim();
+            const pass = document.getElementById('prof-pass').value;
+            const pass2 = document.getElementById('prof-pass2').value;
+            if (pass && pass !== pass2) { document.getElementById('prof-err').classList.remove('hidden'); return; }
+            document.getElementById('prof-err').classList.add('hidden');
+            if (currentAdmin) {
+                currentAdmin.name = name || currentAdmin.name;
+                currentAdmin.email = email || currentAdmin.email;
+                if (pass) currentAdmin.pass = pass;
+                document.getElementById('sidebar-name').textContent = currentAdmin.name;
+                document.getElementById('sidebar-email').textContent = currentAdmin.email;
+                document.getElementById('sidebar-avatar').textContent = currentAdmin.name[0];
+                document.getElementById('profile-avatar-preview').textContent = currentAdmin.name[0];
+            }
+            document.getElementById('prof-pass').value = '';
+            document.getElementById('prof-pass2').value = '';
+            closeModal('modal-admin-profile');
+            showToast('تم حفظ بيانات المشرف ✅');
+        }
 
         // ── Page nav ──────────────────────────────────────────────────
         const PAGE_TITLES = {
             'pg-overview': ['نظرة عامة', 'مرحباً بك في لوحة التحكم'],
-            'pg-clients': ['إدارة العملاء', '12 مؤسسة مسجلة'],
-            'pg-orders': ['الطلبات', '5 طلبات نشطة'],
-            'pg-contracts': ['إدارة العقود', '18 عقد نشط'],
-            'pg-products': ['المنتجات', '13 منتج في الكتالوج'],
-            'pg-finance': ['التقارير المالية', 'السنة المالية 2026'],
+            'pg-clients': [' مرحبًا , يا المشرف ',],
+            'pg-orders': [' مرحبًا , يا المشرف ',],
+            'pg-contracts': [' مرحبًا , يا المشرف ',],
+            'pg-products': [' مرحبًا , يا المشرف ',],
+            'pg-finance': [' مرحبًا , يا المشرف ',],
         };
         function showPage(id) {
             document.querySelectorAll('.pg').forEach(p => p.classList.add('hs'));
@@ -1071,17 +1225,48 @@
         }
 
         // ── Clients ───────────────────────────────────────────────────
-        function renderClients() {
+        let currentClientType = 'company';
+
+        function setClientType(type) {
+            currentClientType = type;
+            document.getElementById('cl-company-fields').classList.toggle('hidden', type !== 'company');
+            document.getElementById('cl-individual-fields').classList.toggle('hidden', type !== 'individual');
+            const compBtn = document.getElementById('cl-tab-company');
+            const indBtn = document.getElementById('cl-tab-individual');
+            if (type === 'company') {
+                compBtn.classList.add('bg-white', 'text-green-700', 'shadow-sm'); compBtn.classList.remove('text-gray-400');
+                indBtn.classList.remove('bg-white', 'text-green-700', 'shadow-sm'); indBtn.classList.add('text-gray-400');
+            } else {
+                indBtn.classList.add('bg-white', 'text-green-700', 'shadow-sm'); indBtn.classList.remove('text-gray-400');
+                compBtn.classList.remove('bg-white', 'text-green-700', 'shadow-sm'); compBtn.classList.add('text-gray-400');
+            }
+        }
+
+        function renderClients(searchTerm, statusFilter) {
+            const s = (searchTerm ?? document.getElementById('client-search')?.value ?? '').toLowerCase().trim();
+            const st = statusFilter ?? document.getElementById('client-status-filter')?.value ?? 'كل الحالات';
             const tb = document.getElementById('clients-tbody');
-            tb.innerHTML = clients.map(c => `
+            let filtered = clients.filter(c => {
+                const matchSearch = !s || c.name.toLowerCase().includes(s) || (c.cr || '').includes(s) || (c.contact || '').toLowerCase().includes(s) || (c.phone || '').includes(s);
+                const matchStatus = st === 'كل الحالات' || c.status === st;
+                return matchSearch && matchStatus;
+            });
+            if (!filtered.length) {
+                tb.innerHTML = '<tr><td colspan="7" class="text-center py-8 text-gray-400 font-bold">لا توجد نتائج مطابقة</td></tr>';
+                return;
+            }
+            tb.innerHTML = filtered.map(c => `
         <tr class="border-b border-gray-50 tr">
             <td class="p-4">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 bg-g rounded-xl flex items-center justify-center text-white font-black text-sm flex-shrink-0">${c.name[0]}</div>
-                    <div><p class="font-bold text-sm">${c.name}</p><p class="text-xs text-gray-400">${c.city}</p></div>
+                    <div class="w-9 h-9 ${c.clientType === 'فرد' ? 'bg-purple-500' : 'bg-g'} rounded-xl flex items-center justify-center text-white font-black text-sm flex-shrink-0">${c.name[0]}</div>
+                    <div>
+                        <p class="font-bold text-sm">${c.name}</p>
+                        <p class="text-xs text-gray-400">${c.city} ${c.clientType === 'فرد' ? '• فرد' : '• شركة'}</p>
+                    </div>
                 </div>
             </td>
-            <td class="p-4 font-bold text-sm">${c.cr}</td>
+            <td class="p-4 font-bold text-sm">${c.cr || '—'}</td>
             <td class="p-4">
                 <p class="font-bold text-sm">${c.contact}</p>
                 <p class="text-xs text-gray-400">${c.phone}</p>
@@ -1097,11 +1282,43 @@
             </td>
         </tr>`).join('');
         }
+
         function addClient() {
+            const isInd = currentClientType === 'individual';
+            let name, cr, vat, contact, phone, email, city;
+            if (isInd) {
+                name = document.getElementById('cl-ind-name').value.trim();
+                const idNum = document.getElementById('cl-ind-id').value.trim();
+                phone = document.getElementById('cl-ind-phone').value.trim();
+                email = document.getElementById('cl-ind-email').value.trim();
+                city = document.getElementById('cl-ind-city').value;
+                if (!name || idNum.length < 10 || phone.length < 10 || !email) {
+                    document.getElementById('cl-err').classList.remove('hidden'); return;
+                }
+                cr = idNum; contact = name; vat = '';
+            } else {
+                name = document.getElementById('cl-co-name').value.trim();
+                cr = document.getElementById('cl-co-cr').value.trim();
+                vat = document.getElementById('cl-co-vat').value.trim();
+                contact = document.getElementById('cl-co-contact').value.trim();
+                phone = document.getElementById('cl-co-phone').value.trim();
+                email = document.getElementById('cl-co-email').value.trim();
+                city = document.getElementById('cl-co-city').value;
+                if (!name || cr.length < 10 || !contact || phone.length < 10 || !email) {
+                    document.getElementById('cl-err').classList.remove('hidden'); return;
+                }
+            }
+            const newClient = {
+                id: nextClientId++, name, cr, vat: vat || '', contact, phone, email, city,
+                contracts: 0, status: 'معلق', date: new Date().toLocaleDateString('ar-SA').replaceAll('/', '/'),
+                clientType: isInd ? 'فرد' : 'شركة'
+            };
+            clients.push(newClient);
             closeModal('modal-add-client');
-            // In real app: would save form data. Demo: just show toast
+            renderClients();
             showToast('تم إضافة العميل بنجاح ✅');
         }
+
         function deleteClient(id) {
             if (!confirm('هل أنت متأكد من حذف هذا العميل؟')) return;
             clients = clients.filter(c => c.id !== id);
@@ -1227,16 +1444,80 @@
             <td class="p-4"><span class="text-xs font-black px-2 py-1 rounded-full ${statusColors[c.status] || 'bg-gray-100'}">${c.status}</span></td>
             <td class="p-4">
                 <div class="flex gap-2">
-                    <button class="text-xs border border-gray-200 px-3 py-1.5 rounded-lg hover:bg-gray-50 font-bold text-gray-600">PDF</button>
+                    <button onclick="showContractPDF('${c.id}')" class="text-xs border border-green-200 text-green-700 px-3 py-1.5 rounded-lg hover:bg-green-50 font-bold">📄 PDF</button>
                     <button onclick="deleteContract('${c.id}')" class="text-xs border border-red-200 text-red-400 px-3 py-1.5 rounded-lg hover:bg-red-50 font-bold">حذف</button>
                 </div>
             </td>
         </tr>`).join('');
         }
-        function addContract() {
-            closeModal('modal-add-contract');
-            showToast('تم إنشاء العقد بنجاح ✅');
+
+        function showContractPDF(id) {
+            const c = contracts.find(x => x.id === id);
+            if (!c) return;
+            document.getElementById('pdf-contract-title').textContent = 'عقد رقم #' + c.id;
+            document.getElementById('pdf-contract-body').innerHTML = `
+                <div style="direction:rtl;font-family:'IBM Plex Sans Arabic',sans-serif">
+                    <div style="text-align:center;margin-bottom:32px;border-bottom:3px solid #006C35;padding-bottom:20px">
+                        <div style="font-size:28px;font-weight:900;color:#006C35;margin-bottom:4px">سلامة | saftey</div>
+                        <div style="font-size:13px;color:#6b7280">حلول الأمن والسلامة — معتمد من الدفاع المدني</div>
+                    </div>
+                    <div style="text-align:center;margin-bottom:28px">
+                        <div style="font-size:20px;font-weight:900;color:#111827;margin-bottom:6px">عقد خدمات أمن وسلامة</div>
+                        <div style="display:inline-block;background:#f0fdf4;color:#006C35;font-weight:900;padding:6px 20px;border-radius:20px;font-size:13px;border:1px solid #bbf7d0">رقم العقد: #${c.id}</div>
+                    </div>
+                    <table style="width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13px">
+                        <tr style="background:#f9fafb"><td style="padding:12px 16px;font-weight:700;color:#6b7280;width:35%">الطرف الأول (مزود الخدمة)</td><td style="padding:12px 16px;font-weight:900;color:#111827">شركة سلامة للأمن والسلامة</td></tr>
+                        <tr><td style="padding:12px 16px;font-weight:700;color:#6b7280">الطرف الثاني (العميل)</td><td style="padding:12px 16px;font-weight:900;color:#111827">${c.client}</td></tr>
+                        <tr style="background:#f9fafb"><td style="padding:12px 16px;font-weight:700;color:#6b7280">نوع الخدمة</td><td style="padding:12px 16px;font-weight:900;color:#111827">${c.type}</td></tr>
+                        <tr><td style="padding:12px 16px;font-weight:700;color:#6b7280">تاريخ البدء</td><td style="padding:12px 16px;font-weight:900;color:#111827">${c.start}</td></tr>
+                        <tr style="background:#f9fafb"><td style="padding:12px 16px;font-weight:700;color:#6b7280">تاريخ الانتهاء</td><td style="padding:12px 16px;font-weight:900;color:#111827">${c.end}</td></tr>
+                        <tr><td style="padding:12px 16px;font-weight:700;color:#6b7280">قيمة العقد</td><td style="padding:12px 16px;font-weight:900;color:#006C35;font-size:16px">${c.value.toLocaleString('ar-SA')} ريال سعودي (شاملة ضريبة 15%)</td></tr>
+                        <tr style="background:#f9fafb"><td style="padding:12px 16px;font-weight:700;color:#6b7280">حالة العقد</td><td style="padding:12px 16px"><span style="background:${c.status === 'نشط' ? '#dcfce7' : '#fef9c3'};color:${c.status === 'نشط' ? '#166534' : '#92400e'};font-weight:900;padding:4px 12px;border-radius:12px;font-size:12px">${c.status}</span></td></tr>
+                    </table>
+                    <div style="background:#f8fafc;border-radius:12px;padding:16px;margin-bottom:24px;font-size:12px;color:#6b7280;line-height:1.8">
+                        <strong style="color:#111827;display:block;margin-bottom:8px">الشروط والأحكام العامة:</strong>
+                        1. يلتزم الطرف الأول بتقديم الخدمة المتفق عليها وفق المواصفات المحددة.<br>
+                        2. يلتزم الطرف الثاني بسداد قيمة العقد في المواعيد المحددة.<br>
+                        3. في حال الإخلال بالشروط، يحق للطرف المتضرر فسخ العقد مع التعويض.<br>
+                        4. يخضع هذا العقد لأنظمة المملكة العربية السعودية.
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:32px">
+                        <div style="border:2px dashed #e5e7eb;border-radius:12px;padding:20px;text-align:center">
+                            <div style="font-weight:900;margin-bottom:4px">توقيع الطرف الأول</div>
+                            <div style="font-size:12px;color:#9ca3af">شركة سلامة | Safety</div>
+                            <div style="height:48px"></div>
+                        </div>
+                        <div style="border:2px dashed #e5e7eb;border-radius:12px;padding:20px;text-align:center">
+                            <div style="font-weight:900;margin-bottom:4px">توقيع الطرف الثاني</div>
+                            <div style="font-size:12px;color:#9ca3af">${c.client}</div>
+                            <div style="height:48px"></div>
+                        </div>
+                    </div>
+                    <div style="text-align:center;margin-top:24px;font-size:11px;color:#9ca3af">
+                        تاريخ الإصدار: ${new Date().toLocaleDateString('ar-SA')} — هذا العقد صادر إلكترونياً ويعتبر ملزماً قانونياً
+                    </div>
+                </div>`;
+            const m = document.getElementById('modal-pdf-contract');
+            m.classList.remove('hidden'); m.classList.add('flex');
         }
+
+        function addContract() {
+            const clientVal = document.getElementById('ct-client').value;
+            const typeVal = document.getElementById('ct-type').value;
+            const startVal = document.getElementById('ct-start').value;
+            const endVal = document.getElementById('ct-end').value;
+            const valueVal = parseFloat(document.getElementById('ct-value').value);
+            if (!clientVal || !startVal || !endVal || !valueVal) {
+                document.getElementById('ct-err').classList.remove('hidden'); return;
+            }
+            document.getElementById('ct-err').classList.add('hidden');
+            const newId = 'DS-2026-' + (nextContractId++);
+            contracts.push({ id: newId, client: clientVal, type: typeVal, start: startVal.replaceAll('-', '/'), end: endVal.replaceAll('-', '/'), value: valueVal, status: 'نشط' });
+            closeModal('modal-add-contract');
+            renderContracts();
+            showToast('تم إنشاء العقد بنجاح ✅ — #' + newId);
+        }
+
         function deleteContract(id) {
             if (!confirm('حذف هذا العقد؟')) return;
             contracts = contracts.filter(c => c.id !== id);
@@ -1271,8 +1552,9 @@
         function editProduct(id) {
             const p = products.find(x => x.id === id);
             if (!p) return;
-            document.getElementById('prod-modal-title').textContent = 'تعديل المنتج';
+            // Set edit id BEFORE openModal so it knows we're editing
             document.getElementById('edit-prod-id').value = id;
+            document.getElementById('prod-modal-title').textContent = 'تعديل المنتج';
             document.getElementById('pm-name').value = p.name;
             document.getElementById('pm-price').value = p.price;
             document.getElementById('pm-cat').value = p.cat;
@@ -1280,7 +1562,9 @@
             document.getElementById('pm-img').value = p.img;
             document.getElementById('pm-stock').value = p.stock;
             document.getElementById('pm-status').value = p.status;
-            openModal('modal-add-product');
+            document.getElementById('pm-err').classList.add('hidden');
+            const m = document.getElementById('modal-add-product');
+            m.classList.remove('hidden'); m.classList.add('flex');
         }
         function saveProduct() {
             const name = document.getElementById('pm-name').value.trim();
@@ -1307,14 +1591,37 @@
         function openModal(id) {
             const m = document.getElementById(id);
             m.classList.remove('hidden'); m.classList.add('flex');
-            // Reset edit state for product modal
-            if (id === 'modal-add-product') {
+            // Reset product modal ONLY when adding new (not editing)
+            if (id === 'modal-add-product' && !document.getElementById('edit-prod-id').value) {
                 document.getElementById('prod-modal-title').textContent = 'إضافة منتج جديد';
                 document.getElementById('edit-prod-id').value = '';
                 ['pm-name', 'pm-price', 'pm-desc', 'pm-img', 'pm-stock'].forEach(i => document.getElementById(i).value = '');
                 document.getElementById('pm-cat').value = 'كاميرات';
                 document.getElementById('pm-status').value = 'active';
                 document.getElementById('pm-err').classList.add('hidden');
+            }
+            // Populate client dropdown for contract modal
+            if (id === 'modal-add-contract') {
+                const sel = document.getElementById('ct-client');
+                sel.innerHTML = '<option value="">اختر عميلاً...</option>';
+                clients.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c.name;
+                    opt.textContent = c.name + (c.cr ? ' — ' + c.cr : '');
+                    sel.appendChild(opt);
+                });
+                // Reset fields
+                ['ct-start', 'ct-end', 'ct-value', 'ct-notes'].forEach(i => document.getElementById(i).value = '');
+                document.getElementById('ct-err').classList.add('hidden');
+            }
+            // Setup client type for add-client modal
+            if (id === 'modal-add-client') {
+                setClientType('company');
+                ['cl-co-name', 'cl-co-cr', 'cl-co-vat', 'cl-co-contact', 'cl-co-phone', 'cl-co-email',
+                    'cl-ind-name', 'cl-ind-id', 'cl-ind-phone', 'cl-ind-email'].forEach(i => {
+                        const el = document.getElementById(i); if (el) el.value = '';
+                    });
+                document.getElementById('cl-err').classList.add('hidden');
             }
         }
         function closeModal(id) { const m = document.getElementById(id); m.classList.add('hidden'); m.classList.remove('flex'); }
